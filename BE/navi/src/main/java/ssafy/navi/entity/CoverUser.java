@@ -5,31 +5,24 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
+@Validated
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NoraebangReview extends BaseTimeEntity {
+public class CoverUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "noraebang_review_pk")
+    @Column(name="cover_user_pk")
     private Long id;
 
-    @Column(name = "content")
-    private String content;
-
-    //==외래키==//
-
-    // 댓글 단 사람
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk")
     private User user;
 
-    // 댓글 단 게시글
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "noraebang_pk")
-    private Noraebang noraebang;
-
+    @JoinColumn(name = "cover_pk")
+    private Cover cover;
 }

@@ -31,9 +31,17 @@ public class User{
     @Column(name="image")
     private String image;
 
+    // 팔로잉 수
+    @Column(name = "following_count")
+    private Integer followingCount;
+
+    // 팔로워 수
+    @Column(name = "follower_count")
+    private Integer followerCount;
+
     // 노래방
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Noraebang> norabangs;
+    private List<Noraebang> noraebangs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NoraebangLike> noraebangLikes;
@@ -43,6 +51,9 @@ public class User{
 
     // AI 커버
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CoverUser> coverUsers;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CoverLike> coverLikes;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -50,15 +61,17 @@ public class User{
 
     // 팔로워
     @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
-    private List<Follow> followerList;
+    private List<Follow> followers;
 
     // 팔로잉
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<Follow> followingList;
+    private List<Follow> followings;
 
+    // 알람
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Alarm> alarms;
 
+    // 매칭 중계 테이블
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MatchingUser> matchingUsers;
 

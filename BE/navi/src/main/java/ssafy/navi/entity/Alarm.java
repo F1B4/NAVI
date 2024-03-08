@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.core.SpringVersion;
 
 @Entity
 @Getter @Setter
@@ -18,6 +19,9 @@ public class Alarm extends BaseTimeEntity{
 
     @Column(name="content")
     private String content;
+
+    @Column(name = "alarm_status")
+    private AlarmStatus alarmStatus;
 
     //==외래키==//
 

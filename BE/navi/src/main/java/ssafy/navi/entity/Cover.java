@@ -46,6 +46,9 @@ public class Cover extends BaseTimeEntity{
     private Matching matching;
 
     @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
+    private List<CoverUser> coverUsers;
+
+    @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
     private List<CoverLike> coverLikes;
 
     @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
