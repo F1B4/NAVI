@@ -1,4 +1,4 @@
 package ssafy.navi.repository;
 
-public class CoverRepository {
+public interface CoverRepository {
 }
