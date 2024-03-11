@@ -42,7 +42,7 @@ public class Cover extends BaseTimeEntity{
 
     // 매칭 중계 테이블
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "match_pk")
+    @JoinColumn(name = "matching_pk")
     private Matching matching;
 
     @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
