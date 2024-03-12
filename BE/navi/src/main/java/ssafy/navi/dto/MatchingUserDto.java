@@ -9,8 +9,9 @@ import ssafy.navi.entity.MatchingUser;
 public class MatchingUserDto {
 
     private Long id;
-//    private UserDto user;
-//    private MatchingDto matching;
+//    private UserDto userDto;
+//    private MatchingDto matchingDto;
+//    private MatchingDto matchingDto;
 
     // 엔티티 Dto로 변환
     public static MatchingUserDto convertToDto(MatchingUser matchingUser) {
@@ -18,8 +19,9 @@ public class MatchingUserDto {
 
         // set
         matchingUserDto.setId(matchingUser.getId());
-//        matchingUserDto.setUser(UserDto.convertToDto(matchingUser.getUser()));
-//        matchingUserDto.setMatching(MatchingDto.convertToDto(matchingUser.getMatching()));
+//        matchingUserDto.setUserDto(UserDto.convertToDto(matchingUser.getUser()));
+//        matchingUserDto.setMatchingDto(MatchingDto.convertToDto(matchingUser.getMatching()));
+//        matchingUserDto.setMatchingDto(MatchingDto.convertToDto(matchingUser.getMatching()));
 
         return matchingUserDto;
     }

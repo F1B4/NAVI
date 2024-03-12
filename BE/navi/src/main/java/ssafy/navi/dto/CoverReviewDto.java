@@ -10,8 +10,8 @@ public class CoverReviewDto {
 
     private Long id;
     private String content;
-//    private CoverDto cover;
-//    private UserDto user;
+//    private CoverDto coverDto;
+//    private UserDto userDto;
 
     // 엔티티 Dto로 변환
     public static CoverReviewDto convertToDto(CoverReview coverReview) {
@@ -20,8 +20,8 @@ public class CoverReviewDto {
         // set
         coverReviewDto.setId(coverReview.getId());
         coverReviewDto.setContent(coverReview.getContent());
-//        coverReviewDto.setCover(CoverDto.convertToDto(coverReview.getCover()));
-//        coverReviewDto.setUser(UserDto.convertToDto(coverReview.getUser()));
+//        coverReviewDto.setCoverDto(CoverDto.convertToDto(coverReview.getCover()));
+//        coverReviewDto.setUserDto(UserDto.convertToDto(coverReview.getUser()));
 
         return coverReviewDto;
     }

@@ -18,6 +18,8 @@ public class CoverUser {
     @Column(name="cover_user_pk")
     private Long id;
 
+    //==외래키==//
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk")
     private User user;
@@ -25,4 +27,9 @@ public class CoverUser {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cover_pk")
     private Cover cover;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "part_pk")
+    private Part part;
+
 }

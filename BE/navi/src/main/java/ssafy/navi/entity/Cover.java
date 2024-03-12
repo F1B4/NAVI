@@ -41,11 +41,12 @@ public class Cover extends BaseTimeEntity{
 
     //==외래키==//
 
-    // 매칭 중계 테이블
+    // 노래 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "matching_pk")
-    private Matching matching;
+    @JoinColumn(name = "song_pk")
+    private Song song;
 
+    // 커버 사용자 중계 테이블
     @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
     private List<CoverUser> coverUsers;
 
