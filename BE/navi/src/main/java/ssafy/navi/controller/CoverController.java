@@ -17,8 +17,12 @@ import ssafy.navi.service.CoverService;
 @RequestMapping("/covers")
 public class CoverController {
 
-    @Autowired
-    CoverService coverService;
+    private final CoverService coverService;
+
+    @GetMapping("")
+    public String test(){
+        return "Hello World";
+    }
 
     /*
     커버 게시판 디테일 보기, pathvariable로 온 co-er_pk를 통해 조회해서 CoverDto에 정보를 담아와서 보내줌
