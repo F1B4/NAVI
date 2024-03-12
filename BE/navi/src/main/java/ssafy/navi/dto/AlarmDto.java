@@ -13,7 +13,7 @@ public class AlarmDto {
     private Long id;
     private String content;
     private AlarmStatus alarmStatus;
-    private UserDto user;
+//    private UserDto user;
 
     // 엔티티 Dto로 변환
     public static AlarmDto convertToDto(Alarm alarm) {
@@ -23,7 +23,7 @@ public class AlarmDto {
         alarmDto.setId(alarm.getId());
         alarmDto.setContent(alarm.getContent());
         alarmDto.setAlarmStatus(alarm.getAlarmStatus());
-        alarmDto.setUser(UserDto.convertToDto(alarm.getUser()));
+//        alarmDto.setUser(UserDto.convertToDto(alarm.getUser()));
 
         return alarmDto;
     }
