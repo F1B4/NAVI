@@ -1,0 +1,1 @@
+https://github.com/RoyRao2333/template-vite-react-ts-tailwind?tab=readme-ov-file
