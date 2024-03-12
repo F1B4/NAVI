@@ -9,8 +9,8 @@ import ssafy.navi.entity.NoraebangLike;
 public class NoraebangLikeDto {
 
     private Long id;
-    private UserDto user;
-    private NoraebangDto noraebang;
+//    private UserDto user;
+//    private NoraebangDto noraebang;
 
     // 엔티티 Dto로 변환
     public static NoraebangLikeDto convertToDto(NoraebangLike noraebangLike) {
@@ -18,8 +18,8 @@ public class NoraebangLikeDto {
 
         // set
         noraebangLikeDto.setId(noraebangLike.getId());
-        noraebangLikeDto.setUser(UserDto.convertToDto(noraebangLike.getUser()));
-        noraebangLikeDto.setNoraebang(NoraebangDto.convertToDto(noraebangLike.getNoraebang()));
+//        noraebangLikeDto.setUser(UserDto.convertToDto(noraebangLike.getUser()));
+//        noraebangLikeDto.setNoraebang(NoraebangDto.convertToDto(noraebangLike.getNoraebang()));
 
         return noraebangLikeDto;
     }
