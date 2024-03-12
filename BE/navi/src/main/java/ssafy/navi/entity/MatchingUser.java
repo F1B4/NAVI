@@ -30,4 +30,9 @@ public class MatchingUser {
     @JoinColumn(name = "matching_pk")
     private Matching matching;
 
+    // 파트
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "part_pk")
+    private Part part;
+
 }
