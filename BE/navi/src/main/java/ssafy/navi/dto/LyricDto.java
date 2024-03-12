@@ -19,7 +19,7 @@ public class LyricDto {
     private LocalDateTime endTime;
     private String content;
     private Integer sequence;
-    private SongDto song;
+//    private SongDto song;
 
     // 엔티티 Dto로 변환
     public static LyricDto convertToDto(Lyric lyric) {
@@ -31,7 +31,7 @@ public class LyricDto {
         lyricDto.setEndTime(lyric.getEndTime());
         lyricDto.setContent(lyric.getContent());
         lyricDto.setSequence(lyric.getSequence());
-        lyricDto.setSong(SongDto.convertToDto(lyric.getSong()));
+//        lyricDto.setSong(SongDto.convertToDto(lyric.getSong()));
 
         return lyricDto;
     }

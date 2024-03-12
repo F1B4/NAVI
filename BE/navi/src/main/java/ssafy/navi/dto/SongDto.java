@@ -18,11 +18,7 @@ public class SongDto {
     private String title;
     private String mr;
     private String image;
-    private ArtistDto artist;
-    private List<NoraebangDto> noraebangDtos;
-    private List<MatchingDto> matchingDtos;
-    private List<LyricDto> lyricDtos;
-    private List<PartDto> partDtos;
+//    private ArtistDto artist;
 
     // 엔티티 Dto로 변환
     public static SongDto convertToDto(Song song) {
@@ -33,19 +29,7 @@ public class SongDto {
         songDto.setTitle(song.getTitle());
         songDto.setMr(song.getMr());
         songDto.setImage(song.getImage());
-        songDto.setArtist(ArtistDto.convertToDto(song.getArtist()));
-        songDto.setNoraebangDtos(song.getNoraebangs()
-                .stream().map(NoraebangDto::convertToDto)
-                .collect(Collectors.toList()));
-        songDto.setMatchingDtos(song.getMatchings()
-                .stream().map(MatchingDto::convertToDto)
-                .collect(Collectors.toList()));
-        songDto.setLyricDtos(song.getLyrics()
-                .stream().map(LyricDto::convertToDto)
-                .collect(Collectors.toList()));
-        songDto.setPartDtos(song.getParts()
-                .stream().map(PartDto::convertToDto)
-                .collect(Collectors.toList()));
+//        songDto.setArtist(ArtistDto.convertToDto(song.getArtist()));
 
         return songDto;
     }
