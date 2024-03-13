@@ -18,8 +18,6 @@ public class SongDto {
     private String title;
     private String mr;
     private String image;
-    private String artist;
-    private Integer partCount;
 
     // 엔티티 Dto로 변환
     public static SongDto convertToDto(Song song) {
@@ -30,9 +28,14 @@ public class SongDto {
         songDto.setTitle(song.getTitle());
         songDto.setMr(song.getMr());
         songDto.setImage(song.getImage());
-        songDto.setArtist(song.getArtist());
-        songDto.setPartCount(song.getPartCount());
 
         return songDto;
     }
+//
+//    public static SongDto convertToDtoArtist(Song song) {
+//        SongDto songDto = new SongDto();
+//        songDto.setArtist(song.getArtist());
+//
+//        return songDto;
+//    }
 }
