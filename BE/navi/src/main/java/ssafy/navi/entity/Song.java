@@ -32,12 +32,9 @@ public class Song {
     //==외래키==//
 
     // 원곡자
-    @Column(name = "artist")
-    private String artist;
-
-    // 원곡자 수
-    @Column(name = "part_count")
-    private Integer partCount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_pk")
+    private Artist artist;
 
     // 노래방 게시글
     @OneToMany(mappedBy = "song")
