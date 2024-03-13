@@ -13,8 +13,8 @@ public class NoraebangReviewDto {
 
     private Long id;
     private String content;
-//    private UserDto user;
-//    private NoraebangDto noraebang;
+//    private UserDto userDto;
+//    private NoraebangDto noraebangDto;
 
     // 엔티티 Dto로 변환
     public static NoraebangReviewDto convertToDto(NoraebangReview noraebangReview) {
@@ -23,8 +23,8 @@ public class NoraebangReviewDto {
         // set
         noraebangReviewDto.setId(noraebangReview.getId());
         noraebangReviewDto.setContent(noraebangReview.getContent());
-//        noraebangReviewDto.setUser(UserDto.convertToDto(noraebangReview.getUser()));
-//        noraebangReviewDto.setNoraebang(NoraebangDto.convertToDto(noraebangReview.getNoraebang()));
+//        noraebangReviewDto.setUserDto(UserDto.convertToDto(noraebangReview.getUser()));
+//        noraebangReviewDto.setNoraebangDto(NoraebangDto.convertToDto(noraebangReview.getNoraebang()));
 
         return noraebangReviewDto;
     }

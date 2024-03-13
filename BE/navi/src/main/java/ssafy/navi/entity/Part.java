@@ -33,8 +33,12 @@ public class Part {
     @JoinColumn(name = "song_pk")
     private Song song;
 
-    // 매칭
-    @OneToMany(mappedBy = "part")
-    private List<Matching> matchings;
+    // 게시글 사용자 중계 테이블
+    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL)
+    private List<CoverUser> coverUsers;
+
+    // 매칭 중계 테이블
+    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL)
+    private List<MatchingUser> matchingUsers;
 
 }

@@ -17,8 +17,8 @@ public class NoraebangDto {
     private String record;
     private Integer hit;
     private Integer likeCount;
-//    private UserDto user;
-//    private SongDto song;
+//    private UserDto userDto;
+//    private SongDto songDto;
 //    private List<NoraebangLikeDto> noraebangLikeDtos;
 //    private List<NoraebangReviewDto> noraebangReviewDtos;
 
@@ -33,8 +33,8 @@ public class NoraebangDto {
         noraebangDto.setRecord(noraebang.getRecord());
         noraebangDto.setHit(noraebang.getHit());
         noraebangDto.setLikeCount(noraebang.getLikeCount());
-//        noraebangDto.setUser(UserDto.convertToDto(noraebang.getUser()));
-//        noraebangDto.setSong(SongDto.convertToDto(noraebang.getSong()));
+//        noraebangDto.setUserDto(UserDto.convertToDto(noraebang.getUser()));
+//        noraebangDto.setSongDto(SongDto.convertToDto(noraebang.getSong()));
 //        noraebangDto.setNoraebangLikeDtos(noraebang.getNoraebangLikes()
 //                .stream().map(NoraebangLikeDto::convertToDto)
 //                .collect(Collectors.toList()));
