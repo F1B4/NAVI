@@ -11,4 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+
+    @GetMapping("")
+    public String mainPage() {
+        return "index";
+    }
+
 }
