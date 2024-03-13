@@ -20,8 +20,8 @@ public class NoraebangController {
     public final NoraebangService noraebangService;
     public final SongService songService;
 
-    @GetMapping("/test")
-    public Response<Song> test() {
-        return Response.of("성공", "가수 이름",);
-    }
+//    @GetMapping("/test")
+//    public Response<Song> test() {
+//        return Response.of("성공", "가수 이름",);
+//    }
 }

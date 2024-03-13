@@ -24,11 +24,11 @@ public class SongService {
     }
 
 
-    public List<SongDto> getAllSongs() {
-        List<Song> all = songRepository.findAll();
-
-        return all.stream()
-                .map(SongDto::convertToDtoArtist)
-                .collect(Collectors.toList());
-    }
+//    public List<SongDto> getAllSongs() {
+//        List<Song> all = songRepository.findAll();
+//
+//        return all.stream()
+//                .map(SongDto::convertToDtoArtist)
+//                .collect(Collectors.toList());
+//    }
 }
