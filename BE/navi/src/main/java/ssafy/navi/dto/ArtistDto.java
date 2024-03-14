@@ -22,9 +22,9 @@ public class ArtistDto {
     public static ArtistDto convertToDto(Artist artist) {
         ArtistDto artistDto = new ArtistDto();
         // set
-        artistDto.setId(artistDto.getId());
-        artistDto.setPartCount(artistDto.getPartCount());
-        artistDto.setName(artistDto.getName());
+        artistDto.setId(artist.getId());
+        artistDto.setPartCount(artist.getPartCount());
+        artistDto.setName(artist.getName());
 
         return artistDto;
     }
