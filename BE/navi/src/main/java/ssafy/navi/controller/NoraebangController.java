@@ -52,7 +52,7 @@ public class NoraebangController {
     public Response<NoraebangDto> InfoNoraebangDetail(@PathVariable("noraebang_pk") Long pk) {
         return Response.of("Ok", "get Noraebang detail", noraebangService.getNoraebang(pk));
     }
-
+//asdf
 //    @PostMapping("/create")
 //    public String createProduct(@RequestParam("files") MultipartFile[] files) throws IOException {
 //        System.out.println("hereee-=-=--=-==--=-=-");
