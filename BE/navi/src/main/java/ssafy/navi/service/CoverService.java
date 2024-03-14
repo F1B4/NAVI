@@ -86,6 +86,8 @@ public class CoverService {
                 .orElseThrow(()->new Exception("커버 게시글이 존재하지 않아요"));
         User user=userRepository.findById(Long.valueOf(1))
                 .orElseThrow(()->new Exception("유저가 없어요"));
+        boolean exists =coverLikeRepository.existsByCoverAndUser(cover,user);
+
         return null;
     }
 }
