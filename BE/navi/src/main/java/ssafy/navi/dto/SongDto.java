@@ -31,11 +31,5 @@ public class SongDto {
 
         return songDto;
     }
-//
-//    public static SongDto convertToDtoArtist(Song song) {
-//        SongDto songDto = new SongDto();
-//        songDto.setArtist(song.getArtist());
-//
-//        return songDto;
-//    }
+
 }

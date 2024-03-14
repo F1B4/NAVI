@@ -75,4 +75,7 @@ public class User{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MatchingUser> matchingUsers;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "voice_pk")
+    private Voice voice;
 }
