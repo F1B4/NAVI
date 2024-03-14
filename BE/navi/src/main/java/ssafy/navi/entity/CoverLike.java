@@ -1,10 +1,7 @@
 package ssafy.navi.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter @Setter
@@ -28,4 +25,9 @@ public class CoverLike {
     @JoinColumn(name = "user_pk")
     private User user;
 
+    @Builder
+    public CoverLike (Long coverPk,User user){
+        this.id=coverPk;
+        this.user=user;
+    }
 }

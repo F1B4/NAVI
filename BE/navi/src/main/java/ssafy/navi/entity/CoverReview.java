@@ -1,10 +1,8 @@
 package ssafy.navi.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import ssafy.navi.dto.CoverReviewDto;
 
 @Entity
 @Getter @Setter
@@ -30,5 +28,12 @@ public class CoverReview extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk")
     private User user;
+
+    @Builder
+    public CoverReview (String content,Cover cover,User user){
+        this.content=content;
+        this.cover=cover;
+        this.user=user;
+    }
 
 }

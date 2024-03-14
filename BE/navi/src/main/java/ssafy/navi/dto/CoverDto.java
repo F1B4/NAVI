@@ -17,7 +17,7 @@ public class CoverDto {
     private String thumbnail;
     private Integer hit;
     private Integer likeCount;
-//    private SongDto songDto;
+    private SongDto songDto;
 //    private List<CoverUserDto> coverUserDtos;
 //    private List<CoverLikeDto> coverLikeDtos;
 //    private List<CoverReviewDto> coverReviewDtos;
@@ -32,7 +32,7 @@ public class CoverDto {
         coverDto.setThumbnail(cover.getThumbnail());
         coverDto.setHit(cover.getHit());
         coverDto.setLikeCount(cover.getLikeCount());
-//        coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
+        coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
 //        coverDto.setCoverUserDtos(cover.getCoverUsers()
 //                .stream().map(CoverUserDto::convertToDto)
 //                .collect(Collectors.toList()));
