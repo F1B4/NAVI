@@ -20,8 +20,7 @@ public class CoverDto {
     private SongDto songDto;
 //    private List<CoverUserDto> coverUserDtos;
 //    private List<CoverLikeDto> coverLikeDtos;
-//    private List<CoverReviewDto> coverReviewDtos;
-
+    private List<CoverReviewDto> coverReviewDtos;
     // 엔티티 Dto로 변환
     public static CoverDto convertToDto(Cover cover) {
         CoverDto coverDto = new CoverDto();
@@ -39,10 +38,9 @@ public class CoverDto {
 //        coverDto.setCoverLikeDtos(cover.getCoverLikes()
 //                .stream().map(CoverLikeDto::convertToDto)
 //                .collect(Collectors.toList()));
-//        coverDto.setCoverReviewDtos(cover.getCoverReviews()
-//                .stream().map(CoverReviewDto::convertToDto)
-//                .collect(Collectors.toList()));
-
+        coverDto.setCoverReviewDtos(cover.getCoverReviews()
+                .stream().map(CoverReviewDto::convertToDto)
+                .collect(Collectors.toList()));
         return coverDto;
     }
 }

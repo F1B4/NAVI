@@ -22,6 +22,11 @@ public class CoverService {
     private final CoverUserRepository coverUserRepository;
     private final UserRepository userRepository;
     private final CoverLikeRepository coverLikeRepository;
+
+    /*
+
+     */
+
     /*
     orElseThrow를 통해 값이 없을경우 예외처리를 함
     orElseThrow를 사용하는 이유 -> jpa는 optional타입으로 반환하기 때문.
@@ -33,19 +38,13 @@ public class CoverService {
         CoverDto coverDto=coverRepository.findById(coverPk)
                 .map(CoverDto::convertToDto)
                 .orElseThrow(()->new Exception("커버가 없어요"));
-        List<CoverReviewDto> coverReviewDto=coverReviewRepository.findById(coverPk)
-                .stream()
-                .map(CoverReviewDto::convertToDto)
-                .collect(Collectors.toList());
         List<CoverUserDto> coverUserDtos=coverUserRepository.findByCover_Id(coverPk)
                 .stream()
                 .map(CoverUserDto::convertToDto)
                 .collect(Collectors.toList());
 
         coverDetail.put("cover",coverDto);
-        coverDetail.put("coverReview",coverReviewDto);
         coverDetail.put("CoverUser",coverUserDtos);
-
         return coverDetail;
     }
 
@@ -63,6 +62,7 @@ public class CoverService {
         coverReview=coverReviewRepository.save(coverReview);
         return CoverReviewDto.convertToDto(coverReview);
     }
+
     /*
     댓글 삭제
      */

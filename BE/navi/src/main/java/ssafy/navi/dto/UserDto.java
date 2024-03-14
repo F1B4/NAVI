@@ -70,4 +70,11 @@ public class UserDto {
 
         return userDto;
     }
+    public static UserDto convertToDtoCoverDetail(User user){
+        UserDto userDto = new UserDto();
+        // set
+        userDto.setNickname(user.getNickname());
+        userDto.setImage(user.getImage());
+        return userDto;
+    }
 }
