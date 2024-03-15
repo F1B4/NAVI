@@ -17,11 +17,10 @@ public class CoverDto {
     private String thumbnail;
     private Integer hit;
     private Integer likeCount;
-//    private SongDto songDto;
+    private SongDto songDto;
 //    private List<CoverUserDto> coverUserDtos;
 //    private List<CoverLikeDto> coverLikeDtos;
-//    private List<CoverReviewDto> coverReviewDtos;
-
+    private List<CoverReviewDto> coverReviewDtos;
     // 엔티티 Dto로 변환
     public static CoverDto convertToDto(Cover cover) {
         CoverDto coverDto = new CoverDto();
@@ -32,17 +31,16 @@ public class CoverDto {
         coverDto.setThumbnail(cover.getThumbnail());
         coverDto.setHit(cover.getHit());
         coverDto.setLikeCount(cover.getLikeCount());
-//        coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
+        coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
 //        coverDto.setCoverUserDtos(cover.getCoverUsers()
 //                .stream().map(CoverUserDto::convertToDto)
 //                .collect(Collectors.toList()));
 //        coverDto.setCoverLikeDtos(cover.getCoverLikes()
 //                .stream().map(CoverLikeDto::convertToDto)
 //                .collect(Collectors.toList()));
-//        coverDto.setCoverReviewDtos(cover.getCoverReviews()
-//                .stream().map(CoverReviewDto::convertToDto)
-//                .collect(Collectors.toList()));
-
+        coverDto.setCoverReviewDtos(cover.getCoverReviews()
+                .stream().map(CoverReviewDto::convertToDto)
+                .collect(Collectors.toList()));
         return coverDto;
     }
 }
