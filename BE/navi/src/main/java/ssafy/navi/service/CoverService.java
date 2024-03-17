@@ -107,5 +107,6 @@ public class CoverService {
             coverRepository.save(cover);
             return CoverLikeDto.convertToDto(like);
         }
+
     }
 }

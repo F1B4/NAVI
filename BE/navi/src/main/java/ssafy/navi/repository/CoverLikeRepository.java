@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface CoverLikeRepository extends JpaRepository<CoverLike,Long> {
     Optional<CoverLike> findByCoverAndUser(Cover cover, User user);
+
 }
