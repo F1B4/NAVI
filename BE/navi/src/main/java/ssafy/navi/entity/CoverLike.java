@@ -26,8 +26,8 @@ public class CoverLike {
     private User user;
 
     @Builder
-    public CoverLike (Long coverPk,User user){
-        this.id=coverPk;
+    public CoverLike (Cover cover,User user){
+        this.cover=cover;
         this.user=user;
     }
 }

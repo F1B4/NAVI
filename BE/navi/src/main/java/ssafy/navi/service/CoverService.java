@@ -35,9 +35,12 @@ public class CoverService {
      */
     public Map<String, Object> getCoverDetail(Long coverPk) throws Exception {
         Map<String,Object> coverDetail=new HashMap<>();
-        CoverDto coverDto=coverRepository.findById(coverPk)
-                .map(CoverDto::convertToDto)
-                .orElseThrow(()->new Exception("커버가 없어요"));
+        CoverDto coverDto = coverRepository.findById(coverPk).map(cover -> {
+            cover.setHit(cover.getHit() + 1); // 조회수 증가
+            return coverRepository.save(cover); // 변경된 엔티티 저장
+        })
+                .map(CoverDto::convertToDto).orElseThrow(() -> new Exception("커버가 없어요"));
+
         List<CoverUserDto> coverUserDtos=coverUserRepository.findByCover_Id(coverPk)
                 .stream()
                 .map(CoverUserDto::convertToDto)
@@ -86,6 +89,23 @@ public class CoverService {
                 .orElseThrow(()->new Exception("커버 게시글이 존재하지 않아요"));
         User user=userRepository.findById(Long.valueOf(1))
                 .orElseThrow(()->new Exception("유저가 없어요"));
-        return null;
+        Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
+
+        if (exists.isPresent()) {
+            // 이미 좋아요를 눌렀다면, 좋아요 삭제
+            coverLikeRepository.delete(exists.get());
+            int likeCount = cover.getLikeCount() == null ? 0 : cover.getLikeCount() - 1;
+            cover.setLikeCount(likeCount);
+            coverRepository.save(cover);
+            return null;
+        }else {
+            // 좋아요가 없다면, 새로운 좋아요 생성
+            CoverLike like=new CoverLike(cover,user);
+            coverLikeRepository.save(like);
+            int likeCount = cover.getLikeCount() == null ? 1 : cover.getLikeCount() + 1;
+            cover.setLikeCount(likeCount);
+            coverRepository.save(cover);
+            return CoverLikeDto.convertToDto(like);
+        }
     }
 }

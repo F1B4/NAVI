@@ -70,7 +70,12 @@ public class CoverController {
 
      */
     @PostMapping("/{cover_pk}/like")
-    public Response<CoverLikeDto> coverLike(@PathVariable("cover_pk") Long coverPk,@RequestBody CoverReviewDto coverReviewDto) throws Exception{
-        return Response.of("OK","좋아요",coverService.coverLike(coverPk));
+    public Response<CoverLikeDto> coverLike(@PathVariable("cover_pk") Long coverPk) throws Exception{
+        CoverLikeDto res=coverService.coverLike(coverPk);
+        if(res!=null){
+            return Response.of("OK","좋아요 성공",res);
+        }else{
+            return Response.of("OK","좋아요 삭제",null);
+        }
     }
 }
