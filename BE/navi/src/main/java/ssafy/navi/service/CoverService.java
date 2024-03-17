@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.*;
 import ssafy.navi.entity.*;
 import ssafy.navi.repository.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,8 +28,40 @@ public class CoverService {
     private final CoverLikeRepository coverLikeRepository;
 
     /*
-
+    커버 게시판 전체 게시글 조회
      */
+    public List<CoverDto> getCover() {
+        List<Cover> covers = coverRepository.findAll();
+        return covers.stream()
+                .map(CoverDto::convertToDtoList)
+                .collect(Collectors.toList());
+    }
+    /*
+    커버 게시판 전체 게시글 조회
+    조회순
+     */
+    public List<CoverDto> getCoverByView(){
+        List<Cover> covers = coverRepository.findAll(Sort.by(Sort.Direction.DESC, "hit")); // 조회수 내림차순 정렬
+        return covers.stream()
+                .map(CoverDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    Hot 게시글 조회하기
+    오늘 날짜로 부터 1주일 이내의 게시글 중 조회수가 가장 높은 6개를 조회함
+    LocalDate타입에서 LocalDateTime으로 변환하는 이유 : 1주일 전의 자정을 기준으로 조회하기 위해서 시간개념이 포함된 LocalDateTime으로 변환함
+     */
+    public List<CoverDto> getHotCover(){
+        //1주일 전 날짜를 알아냄
+        LocalDate oneWeek=LocalDate.now().minus(Period.ofWeeks(1));
+        //1주일 전 날짜의 자정으로 값 지정
+        LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
+        List<Cover> covers = coverRepository.findTop6ByCreatedAtAfterOrderByHitDesc(oneWeekAgo);
+        return covers.stream()
+                .map(CoverDto::convertToDto)
+                .collect(Collectors.toList());
+    }
 
     /*
     orElseThrow를 통해 값이 없을경우 예외처리를 함
@@ -67,6 +103,7 @@ public class CoverService {
     }
 
     /*
+    게시글 체크, 유저 체크, 댓글 유무 체크
     댓글 삭제
      */
     public String deleteCoverReview(Long coverPk,Long coverReviewPk) throws Exception{
@@ -83,6 +120,8 @@ public class CoverService {
 
     /*
     커버 좋아요
+    커버 체크, 유저 체크, 이미 좋아요를 눌렀다면 좋아요 취소
+    좋아요를 누르지 않았다면 좋아요 생성
      */
     public CoverLikeDto coverLike(Long coverPk) throws Exception{
         Cover cover=coverRepository.findById(coverPk)
