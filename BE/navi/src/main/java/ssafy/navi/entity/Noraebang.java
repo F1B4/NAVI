@@ -1,26 +1,21 @@
 package ssafy.navi.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE) //builder패턴을 사용하기 위해 추가
 public class Noraebang extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "noraebang_pk")
     private Long id;
-
-    // 게시판 제목
-    @Column(name = "title")
-    private String title;
 
     // 게시판 내용
     @Column(name = "content")
@@ -32,11 +27,11 @@ public class Noraebang extends BaseTimeEntity{
 
     // 조회수
     @Column(name = "hit")
-    private Integer hit;
+    private Integer hit = 0;
 
     // 좋아요 수
     @Column(name = "like_count")
-    private Integer likeCount;
+    private Integer likeCount = 0;
 
     //==외래키==//
 
