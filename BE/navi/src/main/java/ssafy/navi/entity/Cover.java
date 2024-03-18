@@ -1,12 +1,10 @@
 package ssafy.navi.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ssafy.navi.dto.CoverDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -55,5 +53,4 @@ public class Cover extends BaseTimeEntity{
 
     @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
     private List<CoverReview> coverReviews;
-
 }

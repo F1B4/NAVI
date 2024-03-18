@@ -22,10 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/covers")
 public class CoverController {
-
     private final CoverService coverService;
-
-
     /*
     커버 게시판 목록 가져오기
     최신순
@@ -52,8 +49,6 @@ public class CoverController {
     public Response<List<CoverDto>> getHotCover() throws Exception{
         return Response.of("OK","Hot 게시글 가져오기",coverService.getHotCover());
     }
-
-
 
     /*
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
