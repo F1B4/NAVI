@@ -1,10 +1,7 @@
 package ssafy.navi.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -20,6 +17,11 @@ public class User{
     @Column(name="user_pk")
     private Long id;
 
+    // 소셜 로그인 id
+    @Column(name="username")
+    private String username;
+
+    // 소셜 로그인 설정된 이름
     @Column(name="nickname")
     private String nickname;
 
@@ -30,6 +32,10 @@ public class User{
     // 프로필 사진 S3 URL
     @Column(name="image")
     private String image;
+
+    // 유저 권한
+    @Column(name="role")
+    private Role role;
 
     // 팔로잉 수
     @Column(name = "following_count")
@@ -75,7 +81,18 @@ public class User{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MatchingUser> matchingUsers;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "voice_pk")
-    private Voice voice;
+    // 목소리 목록
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Voice> voices;
+
+    @Builder
+    public User(String username, String nickname, String email, String image, Role role) {
+        this.username = username;
+        this.nickname = nickname;
+        this.email = email;
+        this.image = image;
+        this.role = role;
+        followingCount = 0;
+        followerCount = 0;
+    }
 }

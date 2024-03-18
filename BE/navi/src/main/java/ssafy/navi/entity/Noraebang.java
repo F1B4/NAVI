@@ -18,15 +18,11 @@ public class Noraebang extends BaseTimeEntity{
     @Column(name = "noraebang_pk")
     private Long id;
 
-    // 게시판 제목
-    @Column(name = "title")
-    private String title;
-
     // 게시판 내용
     @Column(name = "content")
     private String content;
 
-    // 녹음파일 S3 URL
+    // mr존재한 녹음파일 S3 URL
     @Column(name = "record")
     private String record;
 
@@ -50,9 +46,11 @@ public class Noraebang extends BaseTimeEntity{
     @JoinColumn(name = "song_pk")
     private Song song;
 
+    // 노래방 좋아요
     @OneToMany(mappedBy = "noraebang", cascade = CascadeType.ALL)
     private List<NoraebangLike> noraebangLikes;
 
+    // 노래방 댓글
     @OneToMany(mappedBy = "noraebang", cascade = CascadeType.ALL)
     private List<NoraebangReview> noraebangReviews;
 

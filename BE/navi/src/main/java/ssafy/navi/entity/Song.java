@@ -56,7 +56,7 @@ public class Song {
     @OneToMany(mappedBy = "song")
     private List<Part> parts;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "voice_pk")
-    private Voice voice;
+    // 목소리
+    @OneToMany(mappedBy = "song")
+    private List<Voice> voices;
 }
