@@ -11,10 +11,16 @@ import ssafy.navi.dto.CustomOAuth2User;
 import ssafy.navi.dto.GoogleResponse;
 import ssafy.navi.dto.NaverResponse;
 import ssafy.navi.dto.OAuth2Response;
+import ssafy.navi.entity.Role;
+import ssafy.navi.entity.User;
+import ssafy.navi.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     // DefaultOAuth2UserService OAuth2UserService의 구현체
+
+    private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -35,7 +41,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return null;
         }
 
-        String role = "ROLE_USER";
+        String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
+        User existData = userRepository.findByUsername(username);
+        Role role = Role.ROLE_GUEST;
+
+        if(existData==null) {
+            User user = new User(username, oAuth2Response.getName(), oAuth2Response.getEmail(), oAuth2Response.getProfileImage(), role);
+
+            userRepository.save(user);
+        }
+        else {
+            existData.setUsername(username);
+            existData.setNickname(oAuth2Response.getName());
+            existData.setEmail(oAuth2Response.getEmail());
+            existData.setImage(oAuth2Response.getProfileImage());
+            role = existData.getRole();
+
+            userRepository.save(existData);
+        }
 
         return new CustomOAuth2User(oAuth2Response, role);
     }
