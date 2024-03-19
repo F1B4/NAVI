@@ -9,9 +9,9 @@ import ssafy.navi.entity.CoverUser;
 public class CoverUserDto {
 
     private Long id;
-//    private UserDto userDto;
+    private UserDto userDto;
 //    private CoverDto coverDto;
-//    private PartDto partDto;
+    private PartDto partDto;
 
     // 엔티티 Dto로 변환
     public static CoverUserDto convertToDto(CoverUser coverUser) {
@@ -19,9 +19,9 @@ public class CoverUserDto {
 
         // set
         coverUserDto.setId(coverUser.getId());
-//        coverUserDto.setUserDto(UserDto.convertToDto(coverUser.getUser()));
+        coverUserDto.setUserDto(UserDto.convertToDto(coverUser.getUser()));
 //        coverUserDto.setCoverDto(CoverDto.convertToDto(coverUser.getCover()));
-//        coverUserDto.setPartDto(CoverDto.convertToDto(coverUser.getPart()));
+        coverUserDto.setPartDto(PartDto.convertToDto(coverUser.getPart()));
 
         return coverUserDto;
     }

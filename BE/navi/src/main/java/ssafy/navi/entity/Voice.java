@@ -21,12 +21,19 @@ public class Voice {
     @Column(name = "voice_pk")
     private Long id;
 
+    // 목소리 S3 URL 주소
     @Column(name = "path")
     private String path;
 
-    @OneToMany(mappedBy = "voice", cascade = CascadeType.ALL)
-    private List<User> users;
+    //==외래키==//
 
-    @OneToMany(mappedBy = "voice")
-    private List<Song> songs;
+    // 목소리 주인
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_pk")
+    private User user;
+
+    // 노래
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "song_pk")
+    private Song song;
 }
