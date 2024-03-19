@@ -31,6 +31,7 @@ public class CoverService {
     커버 게시판 전체 게시글 조회
      */
     public List<CoverDto> getCover() {
+        //커버의 모든 게시글을 조회하고 최신순으로 정렬함
         List<Cover> covers = coverRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         return covers.stream()
                 .map(CoverDto::convertToDtoList)
@@ -42,7 +43,19 @@ public class CoverService {
     조회순
      */
     public List<CoverDto> getCoverByView() {
+        //커버의 모든 게시글을 조회하는데 조회수 순으로 정렬함
         List<Cover> covers = coverRepository.findAll(Sort.by(Sort.Direction.DESC, "hit")); // 조회수 내림차순 정렬
+        return covers.stream()
+                .map(CoverDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    커버 게시판 전체 게시글 조회
+    좋아요 순
+     */
+    public List<CoverDto> getCoverByLike(){
+        List<Cover> covers=coverRepository.findAll(Sort.by(Sort.Direction.DESC,"likeCount"));
         return covers.stream()
                 .map(CoverDto::convertToDto)
                 .collect(Collectors.toList());
@@ -69,6 +82,7 @@ public class CoverService {
     orElseThrow를 사용하는 이유 -> jpa는 optional타입으로 반환하기 때문.
     커버 정보, 커버 댓글, 원곡 정보, 각자 맡은 파트
     원곡 정보는 Cover에 포함되어 있기 때문에 따로 선언하지 않음.
+    Map을 사용하는 이유, 여러 Dto를 한번에 보내주기 위해서
      */
     public Map<String, Object> getCoverDetail(Long coverPk) throws Exception {
         Map<String, Object> coverDetail = new HashMap<>();
