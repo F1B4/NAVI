@@ -43,4 +43,24 @@ public class CoverDto {
                 .collect(Collectors.toList()));
         return coverDto;
     }
+    public static CoverDto convertToDtoList(Cover cover) {
+        CoverDto coverDto = new CoverDto();
+        // set
+        coverDto.setId(cover.getId());
+        coverDto.setTitle(cover.getTitle());
+        coverDto.setVideo(cover.getVideo());
+        coverDto.setThumbnail(cover.getThumbnail());
+        coverDto.setHit(cover.getHit());
+        coverDto.setLikeCount(cover.getLikeCount());
+        coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
+        return coverDto;
+    }
+    public static CoverDto convertToDtoSearch(Cover cover){
+        CoverDto coverDto=new CoverDto();
+
+        coverDto.setId(cover.getId());
+        coverDto.setThumbnail(cover.getThumbnail());
+        coverDto.setTitle(cover.getTitle());
+        return coverDto;
+    }
 }
