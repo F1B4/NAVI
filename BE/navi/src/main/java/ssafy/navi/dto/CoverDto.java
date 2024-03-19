@@ -55,4 +55,12 @@ public class CoverDto {
         coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
         return coverDto;
     }
+    public static CoverDto convertToDtoSearch(Cover cover){
+        CoverDto coverDto=new CoverDto();
+
+        coverDto.setId(cover.getId());
+        coverDto.setThumbnail(cover.getThumbnail());
+        coverDto.setTitle(cover.getTitle());
+        return coverDto;
+    }
 }

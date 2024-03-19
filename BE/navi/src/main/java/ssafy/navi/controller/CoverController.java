@@ -26,6 +26,7 @@ public class CoverController {
     /*
     커버 게시판 목록 가져오기
     최신순
+    PostMan 완
      */
     @GetMapping("")
     public Response<List<CoverDto>> getCover() throws Exception{
@@ -35,6 +36,7 @@ public class CoverController {
     /*
     커버 게시판 목록 가져오기
     조회수 순
+    PostMan 완
      */
     @GetMapping("/byView")
     public Response<List<CoverDto>> getCoverByView() throws Exception{
@@ -44,6 +46,7 @@ public class CoverController {
     /*
     HOT 커버 게시글 목록 가져오기
     최근 1주일간 조회수를 기준으로 조회수가 가장 높은 6개의 게시글을 가져옴
+    PostMan 완
      */
     @GetMapping("/hot")
     public Response<List<CoverDto>> getHotCover() throws Exception{
@@ -53,7 +56,7 @@ public class CoverController {
     /*
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
     커버 정보, 커버 댓글, 커버 좋아요, 원곡 정보, 맡은 파트
-    PostMan 완 -> 조회수+1은 체크안해봄
+    PostMan 완
      */
     @GetMapping("/{cover_pk}")
     public Response<Map<String, Object>> getCoverDetail(@PathVariable("cover_pk") Long coverPk) throws Exception {

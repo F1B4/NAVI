@@ -22,5 +22,8 @@ public interface CoverRepository extends JpaRepository<Cover,Long> {
     List<Cover> findByTitleContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
     @Query("SELECT c FROM Cover c JOIN c.song s JOIN s.artist a WHERE a.name LIKE %:keyword% ORDER BY c.createdAt DESC")
+    List<Cover> findByArtistNameContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
+    @Query("SELECT c FROM Cover c JOIN c.song s JOIN s.artist a WHERE a.name LIKE %:keyword% ORDER BY c.createdAt DESC LIMIT 3")
     List<Cover> findTop3ByArtistNameContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
+
 }

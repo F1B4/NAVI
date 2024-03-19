@@ -29,16 +29,17 @@ public class SearchService {
     커버 제목 검색 3개, 노래방 제목 검색 3개 리스트 형태로 가져옴
     +커버 원곡자 검색 3개, 노래방 원곡자 검색 3개, 유저 검색 3개
     Map에 cover,noraebang 리스트들을 담아서 반환함
+    PostMan 완
      */
     public Map<String,Object> getSearchAll(String keyword) throws Exception{
         Map<String,Object> searchAll=new HashMap<>();
         List<CoverDto> coverDtosTitle=coverRepository.findTop3ByTitleContainingOrderByCreatedAtDesc(keyword)
                 .stream()
-                .map(CoverDto::convertToDto)
+                .map(CoverDto::convertToDtoSearch)
                 .collect(Collectors.toList());
         List<CoverDto> coverDtosArtist=coverRepository.findTop3ByArtistNameContainingOrderByCreatedAtDesc(keyword)
                 .stream()
-                .map(CoverDto::convertToDto)
+                .map(CoverDto::convertToDtoSearch)
                 .collect(Collectors.toList());
         List<NoraebangDto> noraebangDtosTitle=noraebangRepository.findTop3BySongTitleContainingOrderByCreatedAtDesc(keyword)
                 .stream()
@@ -82,11 +83,23 @@ public class SearchService {
     }
 
     /*
-    커버 제목 검색더보기 전체 리스트 가져옴
+    커버 제목 검색 더보기 전체 리스트 가져옴
     쿼리스트링의 keyword로 검색하여 가져오게 됨
      */
     public List<CoverDto> getSearchMoreCoverTitle(String keyword) throws Exception{
         List<CoverDto> coverDtos=coverRepository.findByTitleContainingOrderByCreatedAtDesc(keyword)
+                .stream()
+                .map(CoverDto::convertToDtoList)
+                .collect(Collectors.toList());
+        return coverDtos;
+    }
+
+    /*
+    커버 원곡자 검색 더보기 전체 리스트 가져옴
+    쿼리스트링의 keyword로 검색하여 가져오게 됨
+     */
+    public List<CoverDto> getSearchMoreCoverArtist(String keyword)throws  Exception{
+        List<CoverDto> coverDtos=coverRepository.findByArtistNameContainingOrderByCreatedAtDesc(keyword)
                 .stream()
                 .map(CoverDto::convertToDtoList)
                 .collect(Collectors.toList());
