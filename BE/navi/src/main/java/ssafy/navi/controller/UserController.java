@@ -17,4 +17,10 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String loginPage() {
+
+        return "login";
+    }
+
 }
