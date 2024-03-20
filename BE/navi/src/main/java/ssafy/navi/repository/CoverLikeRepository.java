@@ -6,7 +6,10 @@ import ssafy.navi.entity.Cover;
 import ssafy.navi.entity.CoverLike;
 import ssafy.navi.entity.User;
 
+import java.util.Optional;
+
 @Repository
 public interface CoverLikeRepository extends JpaRepository<CoverLike,Long> {
-    boolean existsByCoverAndUser(Cover cover, User user);
+    Optional<CoverLike> findByCoverAndUser(Cover cover, User user);
+
 }

@@ -3,13 +3,14 @@ package ssafy.navi.dto;
 import lombok.*;
 import ssafy.navi.entity.Noraebang;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class NoraebangDto {
+public class NoraebangDto implements TimeDto{
 
     private Long id;
     private String content;
@@ -18,6 +19,7 @@ public class NoraebangDto {
     private Integer likeCount;
     private SongDto songDto;
     private UserDto userDto;
+    private LocalDateTime createdAt;
     private List<NoraebangLikeDto> noraebangLikeDtos;
     private List<NoraebangReviewDto> noraebangReviewDtos;
 
@@ -50,7 +52,11 @@ public class NoraebangDto {
         noraebangDto.setId(noraebang.getId());
         noraebangDto.setSongDto(SongDto.convertToDto(noraebang.getSong()));
         noraebangDto.setUserDto(UserDto.convertToDto(noraebang.getUser()));
-
+        noraebangDto.setCreatedAt(noraebang.getCreatedAt());
         return noraebangDto;
+    }
+    @Override
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

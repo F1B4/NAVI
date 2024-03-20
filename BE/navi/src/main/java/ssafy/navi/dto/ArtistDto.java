@@ -25,7 +25,6 @@ public class ArtistDto {
         artistDto.setId(artist.getId());
         artistDto.setPartCount(artist.getPartCount());
         artistDto.setName(artist.getName());
-
         return artistDto;
     }
 }
