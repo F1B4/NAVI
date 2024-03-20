@@ -52,10 +52,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
         else {
             existData.setUsername(username);
-            existData.setNickname(oAuth2Response.getName());
             existData.setEmail(oAuth2Response.getEmail());
-            existData.setImage(oAuth2Response.getProfileImage());
-            role = existData.getRole();
 
             userRepository.save(existData);
         }
