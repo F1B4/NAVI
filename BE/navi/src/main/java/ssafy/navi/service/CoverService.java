@@ -29,6 +29,10 @@ public class CoverService {
     private final UserRepository userRepository;
     private final CoverLikeRepository coverLikeRepository;
     private final NoraebangRepository noraebangRepository;
+    private final ArtistRepository artistRepository;
+    private final SongRepository songRepository;
+    private final PartRepository partRepository;
+    private final FollowRepository followRepository;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -58,11 +62,54 @@ public class CoverService {
     좋아요 순
      */
     public List<CoverDto> getCoverByLike(){
-        List<Cover> covers=coverRepository.findAll(Sort.by(Sort.Direction.DESC,"likeCount"));
+        List<Cover> covers=coverRepository.findAll(Sort.by(Sort.Direction.DESC,"likeCount"));   //좋아요 내림차순 정렬
         return covers.stream()
                 .map(CoverDto::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    /*
+    아티스트 전체 조회
+     */
+    public List<ArtistDto> getArtist(){
+        List<Artist> artists=artistRepository.findAll(Sort.by(Sort.Direction.ASC,"name")); //이름을 내림차순 정렬
+        return artists.stream()
+                .map(ArtistDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    아티스트의 전체 노래 조회
+     */
+    public List<SongDto> getSongs(Long artistPk) throws Exception{
+        return songRepository.findById(artistPk)
+                .stream()
+                .map(SongDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    /*
+    파트 및 맞팔로우 목록 가져오기
+     */
+    public Map<String,Object> getPartAndMutualFollow(Long songPk) throws Exception{
+        Map<String,Object> partAndMutualFollow=new HashMap<>();
+        List<PartDto> parts=partRepository.findBySongId(songPk)
+                .stream()
+                .map(PartDto::convertToDto)
+                .collect(Collectors.toList());
+
+        List<UserDto> mutualFollow=followRepository.findMutualFollowers(1L)
+                .stream()
+                .map(UserDto::convertToDto)
+                .collect(Collectors.toList());
+
+        partAndMutualFollow.put("part",parts);
+        partAndMutualFollow.put("mutualFollow",mutualFollow);
+
+        return partAndMutualFollow;
+    }
+
 
     /*
     최신 컨텐츠 가져오기
@@ -85,6 +132,8 @@ public class CoverService {
         return newList.stream().limit(10).collect(Collectors.toList());
     }
 
+
+
     /*
     Hot 게시글 조회하기
     오늘 날짜로 부터 1주일 이내의 게시글 중 조회수가 가장 높은 6개를 조회함
@@ -97,7 +146,7 @@ public class CoverService {
         LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
         List<Cover> covers = coverRepository.findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(oneWeekAgo);
         return covers.stream()
-                .map(CoverDto::convertToDto)
+                .map(CoverDto::convertToDtoList)
                 .collect(Collectors.toList());
     }
 

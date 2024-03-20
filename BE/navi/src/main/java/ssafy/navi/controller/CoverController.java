@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssafy.navi.dto.CoverDto;
-import ssafy.navi.dto.CoverLikeDto;
-import ssafy.navi.dto.CoverReviewDto;
-import ssafy.navi.dto.Response;
+import ssafy.navi.dto.*;
 import ssafy.navi.entity.CoverReview;
 import ssafy.navi.service.CoverService;
 
@@ -52,6 +49,40 @@ public class CoverController {
     public Response<List<CoverDto>> getCoverByLike() throws Exception{
         return Response.of("OK","게시글 목록 좋아요 순으로 가져오기",coverService.getCoverByLike());
     }
+
+    /*
+    아티스트 정보 가져오기
+    커버 생성 화면으로 갔을 때 처음엔 아티스트 정보들을 보내줘야 아티스트를 선택할 수 있기 때문에 아티스트를 담아서 보냄
+    PostMan 완
+     */
+    @GetMapping("/info")
+    public Response<List<ArtistDto>> getArtist() throws Exception{
+        return Response.of("OK","아티스트 정보 전부 가져오기",coverService.getArtist());
+    }
+
+    /*
+    곡 목록 가져오기
+    아티스트 선택 후 해당 아티스트의 곡들을 받아야함
+    PostMan 완
+     */
+    @GetMapping("/{artist_pk}/song")
+    public Response<List<SongDto>> getSonga(@PathVariable("artist_pk") Long artistPk) throws Exception{
+        return Response.of("OK","아티스트의 노래 전부 가져오기",coverService.getSongs(artistPk));
+    }
+
+    /*
+    파트와 맞팔로우 목록 가져오기
+    PostMan 완
+     */
+    @GetMapping("/{song_pk}/select")
+    public Response<Map<String,Object>> getPartAndMutualFollow(@PathVariable("song_pk") Long songPk) throws Exception{
+        return Response.of("OK","파트 및 맞팔로우 목록 가져오기",coverService.getPartAndMutualFollow(songPk));
+    }
+
+    /*
+    매칭 요청하기
+     */
+
 
     /*
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
@@ -98,4 +129,6 @@ public class CoverController {
             return Response.of("OK","좋아요 삭제",null);
         }
     }
+
+
 }
