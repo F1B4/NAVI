@@ -1,10 +1,12 @@
 package ssafy.navi.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.*;
 import ssafy.navi.entity.*;
@@ -26,6 +28,7 @@ public class CoverService {
     private final CoverUserRepository coverUserRepository;
     private final UserRepository userRepository;
     private final CoverLikeRepository coverLikeRepository;
+    private final NoraebangRepository noraebangRepository;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -62,6 +65,27 @@ public class CoverService {
     }
 
     /*
+    최신 컨텐츠 가져오기
+     */
+    public List<TimeDto> getNewContents(){
+        List<TimeDto> covers=coverRepository.findTop10ByOrderByCreatedAtDesc()
+                .stream()
+                .map(CoverDto::convertToDtoList)
+                .collect(Collectors.toList());
+        List<TimeDto> noraebangs=noraebangRepository.findTop10ByOrderByCreatedAtDesc()
+                .stream()
+                .map(NoraebangDto::convertToDtoNoraebangs)
+                .collect(Collectors.toList());
+        List<TimeDto> newList = new ArrayList<>(covers);
+        newList.addAll(noraebangs);
+        // 리스트를 생성시간으로 내림차순 정렬
+        newList.sort(Comparator.comparing(TimeDto::getCreatedAt).reversed());
+
+        // 정렬된 리스트에서 최신 10개의 데이터만 반환
+        return newList.stream().limit(10).collect(Collectors.toList());
+    }
+
+    /*
     Hot 게시글 조회하기
     오늘 날짜로 부터 1주일 이내의 게시글 중 조회수가 가장 높은 6개를 조회함
     LocalDate타입에서 LocalDateTime으로 변환하는 이유 : 1주일 전의 자정을 기준으로 조회하기 위해서 시간개념이 포함된 LocalDateTime으로 변환함
@@ -71,10 +95,16 @@ public class CoverService {
         LocalDate oneWeek = LocalDate.now().minus(Period.ofWeeks(1));
         //1주일 전 날짜의 자정으로 값 지정
         LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
-        List<Cover> covers = coverRepository.findTop6ByCreatedAtAfterOrderByHitDesc(oneWeekAgo);
+        List<Cover> covers = coverRepository.findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(oneWeekAgo);
         return covers.stream()
                 .map(CoverDto::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Scheduled(cron = "0 0 0 * * SUN")
+    @Transactional
+    public void resetWeeklyHits() {
+        coverRepository.resetWeeklyHits();
     }
 
     /*
@@ -88,6 +118,7 @@ public class CoverService {
         Map<String, Object> coverDetail = new HashMap<>();
         CoverDto coverDto = coverRepository.findById(coverPk).map(cover -> {
                     cover.setHit(cover.getHit() + 1); // 조회수 증가
+                    cover.setWeeklyHit(cover.getWeeklyHit()+1); //주간 조회수 증가
                     return coverRepository.save(cover); // 변경된 엔티티 저장
                 })
                 .map(CoverDto::convertToDto).orElseThrow(() -> new Exception("커버가 없어요"));

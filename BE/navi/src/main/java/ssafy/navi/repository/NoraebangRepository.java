@@ -24,4 +24,5 @@ public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
     @Query("SELECT n FROM Noraebang n WHERE n.song.artist.name LIKE %:keyword% ORDER BY n.createdAt DESC")
     List<Noraebang> findByArtistNameContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
+    List<Noraebang> findTop10ByOrderByCreatedAtDesc();
 }

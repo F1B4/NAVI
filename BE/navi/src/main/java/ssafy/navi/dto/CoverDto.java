@@ -3,13 +3,14 @@ package ssafy.navi.dto;
 import lombok.*;
 import ssafy.navi.entity.Cover;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CoverDto {
+public class CoverDto implements TimeDto {
 
     private Long id;
     private String title;
@@ -18,6 +19,7 @@ public class CoverDto {
     private Integer hit;
     private Integer likeCount;
     private SongDto songDto;
+    private LocalDateTime createdAt;
 //    private List<CoverUserDto> coverUserDtos;
 //    private List<CoverLikeDto> coverLikeDtos;
     private List<CoverReviewDto> coverReviewDtos;
@@ -52,6 +54,7 @@ public class CoverDto {
         coverDto.setThumbnail(cover.getThumbnail());
         coverDto.setHit(cover.getHit());
         coverDto.setLikeCount(cover.getLikeCount());
+        coverDto.setCreatedAt(cover.getCreatedAt());
         coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
         return coverDto;
     }
@@ -62,5 +65,10 @@ public class CoverDto {
         coverDto.setThumbnail(cover.getThumbnail());
         coverDto.setTitle(cover.getTitle());
         return coverDto;
+    }
+
+    @Override
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

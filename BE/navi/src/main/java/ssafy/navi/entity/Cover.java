@@ -33,9 +33,14 @@ public class Cover extends BaseTimeEntity{
     @Column(name = "hit")
     private Integer hit;
 
+    //주간 조회수
+    @Column(name="weekly_hit")
+    private Integer weeklyHit;
+
     // 좋아요 수
     @Column(name = "like_count")
     private Integer likeCount;
+
 
     //==외래키==//
 

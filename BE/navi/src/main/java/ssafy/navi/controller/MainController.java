@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.navi.dto.CoverDto;
 import ssafy.navi.dto.Response;
+import ssafy.navi.dto.TimeDto;
 import ssafy.navi.service.CoverService;
 import ssafy.navi.service.NoraebangService;
 
@@ -22,8 +23,12 @@ public class MainController {
 
     /*
     최신 컨텐츠 10개 가져오기
+    PostMan 완
      */
-    
+    @GetMapping("/new")
+    public Response<List<TimeDto>> getNewContents() throws Exception{
+        return Response.of("OK","최신 컨텐츠 가져오기",coverService.getNewContents());
+    }
 
 
     /*
