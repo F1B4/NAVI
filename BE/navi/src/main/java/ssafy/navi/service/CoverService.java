@@ -114,12 +114,12 @@ public class CoverService {
     커버 생성 로직
      */
     public String createCover(){
-        int matching
+
         return "matching";
     }
 
     /*
-    최신 컨텐츠 가져오기q
+    최신 컨텐츠 가져오기
      */
     public List<TimeDto> getNewContents(){
         List<TimeDto> covers=coverRepository.findTop10ByOrderByCreatedAtDesc()
