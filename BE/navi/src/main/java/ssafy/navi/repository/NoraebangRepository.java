@@ -4,8 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ssafy.navi.entity.Cover;
-import ssafy.navi.entity.Noraebang;
+import ssafy.navi.entity.noraebang.Noraebang;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,4 +29,5 @@ public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
     @Query("SELECT n FROM Noraebang n WHERE n.song.artist.name LIKE %:keyword% ORDER BY n.createdAt DESC")
     List<Noraebang> findByArtistNameContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
+    List<Noraebang> findTop10ByOrderByCreatedAtDesc();
 }

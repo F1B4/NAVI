@@ -1,18 +1,17 @@
 package ssafy.navi.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import ssafy.navi.dto.CustomOAuth2User;
-import ssafy.navi.dto.GoogleResponse;
-import ssafy.navi.dto.NaverResponse;
-import ssafy.navi.dto.OAuth2Response;
-import ssafy.navi.entity.Role;
-import ssafy.navi.entity.User;
+import ssafy.navi.dto.user.CustomOAuth2User;
+import ssafy.navi.dto.user.GoogleResponse;
+import ssafy.navi.dto.user.NaverResponse;
+import ssafy.navi.dto.user.OAuth2Response;
+import ssafy.navi.entity.user.Role;
+import ssafy.navi.entity.user.User;
 import ssafy.navi.repository.UserRepository;
 
 @Service
@@ -52,10 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
         else {
             existData.setUsername(username);
-            existData.setNickname(oAuth2Response.getName());
             existData.setEmail(oAuth2Response.getEmail());
-            existData.setImage(oAuth2Response.getProfileImage());
-            role = existData.getRole();
 
             userRepository.save(existData);
         }

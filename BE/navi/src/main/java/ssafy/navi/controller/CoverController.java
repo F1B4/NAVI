@@ -2,15 +2,14 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssafy.navi.dto.CoverDto;
-import ssafy.navi.dto.CoverLikeDto;
-import ssafy.navi.dto.CoverReviewDto;
-import ssafy.navi.dto.Response;
-import ssafy.navi.entity.CoverReview;
+import ssafy.navi.dto.cover.CoverDto;
+import ssafy.navi.dto.cover.CoverLikeDto;
+import ssafy.navi.dto.cover.CoverRegistDto;
+import ssafy.navi.dto.cover.CoverReviewDto;
+import ssafy.navi.dto.song.ArtistDto;
+import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.dto.util.Response;
 import ssafy.navi.service.CoverService;
 
 import java.util.List;
@@ -26,7 +25,6 @@ public class CoverController {
     /*
     커버 게시판 목록 가져오기
     최신순
-    PostMan 완
      */
     @GetMapping("")
     public Response<List<CoverDto>> getCover() throws Exception{
@@ -36,7 +34,6 @@ public class CoverController {
     /*
     커버 게시판 목록 가져오기
     조회수 순
-    PostMan 완
      */
     @GetMapping("/byView")
     public Response<List<CoverDto>> getCoverByView() throws Exception{
@@ -46,7 +43,6 @@ public class CoverController {
     /*
     커버 게시판 정렬하기
     좋아요 순
-    PostMan 완
      */
     @GetMapping("/byLike")
     public Response<List<CoverDto>> getCoverByLike() throws Exception{
@@ -54,12 +50,45 @@ public class CoverController {
     }
 
     /*
+    아티스트 정보 가져오기
+    커버 생성 화면으로 갔을 때 처음엔 아티스트 정보들을 보내줘야 아티스트를 선택할 수 있기 때문에 아티스트를 담아서 보냄
+     */
+    @GetMapping("/info")
+    public Response<List<ArtistDto>> getArtist() throws Exception{
+        return Response.of("OK","아티스트 정보 전부 가져오기",coverService.getArtist());
+    }
+
+    /*
+    곡 목록 가져오기
+    아티스트 선택 후 해당 아티스트의 곡들을 받아야함
+     */
+    @GetMapping("/{artist_pk}/song")
+    public Response<List<SongDto>> getSong(@PathVariable("artist_pk") Long artistPk) throws Exception{
+        return Response.of("OK","아티스트의 노래 전부 가져오기",coverService.getSongs(artistPk));
+    }
+
+    /*
+    파트와 맞팔로우 목록 가져오기
+     */
+    @GetMapping("/{song_pk}/select")
+    public Response<Map<String,Object>> getPartAndMutualFollow(@PathVariable("song_pk") Long songPk) throws Exception{
+        return Response.of("OK","파트 및 맞팔로우 목록 가져오기",coverService.getPartAndMutualFollow(songPk));
+    }
+
+    /*
+    매칭 요청하기
+     */
+    @PostMapping("")
+    public Response<?> createCover(@RequestBody CoverRegistDto coverRegistDto) throws Exception{
+        return Response.of("OK","Make a Song 시작하기",coverService.createCover(coverRegistDto));
+    }
+
+    /*
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
     커버 정보, 커버 댓글, 커버 좋아요, 원곡 정보, 맡은 파트
-    PostMan 완
      */
     @GetMapping("/{cover_pk}")
-    public Response<Map<String, Object>> getCoverDetail(@PathVariable("cover_pk") Long coverPk) throws Exception {
+    public Response<CoverDto> getCoverDetail(@PathVariable("cover_pk") Long coverPk) throws Exception {
         return Response.of("OK","게시글 상세보기",coverService.getCoverDetail(coverPk));
     }
 
@@ -67,7 +96,6 @@ public class CoverController {
     커버 게시판 댓글 작성
     클라이언트에서 댓글 작성자의 정보를 어떻게 넘겨주냐에 따라 바뀔예정
     RequestBody에 내용을 받아옴
-    PostMan 완
      */
     @PostMapping("/{cover_pk}/review")
     public Response<CoverReviewDto> createCoverReview(@PathVariable("cover_pk") Long coverPk, @RequestBody CoverReviewDto coverReviewDto) throws Exception {
@@ -78,7 +106,6 @@ public class CoverController {
     커버 게시판 댓글 삭제
     클라이언트에서 댓글 작성자의 정보와 로그인한 유저의 정보가 일치할 때만 삭제할 수 있도록 하기
     게시글 정보와 유저 정보 받아와서 처리하기
-    PostMan 완
      */
     @DeleteMapping("/{cover_pk}/review/{cover_review_pk}")
     public Response<String> deleteCoverReview(@PathVariable("cover_pk")Long coverPk,@PathVariable("cover_review_pk")Long coverReviewPk) throws Exception{
@@ -87,7 +114,6 @@ public class CoverController {
 
     /*
     커버 게시글 좋아요
-    PostMan 완
      */
     @PostMapping("/{cover_pk}/like")
     public Response<CoverLikeDto> coverLike(@PathVariable("cover_pk") Long coverPk) throws Exception{
