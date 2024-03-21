@@ -11,11 +11,9 @@ import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.UserDto;
-import ssafy.navi.entity.cover.Cover;
-import ssafy.navi.entity.cover.CoverLike;
-import ssafy.navi.entity.cover.CoverReview;
-import ssafy.navi.entity.cover.Matching;
+import ssafy.navi.entity.cover.*;
 import ssafy.navi.entity.song.Artist;
+import ssafy.navi.entity.song.Part;
 import ssafy.navi.entity.song.Song;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.repository.*;
@@ -122,7 +120,7 @@ public class CoverService {
         int matchingCount= coverRegistDto.getPartData().size();
         //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
         Song song=songRepository.findById(coverRegistDto.getSongPk())
-                .orElseThrow(()->new RuntimeException("해당 곡이 없습니다."));
+                .orElseThrow(()->new RuntimeException("해당 곡이 존재하지 않음"));
         //Artist에 파트 수가 저장되어 있음
         Artist artist=song.getArtist();
         //전체 파트 수
@@ -140,14 +138,24 @@ public class CoverService {
                         .stream()
                         .map(part->part.getPart().getId())
                         .collect(Collectors.toList());
+                //내가 해당 매칭에 참여할 수 있는지 상태를 저장하는 boolean 변수
                 boolean partCheck=true;
                 for(UserPartDto userPart : coverRegistDto.getPartData()){
+                    //내가 맡은 파트가 해당 매칭에 이미 존재하는 파트라면 해당 매칭에 참가할 수 없음
                     if(existsPart.contains(userPart.getPartPk())){
                         partCheck=false;
                         break;
                     }
                 }
                 if(partCheck){
+                    for(UserPartDto userPartDto : coverRegistDto.getPartData()){
+                        User user=userRepository.findById(userPartDto.getUserPk())
+                                .orElseThrow(()->new RuntimeException("유저가 존재하지 않음"));
+                        Part part=partRepository.findById(userPartDto.getPartPk())
+                                .orElseThrow(()->new RuntimeException("파트가 존재하지 않음"));
+                        MatchingUser newMatchingUser=new MatchingUser(user,matching,part);
+                        matchingUserRepository.save(newMatchingUser);
+                    }
 
                 }
             }
@@ -170,7 +178,6 @@ public class CoverService {
     *****************************댓글도 같이 가져오기************************
      */
     public CoverDto getCoverDetail(Long coverPk) throws Exception {
-        Map<String, Object> coverDetail = new HashMap<>();
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))

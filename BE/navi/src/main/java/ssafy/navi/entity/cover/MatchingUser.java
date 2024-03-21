@@ -1,10 +1,7 @@
 package ssafy.navi.entity.cover;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.song.Part;
@@ -37,4 +34,10 @@ public class MatchingUser {
     @JoinColumn(name = "part_pk")
     private Part part;
 
+    @Builder
+    public MatchingUser(User user,Matching matching,Part part){
+        this.user=user;
+        this.matching=matching;
+        this.part=part;
+    }
 }
