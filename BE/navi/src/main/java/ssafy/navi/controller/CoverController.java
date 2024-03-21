@@ -2,12 +2,8 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssafy.navi.dto.*;
-import ssafy.navi.entity.CoverReview;
 import ssafy.navi.service.CoverService;
 
 import java.util.List;
@@ -83,8 +79,8 @@ public class CoverController {
     매칭 요청하기
      */
     @PostMapping("")
-    public Response<?> createCover() throws Exception{
-        return Response.of("OK","Make a Song 시작하기",coverService.createCover());
+    public Response<?> createCover(@RequestBody CoverRegistDto coverRegistDto) throws Exception{
+        return Response.of("OK","Make a Song 시작하기",coverService.createCover(coverRegistDto));
     }
 
     /*

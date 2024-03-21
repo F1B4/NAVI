@@ -45,6 +45,14 @@ public class User{
     @Column(name = "follower_count")
     private Integer followerCount;
 
+    // 모델 경로
+    @Column(name ="model")
+    private String model;
+
+    // 인덱스 경로
+    @Column(name="index")
+    private String index;
+
     // 노래방
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Noraebang> noraebangs;

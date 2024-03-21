@@ -3,8 +3,6 @@ package ssafy.navi.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,6 +31,8 @@ public class CoverService {
     private final SongRepository songRepository;
     private final PartRepository partRepository;
     private final FollowRepository followRepository;
+    private final MatchingRepository matchingRepository;
+    private final MatchingUserRepository matchingUserRepository;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -113,8 +113,23 @@ public class CoverService {
     /*
     커버 생성 로직
      */
-    public String createCover(){
+    public String createCover(CoverRegistDto coverRegistDto){
+        //현재 사용자가 요청한 파트 수
+        int matchingCount= coverRegistDto.getPartData().size();
+        Song song=songRepository.findById(coverRegistDto.getSongPk())
+                .orElseThrow(()->new RuntimeException("해당 곡이 없습니다."));
+        Artist artist=song.getArtist();
+        int totalPartCount=artist.getPartCount();
 
+        List<Matching> matchings=matchingRepository.findBySongId(coverRegistDto.getSongPk());
+        for(Matching matching : matchings){
+            int existingPartCount=matching.getMatchingUsers().size();
+            if(existingPartCount+matchingCount<=totalPartCount){
+                for(UserPartDto userPart : coverRegistDto.getPartData()){
+                    
+                }
+            }
+        }
         return "matching";
     }
 
