@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ssafy.navi.dto.CoverDto;
 import ssafy.navi.dto.NoraebangDto;
 import ssafy.navi.dto.NoraebangReviewDto;
 import ssafy.navi.dto.SongDto;
@@ -14,6 +15,9 @@ import ssafy.navi.entity.*;
 import ssafy.navi.repository.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -162,5 +166,16 @@ public class NoraebangService {
                 noraebangLikeRepository.save(like);
             }
         }
+    }
+
+    public List<NoraebangDto> getHotNoraebang() {
+        //1주일 전 날짜를 알아냄
+        LocalDate oneWeek = LocalDate.now().minus(Period.ofWeeks(1));
+        //1주일 전 날짜의 자정으로 값 지정
+        LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
+        List<Noraebang> noraebangs = noraebangRepository.findTop6ByCreatedAtAfterOrderByHitDesc(oneWeekAgo);
+        return noraebangs.stream()
+                .map(NoraebangDto::convertToDtoNoraebangs)
+                .collect(Collectors.toList());
     }
 }

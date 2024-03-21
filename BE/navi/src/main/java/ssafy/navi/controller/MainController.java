@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.navi.dto.CoverDto;
+import ssafy.navi.dto.NoraebangDto;
 import ssafy.navi.dto.Response;
 import ssafy.navi.service.CoverService;
 import ssafy.navi.service.NoraebangService;
@@ -23,8 +24,11 @@ public class MainController {
     /*
     최신 컨텐츠 10개 가져오기
      */
-    
 
+    @GetMapping("/noraebangs/hot")
+    public Response<List<NoraebangDto>> getHotNoraebang() throws Exception{
+        return Response.of("OK","Hot 게시글 가져오기",noraebangService.getHotNoraebang());
+    }
 
     /*
     HOT 커버 게시글 목록 가져오기
