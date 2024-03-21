@@ -82,7 +82,10 @@ public class CoverController {
     /*
     매칭 요청하기
      */
-
+    @PostMapping("")
+    public Response<?> createCover() throws Exception{
+        return Response.of("OK","Make a Song 시작하기",coverService.createCover());
+    }
 
     /*
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄

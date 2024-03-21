@@ -17,7 +17,10 @@ public class Matching extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "matching_pk")
     private Long id;
-    
+
+    @Column(name="part_count")
+    private int partCount;
+
     //==외래키==//
     
     // 노래
