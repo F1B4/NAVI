@@ -106,8 +106,9 @@ public class NoraebangService {
 
     @Transactional
     public void createReview(Long NoraebangPk,
-                             Long userPk,
-                             String content) {
+                             NoraebangReviewDto noraebangReviewDto) {
+        Long userPk = noraebangReviewDto.getUserDto().getId();
+        String content = noraebangReviewDto.getContent();
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(NoraebangPk);
         Optional<User> userOptional = userRepository.findById(userPk);
 
@@ -149,7 +150,7 @@ public class NoraebangService {
         }
         noraebangReviewRepository.deleteById(reviewPk);
 
-        return "Ok";
+        return "OK";
     }
 
 
