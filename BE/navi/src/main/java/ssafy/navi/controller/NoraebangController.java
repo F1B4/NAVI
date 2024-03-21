@@ -1,25 +1,17 @@
 package ssafy.navi.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import ssafy.navi.dto.ArtistDto;
-import ssafy.navi.dto.NoraebangDto;
-import ssafy.navi.dto.Response;
-import ssafy.navi.dto.SongDto;
-import ssafy.navi.entity.Song;
+import ssafy.navi.dto.song.ArtistDto;
+import ssafy.navi.dto.noraebang.NoraebangDto;
+import ssafy.navi.dto.util.Response;
+import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.service.ArtistService;
 import ssafy.navi.service.NoraebangService;
 import ssafy.navi.service.S3Service;
 import ssafy.navi.service.SongService;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
