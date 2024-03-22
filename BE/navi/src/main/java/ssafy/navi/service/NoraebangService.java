@@ -90,7 +90,7 @@ public class NoraebangService {
     public void updateNoraebang(String content, Long NoraebangPk) {
         Optional<Noraebang> byId = noraebangRepository.findById(NoraebangPk);
         byId.ifPresent(norae -> {
-            norae.setContent(content);
+            norae.updateContent(content);
         });
     }
 
