@@ -13,7 +13,7 @@ import ssafy.navi.entity.util.BaseTimeEntity;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE) //builder패턴을 사용하기 위해 추가

@@ -140,6 +140,9 @@ public class CoverService {
         return "matching";
     }
 
+    /*
+    매주 일요일 0시 0분 0초 주간조회수 리셋
+     */
     @Scheduled(cron = "0 0 0 * * SUN")
     @Transactional
     public void resetWeeklyHits() {
