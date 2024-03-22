@@ -1,6 +1,7 @@
 package ssafy.navi.entity.noraebang;
 
 import jakarta.persistence.*;
+import lombok.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import ssafy.navi.entity.util.BaseTimeEntity;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class NoraebangReview extends BaseTimeEntity {
 
     @Id

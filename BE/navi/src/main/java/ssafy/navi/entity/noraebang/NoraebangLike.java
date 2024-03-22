@@ -1,6 +1,7 @@
 package ssafy.navi.entity.noraebang;
 
 import jakarta.persistence.*;
+import lombok.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import ssafy.navi.entity.user.User;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class NoraebangLike {
 
     @Id

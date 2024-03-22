@@ -13,7 +13,7 @@ import ssafy.navi.entity.user.Voice;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Song {
 

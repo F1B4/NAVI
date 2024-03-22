@@ -6,10 +6,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ssafy.navi.entity.noraebang.Noraebang;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
+
+    // TopN을 사용하면 N만큼의 결과만을 조회함
+    List<Noraebang> findTop10ByCreatedAtAfterOrderByHitDesc(LocalDateTime startDate);
+
 
     //노래방 제목으로 조회 3개
     @Query("SELECT n FROM Noraebang n WHERE n.song.title LIKE %:keyword% ORDER BY n.createdAt DESC")

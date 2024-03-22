@@ -30,7 +30,6 @@ public class CoverService {
     private final CoverReviewRepository coverReviewRepository;
     private final UserRepository userRepository;
     private final CoverLikeRepository coverLikeRepository;
-    private final ArtistRepository artistRepository;
     private final SongRepository songRepository;
     private final PartRepository partRepository;
     private final FollowRepository followRepository;
@@ -70,26 +69,6 @@ public class CoverService {
                 .map(CoverDto::convertToDto)
                 .collect(Collectors.toList());
     }
-
-    /*
-    아티스트 전체 조회
-     */
-    public List<ArtistDto> getArtist(){
-        List<Artist> artists=artistRepository.findAll(Sort.by(Sort.Direction.ASC,"name")); //이름을 내림차순 정렬
-        return artists.stream()
-                .map(ArtistDto::convertToDto)
-                .collect(Collectors.toList());
-    }
-
-    /*
-    아티스트의 노래 전체 조회
-     */
-    public List<SongDto> getSongs(Long artistPk) throws Exception{
-        return songRepository.findById(artistPk).stream()
-                .map(SongDto::convertToDto)
-                .collect(Collectors.toList());
-    }
-
 
     /*
     파트 및 맞팔로우 목록 가져오기
@@ -199,6 +178,9 @@ public class CoverService {
         return "새로운 매칭 생성 및 매칭유저 추가";
     }
 
+    /*
+    매주 일요일 0시 0분 0초 주간조회수 리셋
+     */
     @Scheduled(cron = "0 0 0 * * SUN")
     @Transactional
     public void resetWeeklyHits() {
@@ -255,8 +237,7 @@ public class CoverService {
         CoverReview coverReview = coverReviewRepository.findById(coverReviewPk)
                 .orElseThrow(() -> new Exception("댓글이 존재하지 않음"));
         coverReviewRepository.delete(coverReview);
-        String msg = "댓글 삭제 완료";
-        return msg;
+        return "댓글 삭제 완료";
     }
 
     /*
@@ -264,7 +245,7 @@ public class CoverService {
     커버 체크, 유저 체크, 이미 좋아요를 눌렀다면 좋아요 취소
     좋아요를 누르지 않았다면 좋아요 생성
      */
-    public CoverLikeDto coverLike(Long coverPk) throws Exception {
+    public CoverLikeDto toggleCoverLike(Long coverPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))

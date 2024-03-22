@@ -1,6 +1,7 @@
 package ssafy.navi.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,29 +14,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ArtistService {
 
     private final ArtistRepository artistRepository;
-    @Autowired
-    public ArtistService(ArtistRepository artistRepository) {
-        this.artistRepository = artistRepository;
-    }
 
+    /*
+    모든 원곡자 조회
+     */
     public List<ArtistDto> getAllArtist() {
-        List<Artist> all = artistRepository.findAll();
-        for (Artist name : all) {
+        List<Artist> artists = artistRepository.findAll();
+        for (Artist name : artists) {
             System.out.println(name.getName());
         }
 
-        return all.stream().map(ArtistDto::convertToDto).collect(Collectors.toList());
+        return artists.stream().map(ArtistDto::convertToDto).collect(Collectors.toList());
     }
 
-    public List<SongDto> getAllArtistSong(Long artistPk) {
-        Artist artist = artistRepository.findById(artistPk)
-                .orElseThrow(() -> new EntityNotFoundException("Artist not found with id: " + artistPk));
-
-        return artist.getSongs().stream()
-                .map(SongDto::convertToDto).collect(Collectors.toList());
-    }
 }

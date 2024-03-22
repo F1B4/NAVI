@@ -10,18 +10,22 @@ import ssafy.navi.dto.cover.CoverReviewDto;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.util.Response;
+import ssafy.navi.service.ArtistService;
 import ssafy.navi.service.CoverService;
+import ssafy.navi.service.SongService;
 
 import java.util.List;
 import java.util.Map;
 
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/covers")
+@Slf4j
 public class CoverController {
     private final CoverService coverService;
+    private final ArtistService artistService;
+    private final SongService songService;
     /*
     커버 게시판 목록 가져오기
     최신순
@@ -55,7 +59,7 @@ public class CoverController {
      */
     @GetMapping("/info")
     public Response<List<ArtistDto>> getArtist() throws Exception{
-        return Response.of("OK","아티스트 정보 전부 가져오기",coverService.getArtist());
+        return Response.of("OK","아티스트 정보 전부 가져오기",artistService.getAllArtist());
     }
 
     /*
@@ -64,7 +68,7 @@ public class CoverController {
      */
     @GetMapping("/{artist_pk}/song")
     public Response<List<SongDto>> getSong(@PathVariable("artist_pk") Long artistPk) throws Exception{
-        return Response.of("OK","아티스트의 노래 전부 가져오기",coverService.getSongs(artistPk));
+        return Response.of("OK","아티스트의 노래 전부 가져오기",songService.getSongByArtist(artistPk));
     }
 
     /*
@@ -117,7 +121,7 @@ public class CoverController {
      */
     @PostMapping("/{cover_pk}/like")
     public Response<CoverLikeDto> coverLike(@PathVariable("cover_pk") Long coverPk) throws Exception{
-        CoverLikeDto res=coverService.coverLike(coverPk);
+        CoverLikeDto res=coverService.toggleCoverLike(coverPk);
         if(res!=null){
             return Response.of("OK","좋아요 성공",res);
         }else{

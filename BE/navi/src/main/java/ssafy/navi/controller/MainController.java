@@ -17,10 +17,10 @@ import ssafy.navi.service.NoraebangService;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/main")
+@Slf4j
 public class MainController {
     private final CoverService coverService;
     private final NoraebangService noraebangService;
@@ -34,6 +34,14 @@ public class MainController {
         return Response.of("OK","최신 컨텐츠 가져오기",mainService.getNewContents());
     }
 
+    /*
+    HOT 노래방 게시글 목록 가져오기
+    최근 1주일간 조회수를 기준으로 조회수가 가장 높은 6개의 게시글을 가져옴
+     */
+    @GetMapping("/noraebangs/hot")
+    public Response<List<NoraebangDto>> getHotNoraebang() throws Exception{
+        return Response.of("OK","Hot 게시글 가져오기",mainService.getHotNoraebang());
+    }
 
     /*
     HOT 커버 게시글 목록 가져오기
