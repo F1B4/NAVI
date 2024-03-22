@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class NaviApplicationTests {
 
 	@Test
-	void contextLoads() {
-	}
+	void checkWeekDate() {
 
+
+	}
 }
