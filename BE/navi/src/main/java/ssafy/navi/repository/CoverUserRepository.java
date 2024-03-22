@@ -1,7 +1,7 @@
 package ssafy.navi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ssafy.navi.entity.CoverUser;
+import ssafy.navi.entity.cover.CoverUser;
 
 import java.util.List;
 

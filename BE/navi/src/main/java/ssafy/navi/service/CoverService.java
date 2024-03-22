@@ -3,18 +3,21 @@ package ssafy.navi.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ssafy.navi.dto.*;
-import ssafy.navi.entity.*;
+import ssafy.navi.dto.cover.*;
+import ssafy.navi.dto.song.ArtistDto;
+import ssafy.navi.dto.song.PartDto;
+import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.dto.user.UserDto;
+import ssafy.navi.entity.cover.*;
+import ssafy.navi.entity.song.Artist;
+import ssafy.navi.entity.song.Part;
+import ssafy.navi.entity.song.Song;
+import ssafy.navi.entity.user.User;
 import ssafy.navi.repository.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,8 @@ public class CoverService {
     private final SongRepository songRepository;
     private final PartRepository partRepository;
     private final FollowRepository followRepository;
+    private final MatchingRepository matchingRepository;
+    private final MatchingUserRepository matchingUserRepository;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -79,11 +84,10 @@ public class CoverService {
     }
 
     /*
-    아티스트의 전체 노래 조회
+    아티스트의 노래 전체 조회
      */
     public List<SongDto> getSongs(Long artistPk) throws Exception{
-        return songRepository.findById(artistPk)
-                .stream()
+        return songRepository.findById(artistPk).stream()
                 .map(SongDto::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -94,13 +98,11 @@ public class CoverService {
      */
     public Map<String,Object> getPartAndMutualFollow(Long songPk) throws Exception{
         Map<String,Object> partAndMutualFollow=new HashMap<>();
-        List<PartDto> parts=partRepository.findBySongId(songPk)
-                .stream()
+        List<PartDto> parts=partRepository.findBySongId(songPk).stream()
                 .map(PartDto::convertToDto)
                 .collect(Collectors.toList());
 
-        List<UserDto> mutualFollow=followRepository.findMutualFollowers(1L)
-                .stream()
+        List<UserDto> mutualFollow=followRepository.findMutualFollowers(1L).stream()
                 .map(UserDto::convertToDto)
                 .collect(Collectors.toList());
 
@@ -110,44 +112,55 @@ public class CoverService {
         return partAndMutualFollow;
     }
 
-
     /*
-    최신 컨텐츠 가져오기
+    커버 생성 로직
      */
-    public List<TimeDto> getNewContents(){
-        List<TimeDto> covers=coverRepository.findTop10ByOrderByCreatedAtDesc()
-                .stream()
-                .map(CoverDto::convertToDtoList)
-                .collect(Collectors.toList());
-        List<TimeDto> noraebangs=noraebangRepository.findTop10ByOrderByCreatedAtDesc()
-                .stream()
-                .map(NoraebangDto::convertToDtoNoraebangs)
-                .collect(Collectors.toList());
-        List<TimeDto> newList = new ArrayList<>(covers);
-        newList.addAll(noraebangs);
-        // 리스트를 생성시간으로 내림차순 정렬
-        newList.sort(Comparator.comparing(TimeDto::getCreatedAt).reversed());
+    public String createCover(CoverRegistDto coverRegistDto){
+        //현재 사용자가 요청한 파트 수
+        int matchingCount= coverRegistDto.getPartData().size();
+        //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
+        Song song=songRepository.findById(coverRegistDto.getSongPk())
+                .orElseThrow(()->new RuntimeException("해당 곡이 존재하지 않음"));
+        //Artist에 파트 수가 저장되어 있음
+        Artist artist=song.getArtist();
+        //전체 파트 수
+        int totalPartCount=artist.getPartCount();
 
-        // 정렬된 리스트에서 최신 10개의 데이터만 반환
-        return newList.stream().limit(10).collect(Collectors.toList());
-    }
+        //해당 노래를 매칭중인 매칭테이블들 리스트
+        List<Matching> matchings=matchingRepository.findBySongId(coverRegistDto.getSongPk());
+        for(Matching matching : matchings){
+            //해당 매칭에 현재 매칭된 사람의 수
+            int existingPartCount=matching.getMatchingUsers().size();
 
+            //해당 매칭의 사람 수 + 내가 매칭할 사람 수 <= 전체 파트 수라면 해당 매칭에 참여할 수 있는 1차 조건이 만족됨
+            if(existingPartCount+matchingCount<=totalPartCount){
+                List<Long> existsPart=matching.getMatchingUsers()
+                        .stream()
+                        .map(part->part.getPart().getId())
+                        .collect(Collectors.toList());
+                //내가 해당 매칭에 참여할 수 있는지 상태를 저장하는 boolean 변수
+                boolean partCheck=true;
+                for(UserPartDto userPart : coverRegistDto.getPartData()){
+                    //내가 맡은 파트가 해당 매칭에 이미 존재하는 파트라면 해당 매칭에 참가할 수 없음
+                    if(existsPart.contains(userPart.getPartPk())){
+                        partCheck=false;
+                        break;
+                    }
+                }
+                if(partCheck){
+                    for(UserPartDto userPartDto : coverRegistDto.getPartData()){
+                        User user=userRepository.findById(userPartDto.getUserPk())
+                                .orElseThrow(()->new RuntimeException("유저가 존재하지 않음"));
+                        Part part=partRepository.findById(userPartDto.getPartPk())
+                                .orElseThrow(()->new RuntimeException("파트가 존재하지 않음"));
+                        MatchingUser newMatchingUser=new MatchingUser(user,matching,part);
+                        matchingUserRepository.save(newMatchingUser);
+                    }
 
-
-    /*
-    Hot 게시글 조회하기
-    오늘 날짜로 부터 1주일 이내의 게시글 중 조회수가 가장 높은 6개를 조회함
-    LocalDate타입에서 LocalDateTime으로 변환하는 이유 : 1주일 전의 자정을 기준으로 조회하기 위해서 시간개념이 포함된 LocalDateTime으로 변환함
-     */
-    public List<CoverDto> getHotCover() {
-        //1주일 전 날짜를 알아냄
-        LocalDate oneWeek = LocalDate.now().minus(Period.ofWeeks(1));
-        //1주일 전 날짜의 자정으로 값 지정
-        LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
-        List<Cover> covers = coverRepository.findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(oneWeekAgo);
-        return covers.stream()
-                .map(CoverDto::convertToDtoList)
-                .collect(Collectors.toList());
+                }
+            }
+        }
+        return "matching";
     }
 
     @Scheduled(cron = "0 0 0 * * SUN")
@@ -162,24 +175,22 @@ public class CoverService {
     커버 정보, 커버 댓글, 원곡 정보, 각자 맡은 파트
     원곡 정보는 Cover에 포함되어 있기 때문에 따로 선언하지 않음.
     Map을 사용하는 이유, 여러 Dto를 한번에 보내주기 위해서
+    *****************************댓글도 같이 가져오기************************
      */
-    public Map<String, Object> getCoverDetail(Long coverPk) throws Exception {
-        Map<String, Object> coverDetail = new HashMap<>();
-        CoverDto coverDto = coverRepository.findById(coverPk).map(cover -> {
-                    cover.setHit(cover.getHit() + 1); // 조회수 증가
-                    cover.setWeeklyHit(cover.getWeeklyHit()+1); //주간 조회수 증가
-                    return coverRepository.save(cover); // 변경된 엔티티 저장
-                })
-                .map(CoverDto::convertToDto).orElseThrow(() -> new Exception("커버가 없어요"));
+    public CoverDto getCoverDetail(Long coverPk) throws Exception {
+        Cover cover = coverRepository.findById(coverPk)
+                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
+        User user = userRepository.findById(Long.valueOf(1))
+                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        cover.setHit(cover.getHit() + 1); // 조회수 증가
+        cover.setWeeklyHit(cover.getWeeklyHit() + 1); // 주간 조회수 증가
+        coverRepository.save(cover); // 변경된 엔티티 저장
+        CoverDto coverDto= CoverDto.convertToDto(cover);
 
-        List<CoverUserDto> coverUserDtos = coverUserRepository.findByCover_Id(coverPk)
-                .stream()
-                .map(CoverUserDto::convertToDto)
-                .collect(Collectors.toList());
+        Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
+        coverDto.setLikeExsits(exists.isPresent());
 
-        coverDetail.put("cover", coverDto);
-        coverDetail.put("CoverUser", coverUserDtos);
-        return coverDetail;
+        return coverDto;
     }
 
     /*
@@ -188,9 +199,9 @@ public class CoverService {
      */
     public CoverReviewDto createCoverReview(Long coverPk, CoverReviewDto coverReviewDto) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
-                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않아요"));
+                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 없어요"));
+                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
         CoverReview coverReview = new CoverReview(coverReviewDto.getContent(), cover, user);
         coverReview = coverReviewRepository.save(coverReview);
         return CoverReviewDto.convertToDto(coverReview);
@@ -202,13 +213,13 @@ public class CoverService {
      */
     public String deleteCoverReview(Long coverPk, Long coverReviewPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
-                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않아요"));
+                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 없어요"));
+                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
         CoverReview coverReview = coverReviewRepository.findById(coverReviewPk)
-                .orElseThrow(() -> new Exception("댓글이 없어요"));
+                .orElseThrow(() -> new Exception("댓글이 존재하지 않음"));
         coverReviewRepository.delete(coverReview);
-        String msg = "댓글 삭제가 잘 되었네요~";
+        String msg = "댓글 삭제 완료";
         return msg;
     }
 
@@ -219,9 +230,9 @@ public class CoverService {
      */
     public CoverLikeDto coverLike(Long coverPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
-                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않아요"));
+                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 없어요"));
+                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
         Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
 
         if (exists.isPresent()) {

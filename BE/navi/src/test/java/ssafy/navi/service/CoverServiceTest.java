@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssafy.navi.entity.Cover;
+import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.repository.CoverRepository;
 
 import java.time.LocalDateTime;
