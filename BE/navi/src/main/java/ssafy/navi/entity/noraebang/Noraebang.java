@@ -13,7 +13,7 @@ import ssafy.navi.entity.util.BaseTimeEntity;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE) //builder패턴을 사용하기 위해 추가
@@ -33,10 +33,12 @@ public class Noraebang extends BaseTimeEntity{
 
     // 조회수
     @Column(name = "hit")
+    @Builder.Default
     private Integer hit = 0;
 
     // 좋아요 수
     @Column(name = "like_count")
+    @Builder.Default
     private Integer likeCount = 0;
 
     //==외래키==//
