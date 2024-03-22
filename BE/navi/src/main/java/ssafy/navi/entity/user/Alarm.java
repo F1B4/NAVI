@@ -8,7 +8,7 @@ import lombok.Setter;
 import ssafy.navi.entity.util.BaseTimeEntity;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alarm extends BaseTimeEntity {
 

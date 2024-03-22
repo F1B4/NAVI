@@ -11,7 +11,7 @@ import ssafy.navi.entity.cover.MatchingUser;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Part {
 
