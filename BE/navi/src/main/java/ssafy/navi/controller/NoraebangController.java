@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/noraebangs")
+@Slf4j
 public class NoraebangController {
 
     public final NoraebangService noraebangService;
@@ -45,7 +45,7 @@ public class NoraebangController {
      */
     @GetMapping("/{artist_pk}/songs")
     public Response<List<SongDto>> InfoSongs(@PathVariable("artist_pk") Long artistPk) {
-        return Response.of("OK", "아티스트의 모든 노래 가져오기", artistService.getAllArtistSong(artistPk));
+        return Response.of("OK", "아티스트의 모든 노래 가져오기", songService.getSongByArtist(artistPk));
     }
 
     /*
@@ -53,7 +53,7 @@ public class NoraebangController {
      */
     @GetMapping("")
     public Response<List<NoraebangDto>> getNoraebangs() {
-        return Response.of("OK", "모든 노래방 게시글 가져오기", noraebangService.getAllNoraebang());
+        return Response.of("OK", "모든 노래방 게시글 가져오기", noraebangService.getNoraebang());
     }
 
     /*
@@ -61,7 +61,7 @@ public class NoraebangController {
      */
     @GetMapping("/{noraebang_pk}")
     public Response<NoraebangDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) {
-        return Response.of("Ok", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebang(noraebangPk));
+        return Response.of("Ok", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
 
     /*
@@ -103,8 +103,8 @@ public class NoraebangController {
     게시글 pk, 유저 pk, 댓글 내용 필요.
      */
     @PostMapping("/{noraebang_pk}/review")
-    public Response<?> createReviewNoraebang(@PathVariable("noraebang_pk") Long noraebangPk, @RequestBody NoraebangReviewDto noraebangReviewDto) {
-        noraebangService.createReview(noraebangPk, noraebangReviewDto);
+    public Response<?> createNoraebangReview(@PathVariable("noraebang_pk") Long noraebangPk, @RequestBody NoraebangReviewDto noraebangReviewDto) {
+        noraebangService.createNoraebangReview(noraebangPk, noraebangReviewDto);
         return Response.of("Ok", "댓글 작성", null);
     }
 
@@ -123,7 +123,7 @@ public class NoraebangController {
     @DeleteMapping("/{review_pk}/{user_pk}/review")
     public Response<?> deleteNoraebangReview(@PathVariable("noraebang_pk") Long reviewPk,
                                              @PathVariable("user_pk") Long userPk) {
-        return Response.of("OK", "댓글 삭제", noraebangService.deleteReview(reviewPk, userPk));
+        return Response.of("OK", "댓글 삭제", noraebangService.deleteNoraebangReview(reviewPk, userPk));
     }
 
     /*

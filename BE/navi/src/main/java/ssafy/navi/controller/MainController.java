@@ -17,10 +17,10 @@ import ssafy.navi.service.NoraebangService;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/main")
+@Slf4j
 public class MainController {
     private final CoverService coverService;
     private final NoraebangService noraebangService;
@@ -40,7 +40,7 @@ public class MainController {
      */
     @GetMapping("/noraebangs/hot")
     public Response<List<NoraebangDto>> getHotNoraebang() throws Exception{
-        return Response.of("OK","Hot 게시글 가져오기",noraebangService.getHotNoraebang());
+        return Response.of("OK","Hot 게시글 가져오기",mainService.getHotNoraebang());
     }
 
     /*

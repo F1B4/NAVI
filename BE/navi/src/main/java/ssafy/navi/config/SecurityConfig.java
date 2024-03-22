@@ -32,14 +32,15 @@ public class SecurityConfig {
 
         http
                 .oauth2Login((oauth2) -> oauth2
-                        .clientRegistrationRepository(customClientRegistrationRepository.clientRegistrationRepository())
+                        .clientRegistrationRepository(customClientRegistrationRepository.clientRegistrationRepository()) // 변수 설정 세팅
                         .userInfoEndpoint((userInfoEndpointConfig) ->
                                 userInfoEndpointConfig.userService(customOAuth2UserService)));
 
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/", "/oauth2/**", "/login/**", "login").permitAll()
-//                        .anyRequest().authenticated());
+        // 권한 설정
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/", "/oauth2/**", "/login/**", "login").permitAll()
+                        .anyRequest().authenticated());
 
         return http.build();
     }

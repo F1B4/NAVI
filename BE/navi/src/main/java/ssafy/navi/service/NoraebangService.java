@@ -2,6 +2,7 @@ package ssafy.navi.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class NoraebangService {
 
@@ -38,43 +40,32 @@ public class NoraebangService {
     private final NoraebangReviewRepository noraebangReviewRepository;
     private final NoraebangLikeRepository noraebangLikeRepository;
 
-    @Autowired
-    public NoraebangService(NoraebangRepository noraebangRepository,
-                            SongRepository songRepository,
-                            ArtistRepository artistRepository,
-                            UserRepository userRepository,
-                            S3Service s3Service,
-                            NoraebangReviewRepository noraebangReviewRepository,
-                            NoraebangLikeRepository noraebangLikeRepository) {
-        this.noraebangRepository = noraebangRepository;
-        this.songRepository = songRepository;
-        this.artistRepository = artistRepository;
-        this.userRepository = userRepository;
-        this.s3Service = s3Service;
-        this.noraebangReviewRepository = noraebangReviewRepository;
-        this.noraebangLikeRepository = noraebangLikeRepository;
-    }
+    /*
+    모든 노래방 게시글 가져오기
+     */
+    public List<NoraebangDto> getNoraebang() {
+        List<Noraebang> noraebangs = noraebangRepository.findAll();
 
-    public List<NoraebangDto> getAllNoraebang() {
-        List<Noraebang> all = noraebangRepository.findAll();
-
-        return all
-                .stream()
+        return noraebangs.stream()
                 .map(NoraebangDto::convertToDtoNoraebangs)
                 .toList();
     }
 
-    public NoraebangDto getNoraebang(Long pk) {
+    /*
+    노래방 게시글 디테일 정보 가져오기
+     */
+    public NoraebangDto getNoraebangDetail(Long pk) {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
 
         return NoraebangDto.convertToDtoDetail(noraebang);
     }
 
-    public void createNoraebang(MultipartFile file,
-                                String content,
-                                Long songPk,
-                                Long userPk) throws IOException {
+    /*
+     게시글 작성하기.
+     formData 형식으로 file과 게시글 내용, songPk, userPk필요
+     */
+    public void createNoraebang(MultipartFile file, String content, Long songPk, Long userPk) throws IOException {
         String fileName = s3Service.saveFile(file);
         Optional<Song> songbyId = songRepository.findById(songPk);
         if (songbyId.isPresent()) {
@@ -93,6 +84,9 @@ public class NoraebangService {
         }
     }
 
+    /*
+    노래방 게시글 내용 수정하기.
+     */
     public void updateNoraebang(String content, Long NoraebangPk) {
         Optional<Noraebang> byId = noraebangRepository.findById(NoraebangPk);
         byId.ifPresent(norae -> {
@@ -100,16 +94,22 @@ public class NoraebangService {
         });
     }
 
-    public void deleteNoraebang(Long NoraebangPk) {
-        noraebangRepository.deleteById(NoraebangPk);
+    /*
+    노래방 게시글 삭제하기
+     */
+    public void deleteNoraebang(Long noraebangPk) {
+        noraebangRepository.deleteById(noraebangPk);
     }
 
+    /*
+    노래방 게시글 댓글달기,
+    게시글 pk, 유저 pk, 댓글 내용 필요.
+     */
     @Transactional
-    public void createReview(Long NoraebangPk,
-                             NoraebangReviewDto noraebangReviewDto) {
+    public void createNoraebangReview(Long noraebangPk, NoraebangReviewDto noraebangReviewDto) {
         Long userPk = noraebangReviewDto.getUserDto().getId();
         String content = noraebangReviewDto.getContent();
-        Optional<Noraebang> noraebangOptional = noraebangRepository.findById(NoraebangPk);
+        Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
         Optional<User> userOptional = userRepository.findById(userPk);
 
         if (noraebangOptional.isPresent() && userOptional.isPresent()) {
@@ -122,40 +122,40 @@ public class NoraebangService {
                     .noraebang(noraebang)
                     .build();
 
-            List<NoraebangReview> noraebangReviewsUser = user.getNoraebangReviews();
-            List<NoraebangReview> noraebangReviewsNorabang = noraebang.getNoraebangReviews();
-
-            noraebangReviewsUser.add(review);
-            noraebangReviewsNorabang.add(review);
-
-            user.setNoraebangReviews(noraebangReviewsUser);
-            noraebang.setNoraebangReviews(noraebangReviewsNorabang);
-
             noraebangReviewRepository.save(review);
         }
     }
 
-    public List<NoraebangReviewDto> getNoraebangReviews(Long NoraebangPk) {
-        Noraebang noraebang = noraebangRepository.getById(NoraebangPk);
+    /*
+    게시글 댓글 모두 조회
+     */
+    public List<NoraebangReviewDto> getNoraebangReviews(Long noraebangPk) {
+        Noraebang noraebang = noraebangRepository.getById(noraebangPk);
         List<NoraebangReview> noraebangReviews = noraebang.getNoraebangReviews();
-        return noraebangReviews.stream().map(NoraebangReviewDto::convertToDto).collect(Collectors.toList());
+        return noraebangReviews.stream()
+                .map(NoraebangReviewDto::convertToDto)
+                .collect(Collectors.toList());
     }
 
-    public String deleteReview(Long reviewPk,
-                               Long userPk) {
+    /*
+    게시글 댓글 삭제.
+    작성자만 삭제할 수 있음.
+     */
+    public String deleteNoraebangReview(Long reviewPk, Long userPk) {
         NoraebangReview review = noraebangReviewRepository.getById(reviewPk);
 
         if (!Objects.equals(review.getUser().getId(), userPk)) {
-            return "Fail";
+            return "댓글이 존재하지 않음";
         }
         noraebangReviewRepository.deleteById(reviewPk);
 
-        return "OK";
+        return "댓글 삭제 완료";
     }
 
-
-    public void toggleNoraebangLike(Long noraebangPk,
-                                    Long userPk) {
+    /*
+    게시글 좋아요 기능.
+     */
+    public void toggleNoraebangLike(Long noraebangPk, Long userPk) {
         Noraebang noraebang = noraebangRepository.getById(noraebangPk);
         Optional<User> userOptional = userRepository.findById(userPk);
         if (userOptional.isPresent()) {
@@ -174,14 +174,4 @@ public class NoraebangService {
         }
     }
 
-    public List<NoraebangDto> getHotNoraebang() {
-        //1주일 전 날짜를 알아냄
-        LocalDate oneWeek = LocalDate.now().minus(Period.ofWeeks(1));
-        //1주일 전 날짜의 자정으로 값 지정
-        LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
-        List<Noraebang> noraebangs = noraebangRepository.findTop6ByCreatedAtAfterOrderByHitDesc(oneWeekAgo);
-        return noraebangs.stream()
-                .map(NoraebangDto::convertToDtoNoraebangs)
-                .collect(Collectors.toList());
-    }
 }

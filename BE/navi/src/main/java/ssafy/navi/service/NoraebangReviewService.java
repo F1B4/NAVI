@@ -12,4 +12,5 @@ import ssafy.navi.repository.NoraebangReviewRepository;
 public class NoraebangReviewService {
 
     private final NoraebangReviewRepository noraebangReviewRepository;
+
 }

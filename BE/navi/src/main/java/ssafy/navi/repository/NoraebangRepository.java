@@ -13,7 +13,7 @@ import java.util.List;
 public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
 
     // TopN을 사용하면 N만큼의 결과만을 조회함
-    List<Noraebang> findTop6ByCreatedAtAfterOrderByHitDesc(LocalDateTime startDate);
+    List<Noraebang> findTop10ByCreatedAtAfterOrderByHitDesc(LocalDateTime startDate);
 
 
     //노래방 제목으로 조회 3개
