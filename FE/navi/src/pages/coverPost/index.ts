@@ -1,1 +1,1 @@
-export { CoverPostPage } from './ui/Page/Page'
+export { CoverPostPage } from './ui/Page/Page';

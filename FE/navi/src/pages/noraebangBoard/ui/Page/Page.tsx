@@ -3,5 +3,5 @@ export function NoraebangBoardPage() {
     <>
       <div>노래방 게시판</div>
     </>
-  )
+  );
 }

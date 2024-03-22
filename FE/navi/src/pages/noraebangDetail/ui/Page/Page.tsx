@@ -3,5 +3,5 @@ export function NoraebangDetailPage() {
     <>
       <div>노래방 디테일</div>
     </>
-  )
+  );
 }

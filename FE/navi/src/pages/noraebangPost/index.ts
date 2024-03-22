@@ -1,1 +1,1 @@
-export { NoraebangPostPage } from './ui/Page/Page'
+export { NoraebangPostPage } from './ui/Page/Page';

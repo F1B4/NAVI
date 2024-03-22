@@ -3,5 +3,5 @@ export function CoverPostPage() {
     <>
       <div>커버 등록</div>
     </>
-  )
+  );
 }

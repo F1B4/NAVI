@@ -3,5 +3,5 @@ export function NoraebangPostPage() {
     <>
       <div>노래방 등록</div>
     </>
-  )
+  );
 }
