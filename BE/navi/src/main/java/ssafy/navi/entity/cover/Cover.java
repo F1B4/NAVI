@@ -58,4 +58,12 @@ public class Cover extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "cover", cascade = CascadeType.ALL)
     private List<CoverReview> coverReviews;
+
+    @Builder
+    public Cover(String title,int hit,int likeCount, Song song){
+        this.title=title;
+        this.hit=hit;
+        this.likeCount=likeCount;
+        this.song=song;
+    }
 }

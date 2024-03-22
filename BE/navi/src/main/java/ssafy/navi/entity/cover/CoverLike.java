@@ -5,7 +5,7 @@ import lombok.*;
 import ssafy.navi.entity.user.User;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CoverLike {
 
@@ -13,7 +13,7 @@ public class CoverLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="cover_like_pk")
     private Long id;
-    
+
     //==외래키==//
     
     // 좋아요 한 게시물

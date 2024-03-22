@@ -14,7 +14,7 @@ import ssafy.navi.entity.noraebang.NoraebangReview;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @Validated
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User{
@@ -104,6 +104,7 @@ public class User{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Voice> voices;
 
+    //==빌더 패턴==//
     @Builder
     public User(String username, String nickname, String email, String image, Role role) {
         this.username = username;
@@ -113,5 +114,13 @@ public class User{
         this.role = role;
         followingCount = 0;
         followerCount = 0;
+    }
+
+    public void updateUsername(String username) {
+        this.username = username;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
     }
 }

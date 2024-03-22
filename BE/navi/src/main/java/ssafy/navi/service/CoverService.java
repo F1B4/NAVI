@@ -85,16 +85,16 @@ public class CoverService {
 
         partAndMutualFollow.put("part",parts);
         partAndMutualFollow.put("mutualFollow",mutualFollow);
-
         return partAndMutualFollow;
     }
 
     /*
     커버 생성 로직
      */
+    @Transactional
     public String createCover(CoverRegistDto coverRegistDto){
         //현재 사용자가 요청한 파트 수
-        int matchingCount= coverRegistDto.getPartData().size();
+        int matchingCount= coverRegistDto.getUserPartDtos().size();
         //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
         Song song=songRepository.findById(coverRegistDto.getSongPk())
                 .orElseThrow(()->new RuntimeException("해당 곡이 존재하지 않음"));
@@ -105,6 +105,7 @@ public class CoverService {
 
         //해당 노래를 매칭중인 매칭테이블들 리스트
         List<Matching> matchings=matchingRepository.findBySongId(coverRegistDto.getSongPk());
+
         for(Matching matching : matchings){
             //해당 매칭에 현재 매칭된 사람의 수
             int existingPartCount=matching.getMatchingUsers().size();
@@ -117,29 +118,69 @@ public class CoverService {
                         .collect(Collectors.toList());
                 //내가 해당 매칭에 참여할 수 있는지 상태를 저장하는 boolean 변수
                 boolean partCheck=true;
-                for(UserPartDto userPart : coverRegistDto.getPartData()){
+
+                for(UserPartDto userPart : coverRegistDto.getUserPartDtos()){
                     //내가 맡은 파트가 해당 매칭에 이미 존재하는 파트라면 해당 매칭에 참가할 수 없음
                     if(existsPart.contains(userPart.getPartPk())){
                         partCheck=false;
                         break;
                     }
                 }
+
+                //내가 이 매칭에 들어갈 수 있음
                 if(partCheck){
-                    for(UserPartDto userPartDto : coverRegistDto.getPartData()){
+                    for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()){
                         User user=userRepository.findById(userPartDto.getUserPk())
                                 .orElseThrow(()->new RuntimeException("유저가 존재하지 않음"));
+                        System.out.println("안녕 날 소개하지"+userPartDto.getPartPk());
                         Part part=partRepository.findById(userPartDto.getPartPk())
                                 .orElseThrow(()->new RuntimeException("파트가 존재하지 않음"));
+                        //매칭 유저에 데이터 추가하기
                         MatchingUser newMatchingUser=new MatchingUser(user,matching,part);
                         matchingUserRepository.save(newMatchingUser);
                     }
 
+                    //내가 체크한 매칭에 이미 존재하던 인원 + 내가 매칭한 인원 수가 전체 인원 수와 같다면
+                    if(existingPartCount+matchingCount==totalPartCount){
+                        //커버를 생성
+                        Cover newCover=new Cover(song.getTitle(),0,0,song);
+                        //저장하고 ++CoverUser에도 매칭테이블 정보 그대로 옮겨야함? 아무래도 나중에 커버디테일에서 쓰니깐 옮겨야하나?
+                        coverRepository.save(newCover);
+                        List<MatchingUser> matchingUsers = matching.getMatchingUsers();
+                        for(MatchingUser matchingUser:matchingUsers){
+                            System.out.println(matchingUser.getId());
+                        }
+                        matchingUserRepository.deleteAll(matchingUsers);
+                        //매칭테이블에서 삭제
+                        matchingRepository.delete(matching);
+                        return "Cover 생성 완료";
+                    }else{
+                        matching.setPartCount(existingPartCount+matchingCount);
+                        matchingRepository.save(matching);
+                        return "매칭 업데이트 완료";
+                    }
                 }
             }
         }
-        return "matching";
+        //매칭에 실패했으면 새로 매칭을 만듬
+        Matching newMatching=new Matching(matchingCount,song);
+        matchingRepository.save(newMatching);
+
+        for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()){
+            User user = userRepository.findById(userPartDto.getUserPk())
+                    .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
+            Part part = partRepository.findById(userPartDto.getPartPk())
+                    .orElseThrow(() -> new RuntimeException("파트가 존재하지 않음"));
+            //매칭중계 테이블에도 데이터 생성하기
+            MatchingUser newMatchingUser = new MatchingUser(user,newMatching,part);
+            matchingUserRepository.save(newMatchingUser);
+        }
+        return "새로운 매칭 생성 및 매칭유저 추가";
     }
 
+    /*
+    매주 일요일 0시 0분 0초 주간조회수 리셋
+     */
     @Scheduled(cron = "0 0 0 * * SUN")
     @Transactional
     public void resetWeeklyHits() {

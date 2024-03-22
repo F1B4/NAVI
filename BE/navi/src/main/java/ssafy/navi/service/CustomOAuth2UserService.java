@@ -48,16 +48,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 회원가입
         if(existData==null) {
-            User user = new User(username, oAuth2Response.getName(), oAuth2Response.getEmail(), oAuth2Response.getProfileImage(), role);
-
+            User user = User.builder()
+                    .username(username)
+                    .nickname(oAuth2Response.getName())
+                    .email(oAuth2Response.getEmail())
+                    .image(oAuth2Response.getProfileImage())
+                    .role(role)
+                    .build();
             userRepository.save(user);
         }
         // 이미 회원가입이 되어있을 경우, 소셜로그인 일부 정보 재설정
         else {
-            existData.setUsername(username);
-            existData.setEmail(oAuth2Response.getEmail());
-
-            userRepository.save(existData);
+            existData.updateUsername(username);
+            existData.updateEmail(oAuth2Response.getEmail());
         }
 
         return new CustomOAuth2User(oAuth2Response, role);
