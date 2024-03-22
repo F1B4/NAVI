@@ -60,10 +60,21 @@ public class Cover extends BaseTimeEntity {
     private List<CoverReview> coverReviews;
 
     @Builder
-    public Cover(String title,int hit,int likeCount, Song song){
+    public Cover(String title, Song song){
         this.title=title;
-        this.hit=hit;
-        this.likeCount=likeCount;
+        this.hit=0;
+        this.likeCount=0;
+        this.weeklyHit=0;
         this.song=song;
     }
+
+    public void updateCover(int hit,int weeklyHit){
+        this.hit=hit;
+        this.weeklyHit=weeklyHit;
+    }
+    public void updateLikeCount(int likeCount){
+        this.likeCount=likeCount;
+    }
+
+
 }

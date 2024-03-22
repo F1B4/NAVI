@@ -36,4 +36,7 @@ public class Matching extends BaseTimeEntity {
         this.partCount=partCount;
         this.song=song;
     }
+    public void updatePartCount(int partCount){
+        this.partCount=partCount;
+    }
 }

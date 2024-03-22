@@ -66,6 +66,9 @@ public class CoverDto implements TimeDto {
         coverDto.setTitle(cover.getTitle());
         return coverDto;
     }
+    public void updateExists(boolean likeExsits){
+        this.likeExsits=likeExsits;
+    }
 
     @Override
     public LocalDateTime getCreatedAt() {
