@@ -1,10 +1,7 @@
 package ssafy.navi.entity.cover;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.song.Part;
@@ -33,5 +30,12 @@ public class CoverUser {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "part_pk")
     private Part part;
+
+    @Builder
+    public CoverUser (User user,Cover cover, Part part){
+        this.user=user;
+        this.cover=cover;
+        this.part=part;
+    }
 
 }
