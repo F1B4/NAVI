@@ -33,12 +33,12 @@ public class NoraebangService {
 
     private final NoraebangRepository noraebangRepository;
     private final SongRepository songRepository;
-
     private final ArtistRepository artistRepository;
     private final UserRepository userRepository;
     private final S3Service s3Service;
     private final NoraebangReviewRepository noraebangReviewRepository;
     private final NoraebangLikeRepository noraebangLikeRepository;
+    private final NotificationService notificationService;
 
     /*
     모든 노래방 게시글 가져오기
@@ -106,8 +106,8 @@ public class NoraebangService {
     게시글 pk, 유저 pk, 댓글 내용 필요.
      */
     @Transactional
-    public void createNoraebangReview(Long noraebangPk, NoraebangReviewDto noraebangReviewDto) {
-        Long userPk = noraebangReviewDto.getUserDto().getId();
+    public void createNoraebangReview(Long noraebangPk, NoraebangReviewDto noraebangReviewDto) throws Exception {
+        Long userPk = Long.valueOf(3);
         String content = noraebangReviewDto.getContent();
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
         Optional<User> userOptional = userRepository.findById(userPk);
@@ -123,6 +123,7 @@ public class NoraebangService {
                     .build();
 
             noraebangReviewRepository.save(review);
+            notificationService.sendNotificationToUser(userPk, "댓글이 작성 되었습니다.");
         }
     }
 

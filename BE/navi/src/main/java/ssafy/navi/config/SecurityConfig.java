@@ -37,10 +37,10 @@ public class SecurityConfig {
                                 userInfoEndpointConfig.userService(customOAuth2UserService)));
 
         // 권한 설정
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/oauth2/**", "/login/**", "login").permitAll()
-                        .anyRequest().authenticated());
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .requestMatchers("/", "/oauth2/**", "/login/**", "login").permitAll()
+//                        .anyRequest().authenticated());
 
         return http.build();
     }
