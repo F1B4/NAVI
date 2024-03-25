@@ -12,9 +12,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
-    private final OAuth2Response oAuth2Response;
-    private final Role role;
+    private final UserDto userDto;
 
+    // 서비스 별 사용하는 Attribute가 다르기 때문에 사용하지 않는다
     @Override
     public Map<String, Object> getAttributes() {
 
@@ -28,7 +28,7 @@ public class CustomOAuth2User implements OAuth2User {
 
         collection.add(new GrantedAuthority() {
             public String getAuthority() {
-                return role.name();
+                return userDto.getRole().name();
             }
         });
 
@@ -37,6 +37,11 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return oAuth2Response.getName();
+        return userDto.getNickname();
     }
+
+    public String getUsername() {
+        return userDto.getUsername();
+    }
+
 }

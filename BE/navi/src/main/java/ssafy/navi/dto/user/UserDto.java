@@ -1,6 +1,7 @@
 package ssafy.navi.dto.user;
 
 import lombok.*;
+import ssafy.navi.entity.user.Role;
 import ssafy.navi.entity.user.User;
 
 @Getter @Setter
@@ -14,6 +15,8 @@ public class UserDto {
     private String image;
     private Integer followingCount;
     private Integer followerCount;
+    private String username;
+    private Role role;
     // 엔티티 Dto로 변환
     public static UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
@@ -24,6 +27,8 @@ public class UserDto {
         userDto.setImage(user.getImage());
         userDto.setFollowingCount(user.getFollowingCount());
         userDto.setFollowerCount(user.getFollowerCount());
+        userDto.setUsername(user.getUsername());
+        userDto.setRole(user.getRole());
         return userDto;
     }
     public static UserDto convertToDtoCoverDetail(User user){
@@ -32,5 +37,11 @@ public class UserDto {
         userDto.setNickname(user.getNickname());
         userDto.setImage(user.getImage());
         return userDto;
+    }
+    //==빌더 패턴==//
+    @Builder
+    public UserDto(String username, Role role) {
+        this.username = username;
+        this.role = role;
     }
 }
