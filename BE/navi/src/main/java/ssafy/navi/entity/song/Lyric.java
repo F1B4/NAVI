@@ -31,6 +31,11 @@ public class Lyric {
     @Column(name = "sequence")
     private Integer sequence;
 
+    //part
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "part_pk")
+    private Part part;
+
     //==외래키==//
 
     // 무슨 노래의 가사인지

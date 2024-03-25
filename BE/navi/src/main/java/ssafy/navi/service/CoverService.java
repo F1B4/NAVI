@@ -85,16 +85,16 @@ public class CoverService {
 
         partAndMutualFollow.put("part",parts);
         partAndMutualFollow.put("mutualFollow",mutualFollow);
-
         return partAndMutualFollow;
     }
 
     /*
     커버 생성 로직
      */
+    @Transactional
     public String createCover(CoverRegistDto coverRegistDto){
         //현재 사용자가 요청한 파트 수
-        int matchingCount= coverRegistDto.getPartData().size();
+        int matchingCount= coverRegistDto.getUserPartDtos().size();
         //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
         Song song=songRepository.findById(coverRegistDto.getSongPk())
                 .orElseThrow(()->new RuntimeException("해당 곡이 존재하지 않음"));
@@ -105,6 +105,7 @@ public class CoverService {
 
         //해당 노래를 매칭중인 매칭테이블들 리스트
         List<Matching> matchings=matchingRepository.findBySongId(coverRegistDto.getSongPk());
+
         for(Matching matching : matchings){
             //해당 매칭에 현재 매칭된 사람의 수
             int existingPartCount=matching.getMatchingUsers().size();
@@ -117,27 +118,73 @@ public class CoverService {
                         .collect(Collectors.toList());
                 //내가 해당 매칭에 참여할 수 있는지 상태를 저장하는 boolean 변수
                 boolean partCheck=true;
-                for(UserPartDto userPart : coverRegistDto.getPartData()){
+
+                for(UserPartDto userPart : coverRegistDto.getUserPartDtos()){
                     //내가 맡은 파트가 해당 매칭에 이미 존재하는 파트라면 해당 매칭에 참가할 수 없음
                     if(existsPart.contains(userPart.getPartPk())){
                         partCheck=false;
                         break;
                     }
                 }
+
+                //내가 이 매칭에 들어갈 수 있음
                 if(partCheck){
-                    for(UserPartDto userPartDto : coverRegistDto.getPartData()){
+                    for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()){
                         User user=userRepository.findById(userPartDto.getUserPk())
                                 .orElseThrow(()->new RuntimeException("유저가 존재하지 않음"));
                         Part part=partRepository.findById(userPartDto.getPartPk())
                                 .orElseThrow(()->new RuntimeException("파트가 존재하지 않음"));
-                        MatchingUser newMatchingUser=new MatchingUser(user,matching,part);
+                        //매칭 유저에 데이터 추가하기
+                        MatchingUser newMatchingUser=MatchingUser.builder()
+                                .user(user)
+                                .matching(matching)
+                                .part(part)
+                                .build();
                         matchingUserRepository.save(newMatchingUser);
                     }
 
+                    //내가 체크한 매칭에 이미 존재하던 인원 + 내가 매칭한 인원 수가 전체 인원 수와 같다면
+                    if(existingPartCount+matchingCount==totalPartCount){
+                        //커버를 생성
+                        Cover newCover=Cover.builder()
+                                .title(song.getTitle())
+                                .song(song)
+                                .build();
+                        //저장하고 ++CoverUser에도 매칭테이블 정보 그대로 옮겨야함? 아무래도 나중에 커버디테일에서 쓰니깐 옮겨야하나?
+                        coverRepository.save(newCover);
+                        List<MatchingUser> matchingUsers = matching.getMatchingUsers();
+                        matchingUserRepository.deleteAll(matchingUsers);
+                        //매칭테이블에서 삭제
+                        matchingRepository.delete(matching);
+                        return "Cover 생성 완료";
+                    }else{
+                        matching.updatePartCount(existingPartCount+matchingCount);
+                        return "매칭 업데이트 완료";
+                    }
                 }
             }
         }
-        return "matching";
+        //매칭에 실패했으면 새로 매칭을 만듬
+        Matching newMatching=Matching.builder()
+                .partCount(matchingCount)
+                .song(song)
+                .build();
+        matchingRepository.save(newMatching);
+
+        for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()){
+            User user = userRepository.findById(userPartDto.getUserPk())
+                    .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
+            Part part = partRepository.findById(userPartDto.getPartPk())
+                    .orElseThrow(() -> new RuntimeException("파트가 존재하지 않음"));
+            //매칭중계 테이블에도 데이터 생성하기
+            MatchingUser newMatchingUser=MatchingUser.builder()
+                    .user(user)
+                    .matching(newMatching)
+                    .part(part)
+                    .build();
+            matchingUserRepository.save(newMatchingUser);
+        }
+        return "새로운 매칭 생성 및 매칭유저 추가";
     }
 
     /*
@@ -162,14 +209,12 @@ public class CoverService {
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))
                 .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
-        cover.setHit(cover.getHit() + 1); // 조회수 증가
-        cover.setWeeklyHit(cover.getWeeklyHit() + 1); // 주간 조회수 증가
-        coverRepository.save(cover); // 변경된 엔티티 저장
+        cover.updateCover(cover.getHit()+1,cover.getWeeklyHit()+1);
         CoverDto coverDto= CoverDto.convertToDto(cover);
 
+        //내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
         Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
-        coverDto.setLikeExsits(exists.isPresent());
-
+        coverDto.updateExists(exists.isPresent());
         return coverDto;
     }
 
@@ -182,7 +227,12 @@ public class CoverService {
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))
                 .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
-        CoverReview coverReview = new CoverReview(coverReviewDto.getContent(), cover, user);
+//        CoverReview coverReview = new CoverReview(coverReviewDto.getContent(), cover, user);
+        CoverReview coverReview=CoverReview.builder()
+                .content(coverReviewDto.getContent())
+                .cover(cover)
+                .user(user)
+                .build();
         coverReview = coverReviewRepository.save(coverReview);
         return CoverReviewDto.convertToDto(coverReview);
     }
@@ -218,16 +268,17 @@ public class CoverService {
             // 이미 좋아요를 눌렀다면, 좋아요 삭제
             coverLikeRepository.delete(exists.get());
             int likeCount = cover.getLikeCount() == null ? 0 : cover.getLikeCount() - 1;
-            cover.setLikeCount(likeCount);
-            coverRepository.save(cover);
+            cover.updateLikeCount(likeCount);
             return null;
         } else {
             // 좋아요가 없다면, 새로운 좋아요 생성
-            CoverLike like = new CoverLike(cover, user);
+            CoverLike like=CoverLike.builder()
+                    .cover(cover)
+                    .user(user)
+                    .build();
             coverLikeRepository.save(like);
             int likeCount = cover.getLikeCount() == null ? 1 : cover.getLikeCount() + 1;
-            cover.setLikeCount(likeCount);
-            coverRepository.save(cover);
+            cover.updateLikeCount(likeCount);
             return CoverLikeDto.convertToDto(like);
         }
     }

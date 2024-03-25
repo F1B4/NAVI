@@ -1,10 +1,7 @@
 package ssafy.navi.entity.cover;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ssafy.navi.entity.song.Song;
 import ssafy.navi.entity.util.BaseTimeEntity;
 
@@ -31,7 +28,15 @@ public class Matching extends BaseTimeEntity {
     private Song song;
 
     // 매칭 중계 테이블
-    @OneToMany(mappedBy = "matching")
+    @OneToMany(mappedBy = "matching",cascade = CascadeType.ALL)
     private List<MatchingUser> matchingUsers;
 
+    @Builder
+    public Matching(int partCount, Song song){
+        this.partCount=partCount;
+        this.song=song;
+    }
+    public void updatePartCount(int partCount){
+        this.partCount=partCount;
+    }
 }

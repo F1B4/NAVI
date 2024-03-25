@@ -1,0 +1,6 @@
+.root {
+  width: 120px;
+  height: 60px;
+  background-image: url('/images/Logo.png');
+  background-size: cover;
+}
