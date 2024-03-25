@@ -9,7 +9,7 @@ import lombok.Setter;
 import ssafy.navi.entity.user.User;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
