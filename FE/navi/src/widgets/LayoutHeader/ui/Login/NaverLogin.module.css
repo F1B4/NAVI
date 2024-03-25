@@ -1,0 +1,6 @@
+.root {
+  width: 35px;
+  height: 64px;
+  background-image: url('/images/naver_login.png');
+  background-size: cover;
+}

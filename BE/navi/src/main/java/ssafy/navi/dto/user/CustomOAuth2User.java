@@ -1,6 +1,7 @@
 package ssafy.navi.dto.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import ssafy.navi.entity.user.Role;
