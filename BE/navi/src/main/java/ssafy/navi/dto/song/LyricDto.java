@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class LyricDto {
 
     private Long id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String content;
     private Integer sequence;
 
