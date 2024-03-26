@@ -119,4 +119,8 @@ public class User{
     public void updateEmail(String email) {
         this.email = email;
     }
+
+    public void updateImage(String fileName) { this.image = fileName; }
+
+    public void updateNickname(String nickname) { this.nickname = nickname; }
 }
