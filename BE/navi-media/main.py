@@ -26,38 +26,40 @@ connection = pymysql.connect(host='j10d107.p.ssafy.io',
 with connection.cursor() as cursor:
     # SQL 쿼리 실행
     # 일단 cover_pk 3이라고 가정하고 가져옴
+    cover_pk = '7'
+    sql_cover = "SELECT * FROM cover WHERE cover_pk = %s"
+    cursor.execute(sql_cover, (cover_pk, ))
+    
+    # 결과 가져오기
+    cover = cursor.fetchall()
+    print(cover)
+    song_pk = cover[0]['song_pk']
+    sql_lyric = "SELECT * FROM lyric WHERE song_pk = %s"
+    cursor.execute(sql_lyric, (song_pk, ))
+    lyrics = cursor.fetchall()
+    
+
+    sql_cover_user = "SELECT * FROM cover_user WHERE cover_pk = %s"
+    cursor.execute(sql_cover_user,(cover_pk, ))
+    cover_users = cursor.fetchall()
+    print(cover_users)
+    
     # cover_pk = 3
-    # sql_cover = "SELECT * FROM cover WHERE cover_pk = %s"
-    # cursor.execute(sql_cover, (cover_pk, ))
+    # sql_cover = "SELECT * FROM cover WHERE cover_pk = 4"
+    # cursor.execute(sql_cover)
     
     # # 결과 가져오기
     # cover = cursor.fetchall()
     
     # song_pk = cover[0]['song_pk']
-    # sql_lyric = "SELECT * FROM lyric WHERE song_pk = %s"
-    # cursor.execute(sql_lyric, (song_pk, ))
+    # sql_lyric = "SELECT * FROM lyric WHERE song_pk = 3"
+    # cursor.execute(sql_lyric)
     # lyrics = cursor.fetchall()
     
 
-    # sql_cover_user = "SELECT * FROM cover_user WHERE cover_pk = %s"
-    # cursor.execute(sql_cover_user,(cover_pk, ))
+    # sql_cover_user = "SELECT * FROM cover_user WHERE cover_pk = 4"
+    # cursor.execute(sql_cover_user)
     # cover_users = cursor.fetchall()
-    cover_pk = 3
-    sql_cover = "SELECT * FROM cover WHERE cover_pk = 4"
-    cursor.execute(sql_cover)
-    
-    # 결과 가져오기
-    cover = cursor.fetchall()
-    
-    song_pk = cover[0]['song_pk']
-    sql_lyric = "SELECT * FROM lyric WHERE song_pk = 3"
-    cursor.execute(sql_lyric)
-    lyrics = cursor.fetchall()
-    
-
-    sql_cover_user = "SELECT * FROM cover_user WHERE cover_pk = 4"
-    cursor.execute(sql_cover_user)
-    cover_users = cursor.fetchall()
 
     allPart = []
     for r in cover_users:
@@ -65,6 +67,7 @@ with connection.cursor() as cursor:
         allPart[len(allPart)-1].append([r['part_pk']])
         allPart[len(allPart)-1].append([])
         allPart[len(allPart)-1].append([])
+    print(cover_users)
     #임시로 allPart에 14~20까지 넣고 함
     # allPart = [[14,[],[]],[15,[],[]],[16,[],[]],[17,[],[]],[18,[],[]],[19,[],[]],[20,[],[]]]
     
@@ -76,11 +79,11 @@ with connection.cursor() as cursor:
 
     # 1. 원곡 DNA파일 받아와서
     # 2. 파트별로 시간 짤라서 무음처리하고 그 파일 S3에 업로드
-
+print(allPart)
 
 for part in allPart:
     # 오디오 파일 불러오기
-    audio = AudioSegment.from_file("C:/Users/SSAFY/Desktop/DNA_music.wav", format="wav")
+    audio = AudioSegment.from_file("C:/Users/SSAFY/Desktop/ourdream_music.wav", format="wav")
 
     # 노래가 끝나는 시간 설정
     song_end_time_ms=len(audio)
@@ -114,4 +117,4 @@ for part in allPart:
         silence = AudioSegment.silent(duration=end_ms - start_ms)
         working_audio = working_audio[:start_ms] + silence + working_audio[end_ms:]
 
-    working_audio.export("muted_partss{}.wav".format(part[0]), format="wav")
+    working_audio.export("{}_{}.wav".format(song_pk,part[0][0]), format="wav")
