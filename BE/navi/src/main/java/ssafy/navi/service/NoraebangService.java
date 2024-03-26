@@ -97,7 +97,10 @@ public class NoraebangService {
     /*
     노래방 게시글 삭제하기
      */
-    public void deleteNoraebang(Long noraebangPk) {
+    public void deleteNoraebang(Long noraebangPk) throws Exception {
+        Noraebang noraebang = noraebangRepository.findById(noraebangPk)
+                .orElseThrow(() -> new Exception("노래방 게시글을 찾을 수 없습니다."));
+        s3Service.deleteImage(noraebang.getRecord());
         noraebangRepository.deleteById(noraebangPk);
     }
 
