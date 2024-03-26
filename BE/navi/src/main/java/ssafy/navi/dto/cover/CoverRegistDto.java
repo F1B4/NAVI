@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CoverRegistDto {
     private Long songPk;
-    private List<UserPartDto> partData;
+    private List<UserPartDto> userPartDtos;
 }

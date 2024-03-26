@@ -10,7 +10,6 @@ import ssafy.navi.entity.song.Song;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Voice {
 

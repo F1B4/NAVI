@@ -8,6 +8,7 @@ import lombok.Setter;
 import ssafy.navi.entity.song.Lyric;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -15,10 +16,11 @@ import java.time.LocalDateTime;
 public class LyricDto {
 
     private Long id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String content;
     private Integer sequence;
+    private PartDto partDto;
 
     // 엔티티 Dto로 변환
     public static LyricDto convertToDto(Lyric lyric) {
@@ -30,6 +32,7 @@ public class LyricDto {
         lyricDto.setEndTime(lyric.getEndTime());
         lyricDto.setContent(lyric.getContent());
         lyricDto.setSequence(lyric.getSequence());
+        lyricDto.setPartDto(PartDto.convertToDto(lyric.getPart()));
 
         return lyricDto;
     }

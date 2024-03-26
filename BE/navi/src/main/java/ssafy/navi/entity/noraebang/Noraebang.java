@@ -13,7 +13,7 @@ import ssafy.navi.entity.util.BaseTimeEntity;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE) //builder패턴을 사용하기 위해 추가
@@ -61,4 +61,7 @@ public class Noraebang extends BaseTimeEntity{
     @OneToMany(mappedBy = "noraebang", cascade = CascadeType.ALL)
     private List<NoraebangReview> noraebangReviews;
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

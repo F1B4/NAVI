@@ -2,6 +2,8 @@ package ssafy.navi.entity.cover;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.validation.annotation.Validated;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.song.Part;

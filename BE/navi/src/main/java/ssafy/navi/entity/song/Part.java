@@ -11,7 +11,7 @@ import ssafy.navi.entity.cover.MatchingUser;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Part {
 
@@ -42,5 +42,4 @@ public class Part {
     // 매칭 중계 테이블
     @OneToMany(mappedBy = "part", cascade = CascadeType.ALL)
     private List<MatchingUser> matchingUsers;
-
 }

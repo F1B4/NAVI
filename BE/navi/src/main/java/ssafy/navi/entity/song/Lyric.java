@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lyric {
 
@@ -20,11 +17,11 @@ public class Lyric {
 
     // 가사 시작 부분
     @Column(name = "start_time")
-    private LocalDateTime startTime;
+    private String startTime;
 
     // 가사 끝나는 부분
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private String endTime;
 
     // 가사 내용
     @Column(name = "content")
@@ -33,6 +30,11 @@ public class Lyric {
     // 가사 순서
     @Column(name = "sequence")
     private Integer sequence;
+
+    //part
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "part_pk")
+    private Part part;
 
     //==외래키==//
 

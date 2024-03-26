@@ -25,11 +25,10 @@ public class ArtistService {
      */
     public List<ArtistDto> getAllArtist() {
         List<Artist> artists = artistRepository.findAll();
-        for (Artist name : artists) {
-            System.out.println(name.getName());
-        }
 
-        return artists.stream().map(ArtistDto::convertToDto).collect(Collectors.toList());
+        return artists.stream()
+                .map(ArtistDto::convertToDto)
+                .collect(Collectors.toList());
     }
 
 }
