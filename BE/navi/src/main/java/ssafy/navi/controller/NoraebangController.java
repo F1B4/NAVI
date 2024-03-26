@@ -92,7 +92,7 @@ public class NoraebangController {
     노래방 게시글 삭제하기
      */
     @DeleteMapping("/{noraebang_pk}")
-    public Response<?> deleteNoraebang(@PathVariable("noraebang_pk") Long noraebangPk) {
+    public Response<?> deleteNoraebang(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
         noraebangService.deleteNoraebang(noraebangPk);
         return Response.of("Ok", "댓글 삭제", null);
     }
