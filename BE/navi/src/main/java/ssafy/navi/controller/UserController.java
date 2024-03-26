@@ -2,10 +2,9 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.navi.dto.user.UserDto;
+import ssafy.navi.dto.user.UserProfileDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.service.UserService;
 
@@ -18,12 +17,21 @@ public class UserController {
     private final UserService userService;
 
     /*
-    인가된 토큰에서 유저 정보 획득
+    토큰에서 유저 정보 획득
     UserDto 이용
      */
     @GetMapping("/info")
     public Response<UserDto> getInfo() throws Exception {
-        return Response.of("OK", "프로필 조회 성공",userService.getUserInfo());
+        return Response.of("OK", "유저 정보 조회 성공",userService.getUserInfo());
+    }
+
+    /*
+    UserPk으로 유저 프로필 조회
+    UserProfileDto 이용
+     */
+    @GetMapping("/profile/{user_pk}")
+    public Response<UserProfileDto> getUserProfile(@PathVariable("user_pk") Long userPk) throws Exception {
+        return Response.of("OK", "유저 프로필 조회 성공",userService.getUserProfile(userPk));
     }
 
 }
