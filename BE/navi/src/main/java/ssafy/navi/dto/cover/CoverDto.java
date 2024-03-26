@@ -56,6 +56,9 @@ public class CoverDto implements TimeDto {
         coverDto.setLikeCount(cover.getLikeCount());
         coverDto.setCreatedAt(cover.getCreatedAt());
         coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
+        coverDto.setCoverUserDtos(cover.getCoverUsers().stream()
+                .map(CoverUserDto::convertToDto)
+                .collect(Collectors.toList()));
         return coverDto;
     }
     public static CoverDto convertToDtoSearch(Cover cover){

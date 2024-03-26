@@ -72,6 +72,7 @@ public class Cover extends BaseTimeEntity {
         this.hit=hit;
         this.weeklyHit=weeklyHit;
     }
+
     public void updateLikeCount(int likeCount){
         this.likeCount=likeCount;
     }
