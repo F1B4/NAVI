@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CoverUserRepository extends JpaRepository<CoverUser,Long> {
     List<CoverUser> findByCover_Id(Long coverPk);
+
+    List<CoverUser> findByUserId(Long userPk);
 }
