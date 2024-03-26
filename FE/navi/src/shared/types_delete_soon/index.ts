@@ -24,20 +24,16 @@ interface CoverUser {
   };
 }
 
-interface CoverList {
-  resultCode: string;
-  message: string;
-  data: {
-    id: number;
-    title: string;
-    thumbnail: string;
-    hit: number;
-    likeCount: number;
-    songDto: SongInfo;
-    createdAt: string;
-    coverUserDtos: CoverUser[];
-    likeExsits: boolean;
-  }[];
+interface CoverItem {
+  id: number;
+  title: string;
+  thumbnail: string;
+  hit: number;
+  likeCount: number;
+  songDto: SongInfo;
+  createdAt: string;
+  coverUserDtos: CoverUser[];
+  likeExsits: boolean;
 }
 
-export type { User, CoverUser, CoverList, SongInfo };
+export type CoverList = CoverItem[];
