@@ -1,0 +1,6 @@
+.root {
+  width: 35px;
+  height: 40px;
+  background-image: url('/images/Alarm.png');
+  background-size: cover;
+}
