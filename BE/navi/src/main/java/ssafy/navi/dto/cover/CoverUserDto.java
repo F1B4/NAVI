@@ -13,6 +13,7 @@ public class CoverUserDto {
     private Long id;
     private UserDto userDto;
     private PartDto partDto;
+    private CoverDto coverDto;
 
     // 엔티티 Dto로 변환
     public static CoverUserDto convertToDto(CoverUser coverUser) {

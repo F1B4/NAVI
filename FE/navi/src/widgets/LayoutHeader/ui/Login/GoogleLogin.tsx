@@ -1,7 +1,8 @@
-import css from './NaverLogin.module.css';
+import css from './GoogleLogin.module.css';
 
-const onNaverLogin = () => {
-  window.location.href = 'http://localhost:8081/api/oauth2/authorization/naver';
+const onGoogleLogin = () => {
+  window.location.href =
+    'https://j10d107.p.ssafy.io/api/oauth2/authorization/google';
 };
 
 const getData = () => {
@@ -16,10 +17,10 @@ const getData = () => {
     .catch((error) => alert(error));
 };
 
-export function NaverLogin() {
+export function GoogleLogin() {
   return (
     <>
-      <div onClick={onNaverLogin} className={css.root}></div>
+      <div onClick={onGoogleLogin} className={css.root}></div>
     </>
   );
 }

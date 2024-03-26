@@ -22,6 +22,7 @@ public class UserDto {
         UserDto userDto = new UserDto();
 
         // set
+        userDto.setId(user.getId());
         userDto.setNickname(user.getNickname());
         userDto.setEmail(user.getEmail());
         userDto.setImage(user.getImage());
