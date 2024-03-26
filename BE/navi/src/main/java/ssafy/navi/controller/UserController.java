@@ -3,6 +3,7 @@ package ssafy.navi.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.user.UserProfileDto;
 import ssafy.navi.dto.util.Response;
@@ -18,7 +19,7 @@ public class UserController {
 
     /*
     토큰에서 유저 정보 획득
-    UserDto 이용
+    UserDto
      */
     @GetMapping("/info")
     public Response<UserDto> getInfo() throws Exception {
@@ -27,11 +28,29 @@ public class UserController {
 
     /*
     UserPk으로 유저 프로필 조회
-    UserProfileDto 이용
+    UserProfileDto
      */
     @GetMapping("/profile/{user_pk}")
     public Response<UserProfileDto> getUserProfile(@PathVariable("user_pk") Long userPk) throws Exception {
         return Response.of("OK", "유저 프로필 조회 성공",userService.getUserProfile(userPk));
+    }
+
+    /*
+    프로필 이미지 수정
+    UserDto
+     */
+    @PostMapping("/image")
+    public Response<UserDto> updateUserImage(@RequestBody MultipartFile file) throws Exception{
+        return Response.of("OK", "유저 프로필 사진 수정 성공", userService.updateUserImage(file));
+    }
+
+    /*
+    닉네임 수정
+    UserDto
+     */
+    @PostMapping("/nickname")
+    public Response<UserDto> updateUserNickname(@RequestBody String nickname) throws Exception {
+        return Response.of("OK", "유저 닉네임 수정 성공", userService.updateUserNickname(nickname));
     }
 
 }
