@@ -14,4 +14,6 @@ import java.util.List;
 public interface FollowRepository extends JpaRepository<Follow,Long> {
     @Query("SELECT f1.fromUser FROM Follow f1 JOIN Follow f2 ON f1.fromUser = f2.toUser AND f2.fromUser = f1.toUser WHERE f1.toUser.id = :userId")
     List<User> findMutualFollowers(@Param("userId") Long userId);
+
+    Follow findByFromUserIdAndToUserId(Long fromUserPk, Long toUserPk);
 }
