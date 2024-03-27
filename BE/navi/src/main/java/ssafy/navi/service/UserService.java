@@ -37,9 +37,9 @@ public class UserService {
     private final FollowRepository followRepository;
 
     /*
-    로그아웃 (쿠키 삭제)
+    쿠키 삭제
      */
-    public void logout(HttpServletResponse response, String cookieName) {
+    public void deleteCookie(HttpServletResponse response, String cookieName) {
         Cookie cookie = new Cookie(cookieName, null); // 쿠키를 생성하고 값은 null로 설정
         cookie.setPath("/"); // 쿠키의 경로 설정
         cookie.setMaxAge(0); // 쿠키의 유효 시간을 0으로 설정하여 바로 만료
