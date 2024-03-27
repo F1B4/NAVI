@@ -19,7 +19,7 @@ public class AlarmController {
 
 
     @GetMapping("")
-    public Response<List<AlarmDto>> getAlarms() {
+    public Response<List<AlarmDto>> getAlarms() throws Exception {
         return Response.of("OK", "모든 알람 가져오기.", alarmService.getAlarms());
     }
 
