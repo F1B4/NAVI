@@ -6,6 +6,7 @@ interface CardProps {
   classImg: string;
   classDesc: string;
   thumbnail?: string;
+  user?: string;
   info: {
     id: number;
     title: string;
@@ -16,17 +17,20 @@ interface CardProps {
 }
 
 export function Card(props: CardProps) {
+  const imageSrc = props.thumbnail ? props.thumbnail : props.info.image;
   return (
-    <Link to={`/${props.type}/${props.info.id}`}>
-      <div className={props.classCard}>
+    <div className={props.classCard}>
+      <Link to={`/${props.type}/${props.info.id}`}>
         <div className={props.classImg}>
-          <img src={props.info.image} alt="image" />
+          <img src={imageSrc} alt="image" />
         </div>
-        <div className={props.classDesc}>
-          {props.info.title}
-          {props.info.users}
-        </div>
+      </Link>
+      <div className={props.classDesc}>
+        <Link to={`/${props.type}/${props.info.id}`}>
+          <strong>{props.info.title}</strong>
+        </Link>
+        {props.user}
       </div>
-    </Link>
+    </div>
   );
 }

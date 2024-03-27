@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
-import { hotNoraebangListApi } from '@/entities/hotNoraebangList';
-import type { NoraebangList } from '@/entities/hotNoraebangList';
+import { noraebangListApi } from '@/entities/noraebangList';
+import type { NoraebangList } from '@/entities/noraebangList';
 import { Card } from '@/shared/ui';
-import css from './HotNoraebangList.module.css';
+import css from './NoraebangList.module.css';
 
-export function HotNoraebangList() {
+export function NoraebangList() {
   const [noraebangs, setNoraebangs] = useState<NoraebangList>();
 
   useEffect(() => {
-    const AxiosHotNoraebangs = async () => {
+    const AxiosNoraebangs = async () => {
       try {
-        const response = await hotNoraebangListApi();
+        const response = await noraebangListApi();
         if (response !== null) {
           setNoraebangs(response);
+          console.log(response);
         }
       } catch (error) {
-        console.error('Error get hot noraebangs list');
+        console.error('Error get noraebangs list');
       }
     };
-    AxiosHotNoraebangs();
+    AxiosNoraebangs();
   }, []);
+
   return (
     <div className={css.container}>
       {Array.isArray(noraebangs) &&

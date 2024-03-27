@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
-import { hotCoverListApi } from '@/entities/hotCoverList';
-import type { CoverList, CoverUser } from '@/entities/hotCoverList';
+import { coverListApi } from '@/entities/coverList';
+import type { CoverList, CoverUser } from '@/entities/coverList';
 import { Card } from '@/shared/ui';
-import css from './HotCoverList.module.css';
+import css from './CoverList.module.css';
 
-export function HotCoverList() {
+export function CoverList() {
   const [covers, setCovers] = useState<CoverList>();
 
   useEffect(() => {
-    const AxiosHotCovers = async () => {
+    const AxiosCovers = async () => {
       try {
-        const response = await hotCoverListApi();
+        const response = await coverListApi();
         if (response !== null) {
           setCovers(response);
           console.log(response);
         }
       } catch (error) {
-        console.error('Error get hot cover list');
+        console.error('Error get covers list');
       }
     };
-    AxiosHotCovers();
+    AxiosCovers();
   }, []);
 
   return (

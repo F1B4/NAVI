@@ -4,9 +4,9 @@
   width: 240px;
   height: 100vh;
   border-right: solid 1px var(--main_line);
-
   display: flex;
   flex-direction: column;
+  position: fixed;
 }
 
 .btn {

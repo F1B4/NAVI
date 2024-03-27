@@ -1,15 +1,15 @@
-import type { Response, NewContentsList } from './types';
+import type { Response, NoraebangList } from './types';
 import { baseApi } from '@/shared/api';
 import axios, { AxiosResponse } from 'axios';
 
-export const newContentsListApi = async (): Promise<NewContentsList | null> => {
+export const noraebangListApi = async (): Promise<NoraebangList | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/main/new`,
+      `${baseApi}/noraebangs`,
     );
     return response.data.data;
   } catch (error) {
-    console.error('Error new Contents list', error);
+    console.error('Error get noraebang list', error);
     return null;
   }
 };
