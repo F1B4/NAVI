@@ -14,7 +14,9 @@ export function HotCoverList() {
         if (response !== null) {
           setCovers(response);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error get hot cover list');
+      }
     };
     AxiosHotCovers();
   }, []);

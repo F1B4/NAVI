@@ -14,7 +14,9 @@ export function NewContentsList() {
         if (response !== null) {
           setNewContents(response);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error get new contents list');
+      }
     };
     AxiosNewContents();
   }, []);

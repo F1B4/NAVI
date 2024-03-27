@@ -3,7 +3,7 @@ import { Searchbar } from '../Searchbar/Searchbar';
 import { Alarm } from '../Alarm/Alarm';
 import { LayoutHeaderUserImage } from '../LayoutHeaderUserImage/LayoutHeaderUserImage';
 import css from './LayoutHeader.module.css';
-import { NaverLogin } from '../Login/NaverLogin';
+import { Login } from '../Login/Login';
 
 export function LayoutHeader() {
   return (
@@ -14,7 +14,8 @@ export function LayoutHeader() {
       </div>
       <div className={css.right}>
         <Alarm />
-        <UserImage />
+        <LayoutHeaderUserImage />
+        <Login />
       </div>
     </div>
   );
