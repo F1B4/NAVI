@@ -22,7 +22,7 @@ export function HotNoraebangList() {
   }, []);
   return (
     <div className={css.container}>
-      {noraebangs.map((noraebang, index) => (
+      {/* {noraebangs.map((noraebang, index) => (
         <Card
           key={index}
           classCard={css.card}
@@ -31,7 +31,7 @@ export function HotNoraebangList() {
           type="noraebang"
           info={noraebang.songDto}
         />
-      ))}
+      ))} */}
     </div>
   );
 }

@@ -21,9 +21,9 @@ export function NewContentsList() {
     AxiosNewContents();
   }, []);
   return (
+    // 이쪽에서 type에 따라 처리해줘야 할 듯 계산하거나
     <div className={css.container}>
-      {noraebangs.map((noraebang, index) => (
-        // 이쪽에서 type에 따라 처리해줘야 할 듯 계산하거나
+      {/* {noraebangs.map((noraebang, index) => (
         <Card
           key={index}
           classCard={css.card}
@@ -32,7 +32,7 @@ export function NewContentsList() {
           type=""
           info={noraebang.songDto}
         />
-      ))}
+      ))} */}
     </div>
   );
 }

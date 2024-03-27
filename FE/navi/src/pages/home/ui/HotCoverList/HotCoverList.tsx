@@ -22,7 +22,7 @@ export function HotCoverList() {
   }, []);
   return (
     <div className={css.container}>
-      {covers.map((cover, index) => (
+      {/* {covers.map((cover, index) => (
         <Card
           key={index}
           classCard={css.card}
@@ -31,7 +31,7 @@ export function HotCoverList() {
           type="cover"
           info={cover.songDto}
         />
-      ))}
+      ))} */}
     </div>
   );
 }
