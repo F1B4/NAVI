@@ -7,10 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ssafy.navi.dto.user.CustomOAuth2User;
-import ssafy.navi.dto.user.FollowingDto;
-import ssafy.navi.dto.user.UserDto;
-import ssafy.navi.dto.user.UserProfileDto;
+import ssafy.navi.dto.user.*;
 import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.cover.CoverUser;
 import ssafy.navi.entity.user.Follow;
@@ -158,6 +155,37 @@ public class UserService {
         }
     }
 
-    
+    /*
+    유저 팔로잉 리스트 조회
+    followingDto
+     */
+    public List<FollowingDto> getFollowingList(Long userPk) throws Exception {
+        // 팔로잉 리스트 조회할 유저 검색
+        User fromUser = userRepository.findById(userPk)
+                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
 
+        // 해당 유저의 팔로잉 정보 조회
+        List<Follow> follows = followRepository.findAllByFromUserId(fromUser.getId());
+
+        return follows.stream()
+                .map(FollowingDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    유저 팔로워 리스트 조회
+    followerDto
+     */
+    public List<FollowerDto> getFollowerList(Long userPk) throws Exception{
+        // 팔로워 리스트 조회할 유저 검색
+        User toUser = userRepository.findById(userPk)
+                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+
+        // 해당 유저의 팔로잉 정보 조회
+        List<Follow> follows = followRepository.findAllByToUserId(toUser.getId());
+
+        return follows.stream()
+                .map(FollowerDto::convertToDto)
+                .collect(Collectors.toList());
+    }
 }
