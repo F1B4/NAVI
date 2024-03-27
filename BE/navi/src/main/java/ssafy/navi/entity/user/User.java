@@ -123,4 +123,12 @@ public class User{
     public void updateImage(String fileName) { this.image = fileName; }
 
     public void updateNickname(String nickname) { this.nickname = nickname; }
+
+    public void updateFollowingCount(Integer num) {
+        followingCount+=num;
+    }
+
+    public void updateFollowerCount(Integer num) {
+        followerCount+=num;
+    }
 }

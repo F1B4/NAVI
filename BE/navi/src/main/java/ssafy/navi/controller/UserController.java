@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ssafy.navi.dto.user.FollowingDto;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.user.UserProfileDto;
 import ssafy.navi.dto.util.Response;
@@ -51,6 +52,20 @@ public class UserController {
     @PostMapping("/nickname")
     public Response<UserDto> updateUserNickname(@RequestBody String nickname) throws Exception {
         return Response.of("OK", "유저 닉네임 수정 성공", userService.updateUserNickname(nickname));
+    }
+
+    /*
+    유저 팔로우/언팔로우
+    followingDto
+     */
+    @PostMapping("/follow/{user_pk}")
+    public Response<FollowingDto> follow(@PathVariable("user_pk") Long userPk) throws Exception {
+        FollowingDto res = userService.follow(userPk);
+        if(res!=null) {
+            return Response.of("OK","유저 팔로우 성공", res);
+        } else {
+            return Response.of("OK","유저 언팔로우 성공", null);
+        }
     }
 
 }
