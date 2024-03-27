@@ -19,6 +19,7 @@ import ssafy.navi.oauth2.CustomClientRegistrationRepository;
 import ssafy.navi.oauth2.CustomSuccessHandler;
 import ssafy.navi.service.CustomOAuth2UserService;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -56,14 +57,15 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173/"));
+                        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                         configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type"));
                         configuration.setMaxAge(3600L);
 
-                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                        configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
+//                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+//                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
                         return configuration;
                     }

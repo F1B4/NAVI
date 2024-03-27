@@ -4,10 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ssafy.navi.dto.user.FollowerDto;
+import ssafy.navi.dto.user.FollowingDto;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.user.UserProfileDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,6 +55,38 @@ public class UserController {
     @PostMapping("/nickname")
     public Response<UserDto> updateUserNickname(@RequestBody String nickname) throws Exception {
         return Response.of("OK", "유저 닉네임 수정 성공", userService.updateUserNickname(nickname));
+    }
+
+    /*
+    유저 팔로우/언팔로우
+    followingDto
+     */
+    @PostMapping("/follow/{user_pk}")
+    public Response<FollowingDto> follow(@PathVariable("user_pk") Long userPk) throws Exception {
+        FollowingDto res = userService.follow(userPk);
+        if(res!=null) {
+            return Response.of("OK","유저 팔로우 성공", res);
+        } else {
+            return Response.of("OK","유저 언팔로우 성공", null);
+        }
+    }
+
+    /*
+    유저 팔로잉 리스트 조회
+    followingDto
+     */
+    @GetMapping("/following/{user_pk}")
+    public Response<List<FollowingDto>> getFollowingList(@PathVariable("user_pk") Long userPk) throws Exception {
+        return Response.of("OK", "유저 팔로잉 리스트 조회 성공", userService.getFollowingList(userPk));
+    }
+
+    /*
+    유저 팔로워 리스트 조회
+    followerDto
+     */
+    @GetMapping("/follower/{user_pk}")
+    public Response<List<FollowerDto>> getFollowerList(@PathVariable("user_pk") Long userPk) throws Exception {
+        return Response.of("OK", "유저 팔로워 리스트 조회 성공", userService.getFollowerList(userPk));
     }
 
 }
