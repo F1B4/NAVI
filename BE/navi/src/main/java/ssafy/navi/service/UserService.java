@@ -1,5 +1,8 @@
 package ssafy.navi.service;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,16 @@ public class UserService {
     private final CoverRepository coverRepository;
     private final S3Service s3Service;
     private final FollowRepository followRepository;
+
+    /*
+    로그아웃 (쿠키 삭제)
+     */
+    public void logout(HttpServletResponse response, String cookieName) {
+        Cookie cookie = new Cookie(cookieName, null); // 쿠키를 생성하고 값은 null로 설정
+        cookie.setPath("/"); // 쿠키의 경로 설정
+        cookie.setMaxAge(0); // 쿠키의 유효 시간을 0으로 설정하여 바로 만료
+        response.addCookie(cookie); // 응답에 쿠키 추가하여 클라이언트에 전송, 쿠키 삭제 지시
+    }
 
     /*
     인가된 토큰에서 유저 정보 획득
@@ -188,4 +201,5 @@ public class UserService {
                 .map(FollowerDto::convertToDto)
                 .collect(Collectors.toList());
     }
+
 }
