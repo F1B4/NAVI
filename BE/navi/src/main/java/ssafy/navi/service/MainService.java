@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.NoraebangAllDto;
 import ssafy.navi.dto.noraebang.NoraebangDto;
+import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.TimeDto;
 import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.repository.CoverRepository;
 import ssafy.navi.repository.NoraebangRepository;
+import ssafy.navi.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class MainService {
     private final CoverRepository coverRepository;
     private final NoraebangRepository noraebangRepository;
+    private final UserRepository userRepository;
 
     /*
     최신 컨텐츠 가져오기
@@ -96,12 +99,15 @@ public class MainService {
         List<NoraebangDto> noraeBangDtosArtist=noraebangRepository.findTop3ByArtistNameContainingOrderByCreatedAtDesc(keyword).stream()
                 .map(NoraebangDto::convertToDtoNoraebangs)
                 .collect(Collectors.toList());
+        List<UserDto> userDtos = userRepository.findTop3ByNicknameContainingOrderByNickname(keyword).stream()
+                .map(UserDto::convertToDto)
+                .collect(Collectors.toList());
 
-        //유저 완성되면 추가하기
         searchAll.put("cover",coverDtosTitle);
         searchAll.put("coverArtist",coverDtosArtist);
         searchAll.put("noradebang",noraebangDtosTitle);
         searchAll.put("noraebangArtist",noraeBangDtosArtist);
+        searchAll.put("user",userDtos);
         return searchAll;
     }
 
@@ -147,5 +153,16 @@ public class MainService {
                 .map(CoverDto::convertToDtoList)
                 .collect(Collectors.toList());
         return coverDtos;
+    }
+
+    /*
+    사용자 더보기
+    쿼리스트링 keyword
+     */
+    public List<UserDto> getSearchMoreUser(String keyword) {
+        List<UserDto> userDtos = userRepository.findByNicknameContainingOrderByNickname(keyword).stream()
+                .map(UserDto::convertToDto)
+                .collect(Collectors.toList());
+        return userDtos;
     }
 }

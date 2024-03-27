@@ -39,11 +39,21 @@ public class UserService {
     /*
     쿠키 삭제
      */
-    public void deleteCookie(HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null); // 쿠키를 생성하고 값은 null로 설정
-        cookie.setPath("/"); // 쿠키의 경로 설정
-        cookie.setMaxAge(0); // 쿠키의 유효 시간을 0으로 설정하여 바로 만료
-        response.addCookie(cookie); // 응답에 쿠키 추가하여 클라이언트에 전송, 쿠키 삭제 지시
+    public void deleteCookie(HttpServletRequest request, HttpServletResponse response) {
+        // Authorization 쿠키 삭제
+        Cookie authorization = new Cookie("Authorization", null); // 쿠키를 생성하고 값은 null로 설정
+        authorization.setPath("/"); // 쿠키의 경로 설정
+        authorization.setMaxAge(0); // 쿠키의 유효 시간을 0으로 설정하여 바로 만료
+        response.addCookie(authorization); // 응답에 쿠키 추가하여 클라이언트에 전송, 쿠키 삭제 지시
+        
+        // 세션 무효화
+        request.getSession().invalidate();
+
+        // JSESSIONID 쿠키 수동 무효화
+        Cookie jsessionid = new Cookie("JSESSIONID", null);
+        jsessionid.setPath(request.getContextPath());
+        jsessionid.setMaxAge(0);
+        response.addCookie(jsessionid);
     }
 
     /*
