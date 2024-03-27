@@ -1,5 +1,6 @@
 package ssafy.navi.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class CoverService {
     private final FollowRepository followRepository;
     private final MatchingRepository matchingRepository;
     private final MatchingUserRepository matchingUserRepository;
+    private final CoverUserRepository coverUserRepository;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -93,6 +95,7 @@ public class CoverService {
      */
     @Transactional
     public String createCover(CoverRegistDto coverRegistDto){
+
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
         //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
@@ -102,6 +105,30 @@ public class CoverService {
         Artist artist=song.getArtist();
         //전체 파트 수
         int totalPartCount=artist.getPartCount();
+
+        // 처음부터 모든 파트가 다 채워졌을 경우 바로 커버 생성
+        if (matchingCount == totalPartCount) {
+            Cover cover = Cover.builder()
+                    .title(song.getTitle())
+                    .song(song)
+                    .build();
+            coverRepository.save(cover);
+
+            for (UserPartDto userPartDto : coverRegistDto.getUserPartDtos()) {
+                User user = userRepository.findById(userPartDto.getUserPk())
+                        .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
+                Part part = partRepository.findById(userPartDto.getPartPk())
+                        .orElseThrow(() -> new RuntimeException("파트가 존재하지 않음"));
+                CoverUser newCoverUser = CoverUser.builder()
+                        .user(user)
+                        .cover(cover)
+                        .part(part)
+                        .build();
+                coverUserRepository.save(newCoverUser);
+            }
+
+            return "커버 생성 완료";
+        }
 
         //해당 노래를 매칭중인 매칭테이블들 리스트
         List<Matching> matchings=matchingRepository.findBySongId(coverRegistDto.getSongPk());
@@ -146,14 +173,46 @@ public class CoverService {
                     //내가 체크한 매칭에 이미 존재하던 인원 + 내가 매칭한 인원 수가 전체 인원 수와 같다면
                     if(existingPartCount+matchingCount==totalPartCount){
                         //커버를 생성
-                        Cover newCover=Cover.builder()
+                        Cover cover=Cover.builder()
                                 .title(song.getTitle())
                                 .song(song)
                                 .build();
-                        //저장하고 ++CoverUser에도 매칭테이블 정보 그대로 옮겨야함? 아무래도 나중에 커버디테일에서 쓰니깐 옮겨야하나?
-                        coverRepository.save(newCover);
+                        //커버 저장
+                        coverRepository.save(cover);
+
+                        //이번에 매칭 신청한 사람들 데이터 삭제
+                        for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()) {
+                            User user = userRepository.findById(userPartDto.getUserPk())
+                                    .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
+                            Part part = partRepository.findById(userPartDto.getPartPk())
+                                    .orElseThrow(() -> new RuntimeException("파트가 존재하지 않음"));
+                            CoverUser newCoverUser = CoverUser.builder()
+                                    .user(user)
+                                    .cover(cover)
+                                    .part(part)
+                                    .build();
+                            //매칭 신청한 사람들을 커버 유저로 옮김
+                            coverUserRepository.save(newCoverUser);
+
+
+                            Optional<MatchingUser> matchingUserDeleteList = matchingUserRepository.findByUserIdAndPartId(userPartDto.getUserPk(), userPartDto.getPartPk());
+                            // 해당하는 MatchingUser가 존재하면 삭제
+                            if (matchingUserDeleteList.isPresent()) {
+                                MatchingUser matchingUser = matchingUserDeleteList.get();
+                                matchingUserRepository.delete(matchingUser);
+                            }
+                        }
+                        // 원래 매칭에 존재하던 사람들에 대한 CoverUser 생성 하고 MatchingUser 삭제
                         List<MatchingUser> matchingUsers = matching.getMatchingUsers();
-                        matchingUserRepository.deleteAll(matchingUsers);
+                        for (MatchingUser matchingUser : matchingUsers) {
+                            CoverUser newCoverUser = CoverUser.builder()
+                                    .user(matchingUser.getUser())
+                                    .cover(cover)
+                                    .part(matchingUser.getPart())
+                                    .build();
+                            coverUserRepository.save(newCoverUser); // CoverUser 저장
+                            matchingUserRepository.delete(matchingUser); // MatchingUser 삭제
+                        }
                         //매칭테이블에서 삭제
                         matchingRepository.delete(matching);
                         return "Cover 생성 완료";
@@ -227,7 +286,6 @@ public class CoverService {
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         User user = userRepository.findById(Long.valueOf(1))
                 .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
-//        CoverReview coverReview = new CoverReview(coverReviewDto.getContent(), cover, user);
         CoverReview coverReview=CoverReview.builder()
                 .content(coverReviewDto.getContent())
                 .cover(cover)
