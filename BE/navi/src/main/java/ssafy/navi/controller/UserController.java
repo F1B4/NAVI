@@ -1,5 +1,7 @@
 package ssafy.navi.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,15 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    /*
+    로그아웃 (쿠키 삭제)
+     */
+    @GetMapping("/logout")
+    public Response<String> logout(HttpServletResponse response) {
+        userService.logout(response, "Authorization");
+        return Response.of("OK", "로그아웃 성공", "");
+    }
 
     /*
     토큰에서 유저 정보 획득
