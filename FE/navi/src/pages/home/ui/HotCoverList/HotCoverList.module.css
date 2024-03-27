@@ -1,7 +1,8 @@
 @import url('@/shared/colors');
 
 .container {
-  height: 320px;
+  height: 350px;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,6 +10,7 @@
 }
 
 .card {
+  margin-right: 110px;
   width: 420px;
   height: 320px;
   display: flex;
@@ -16,10 +18,11 @@
   justify-content: center;
 }
 
-.img {
+img {
   width: 420px;
   height: 240px;
   border-radius: 5px;
+  object-fit: cover;
 }
 
 .desc {
@@ -27,5 +30,6 @@
   height: 80px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
 }

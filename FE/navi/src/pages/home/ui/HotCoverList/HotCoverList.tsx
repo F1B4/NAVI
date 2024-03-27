@@ -5,7 +5,7 @@ import { Card } from '@/shared/ui';
 import css from './HotCoverList.module.css';
 
 export function HotCoverList() {
-  const [covers, setCovers] = useState<CoverList>([]);
+  const [covers, setCovers] = useState<CoverList>();
 
   useEffect(() => {
     const AxiosHotCovers = async () => {
@@ -13,6 +13,7 @@ export function HotCoverList() {
         const response = await hotCoverListApi();
         if (response !== null) {
           setCovers(response);
+          console.log(response);
         }
       } catch (error) {
         console.error('Error get hot cover list');
@@ -20,18 +21,20 @@ export function HotCoverList() {
     };
     AxiosHotCovers();
   }, []);
+
   return (
     <div className={css.container}>
-      {/* {covers.map((cover, index) => (
-        <Card
-          key={index}
-          classCard={css.card}
-          classImg={css.img}
-          classDesc={css.desc}
-          type="cover"
-          info={cover.songDto}
-        />
-      ))} */}
+      {Array.isArray(covers) &&
+        covers.map((cover, index) => (
+          <Card
+            key={index}
+            classCard={css.card}
+            classImg={css.img}
+            classDesc={css.desc}
+            type="cover"
+            info={cover.songDto}
+          />
+        ))}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Card } from '@/shared/ui';
 import css from './HotNoraebangList.module.css';
 
 export function HotNoraebangList() {
-  const [noraebangs, setNoraebangs] = useState<NoraebangList>([]);
+  const [noraebangs, setNoraebangs] = useState<NoraebangList>();
 
   useEffect(() => {
     const AxiosHotNoraebangs = async () => {
@@ -22,16 +22,17 @@ export function HotNoraebangList() {
   }, []);
   return (
     <div className={css.container}>
-      {/* {noraebangs.map((noraebang, index) => (
-        <Card
-          key={index}
-          classCard={css.card}
-          classImg={css.img}
-          classDesc={css.desc}
-          type="noraebang"
-          info={noraebang.songDto}
-        />
-      ))} */}
+      {Array.isArray(noraebangs) &&
+        noraebangs.map((noraebang, index) => (
+          <Card
+            key={index}
+            classCard={css.card}
+            classImg={css.img}
+            classDesc={css.desc}
+            type="noraebang"
+            info={noraebang.songDto}
+          />
+        ))}
     </div>
   );
 }
