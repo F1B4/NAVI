@@ -5,8 +5,9 @@ interface CardProps {
   classCard: string;
   classImg: string;
   classDesc: string;
+  thumbnail?: string;
   info: {
-    songPk: number;
+    id: number;
     title: string;
     image: string;
     mr?: string;
@@ -16,7 +17,7 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   return (
-    <Link to={`/${props.type}/${props.info.songPk}`}>
+    <Link to={`/${props.type}/${props.info.id}`}>
       <div className={props.classCard}>
         <div className={props.classImg}>
           <img src={props.info.image} alt="image" />

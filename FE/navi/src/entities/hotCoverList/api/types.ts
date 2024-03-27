@@ -32,9 +32,19 @@ interface CoverItem {
   likeCount: number;
   songDto: SongInfo;
   createdAt: string;
-  // coverReviewDots?: []
+  coverReviewDots?: [];
   coverUserDtos: CoverUser[];
   likeExsits: boolean;
 }
 
-export type CoverList = CoverItem[];
+interface CoverList {
+  data: CoverItem[];
+}
+
+interface Response {
+  resultCode: string;
+  message: string;
+  data: CoverList;
+}
+
+export type { Response, CoverList };

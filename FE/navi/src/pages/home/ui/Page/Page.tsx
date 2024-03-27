@@ -10,9 +10,12 @@ export function HomePage() {
   const store = useUserStore();
 
   useEffect(() => {
-    if (!store.isLogin && store.userId === 0) {
-      store.getData();
-    }
+    const fetchData = async () => {
+      if (document.cookie && store.userId === 0) {
+        store.getData();
+      }
+    };
+    fetchData();
   });
 
   return (
