@@ -27,9 +27,8 @@ public class UserController {
     로그아웃 (쿠키 삭제)
      */
     @GetMapping("/logout")
-    public Response<String> logout(HttpServletResponse response) {
-        userService.deleteCookie(response, "Authorization");
-        userService.deleteCookie(response, "JSESSIONID");
+    public Response<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        userService.deleteCookie(request, response);
         return Response.of("OK", "로그아웃 성공", "");
     }
 
