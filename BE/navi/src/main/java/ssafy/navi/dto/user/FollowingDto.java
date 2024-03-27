@@ -13,12 +13,12 @@ public class FollowingDto {
 
     // 엔티티 Dto로 변환
     public static FollowingDto convertToDto(Follow follow) {
-        FollowingDto followDto = new FollowingDto();
+        FollowingDto followingDto = new FollowingDto();
 
         // set
-        followDto.setId(follow.getId());
-        followDto.setToUser(UserDto.convertToDto(follow.getToUser()));
+        followingDto.setId(follow.getId());
+        followingDto.setToUser(UserDto.convertToDto(follow.getToUser()));
 
-        return followDto;
+        return followingDto;
     }
 }
