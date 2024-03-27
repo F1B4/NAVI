@@ -26,7 +26,7 @@ const useUserStore = create(
       getData: async () => {
         try {
           const response = await axios.get(
-            'https://j10d107.p.ssafy.io/api/users/info',
+            'http://localhost:8081/api/users/info',
             {
               withCredentials: true,
             },
