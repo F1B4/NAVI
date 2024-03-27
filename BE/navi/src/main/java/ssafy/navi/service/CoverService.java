@@ -37,6 +37,7 @@ public class CoverService {
     private final MatchingRepository matchingRepository;
     private final MatchingUserRepository matchingUserRepository;
     private final CoverUserRepository coverUserRepository;
+    private final NotificationService notificationService;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -94,7 +95,7 @@ public class CoverService {
     커버 생성 로직
      */
     @Transactional
-    public String createCover(CoverRegistDto coverRegistDto){
+    public String createCover(CoverRegistDto coverRegistDto) throws Exception {
 
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
@@ -126,7 +127,7 @@ public class CoverService {
                         .build();
                 coverUserRepository.save(newCoverUser);
             }
-
+            notificationService.sendNotificationToUser(Long.valueOf(2), "매칭이 완료되었습니다.", "createCoverComplete");
             return "커버 생성 완료";
         }
 
@@ -215,9 +216,11 @@ public class CoverService {
                         }
                         //매칭테이블에서 삭제
                         matchingRepository.delete(matching);
+                        notificationService.sendNotificationToUser(Long.valueOf(2), "매칭이 완료되었습니다.", "createCoverComplete");
                         return "Cover 생성 완료";
                     }else{
                         matching.updatePartCount(existingPartCount+matchingCount);
+                        notificationService.sendNotificationToUser(Long.valueOf(2), "매칭 인원이 추가 되었습니다.", "createCover");
                         return "매칭 업데이트 완료";
                     }
                 }
@@ -292,6 +295,7 @@ public class CoverService {
                 .user(user)
                 .build();
         coverReview = coverReviewRepository.save(coverReview);
+        notificationService.sendNotificationToUser(Long.valueOf(2),"커버 게시글에 댓글이 작성 되었습니다.", "CoverReview");
         return CoverReviewDto.convertToDto(coverReview);
     }
 
@@ -339,5 +343,20 @@ public class CoverService {
             cover.updateLikeCount(likeCount);
             return CoverLikeDto.convertToDto(like);
         }
+    }
+
+    public List<MatchDto> getMatchings() throws Exception {
+        Long userPk = Long.valueOf(2);
+        List<MatchingUser> matchings = matchingUserRepository.findAllByUser(userRepository.findById(userPk)
+                .orElseThrow(() -> new Exception("유저가 없습니다.")));
+
+        List<MatchDto> matchDtoList = new ArrayList<>();
+        for (MatchingUser matching : matchings) {
+            Matching match = matching.getMatching();
+            MatchDto matchDto = MatchDto.convertToDto(match);
+            matchDtoList.add(matchDto);
+        }
+
+        return matchDtoList;
     }
 }

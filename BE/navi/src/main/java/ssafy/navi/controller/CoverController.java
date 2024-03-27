@@ -3,10 +3,7 @@ package ssafy.navi.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ssafy.navi.dto.cover.CoverDto;
-import ssafy.navi.dto.cover.CoverLikeDto;
-import ssafy.navi.dto.cover.CoverRegistDto;
-import ssafy.navi.dto.cover.CoverReviewDto;
+import ssafy.navi.dto.cover.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.util.Response;
@@ -127,5 +124,15 @@ public class CoverController {
         }else{
             return Response.of("OK","좋아요 삭제",null);
         }
+    }
+
+    /*
+    진행중인 나의 모든 매칭 가져오기
+    매칭이 완성되거나 새로운 유저가 생기면 프론트로 event가 전달됨.
+    event가 전달됐다면 axios를 전송, 자동 업데이트 가능
+    */
+    @GetMapping("/match")
+    public Response<List<MatchDto>> getMatchings() throws Exception {
+        return Response.of("OK", "나의 모든 매칭정보 가져오기", coverService.getMatchings());
     }
 }

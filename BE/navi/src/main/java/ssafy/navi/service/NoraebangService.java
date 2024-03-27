@@ -134,7 +134,7 @@ public class NoraebangService {
                     .build();
 
             noraebangReviewRepository.save(review);
-            notificationService.sendNotificationToUser(userPk, "댓글이 작성 되었습니다.");
+            notificationService.sendNotificationToUser(userPk, "노래방 게시글에 댓글이 작성 되었습니다.", "noraebangReview");
         }
     }
 

@@ -21,7 +21,7 @@ public class AlarmService {
     private final UserService userService;
 
     public List<AlarmDto> getAlarms() throws Exception {
-        User user = userService.findById(Long.valueOf(3));
+        User user = userService.findById(Long.valueOf(2));
         List<Alarm> alarms = user.getAlarms();
         return alarms.stream()
                 .map(AlarmDto::convertToDto)
