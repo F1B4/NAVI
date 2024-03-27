@@ -42,7 +42,7 @@ public class UserService {
         CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
         User user = userRepository.findByUsername(customOAuth2User.getUsername());
         //==테스트용임시정보==//
-//        User user = userRepository.findById(6L)
+//        User user = userRepository.findById(1L)
 //                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
 
         return UserDto.convertToDto(user);
