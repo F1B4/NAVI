@@ -9,6 +9,7 @@ import ssafy.navi.entity.cover.CoverLike;
 public class CoverLikeDto {
 
     private Long id;
+    private CoverDto coverDto;
 
     // 엔티티 Dto로 변환
     public static CoverLikeDto convertToDto(CoverLike coverLike) {
@@ -16,6 +17,7 @@ public class CoverLikeDto {
 
         // set
         coverLikeDto.setId(coverLike.getId());
+        coverLikeDto.setCoverDto(CoverDto.convertToDtoList(coverLike.getCover()));
 
         return coverLikeDto;
     }

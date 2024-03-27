@@ -9,6 +9,7 @@ import ssafy.navi.entity.cover.Cover;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface CoverRepository extends JpaRepository<Cover,Long> {
