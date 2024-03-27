@@ -1,9 +1,19 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const useUserStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state : any) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-}))
+interface userState {
+  userId: number;
+}
 
-export { useUserStore } 
+const useUserStore = create(
+  persist<userState>(
+    () => ({
+      userId: 0,
+    }),
+    {
+      name: 'userStorage',
+    },
+  ),
+);
+
+export { useUserStore };

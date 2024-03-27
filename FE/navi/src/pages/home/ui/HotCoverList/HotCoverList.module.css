@@ -1,0 +1,31 @@
+@import url('@/shared/colors');
+
+.container {
+  height: 320px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.card {
+  width: 420px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.img {
+  width: 420px;
+  height: 240px;
+  border-radius: 5px;
+}
+
+.desc {
+  width: 420px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

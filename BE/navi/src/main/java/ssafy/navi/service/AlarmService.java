@@ -20,8 +20,9 @@ public class AlarmService {
     private final AlarmRespository alarmRespository;
     private final UserService userService;
 
-    public List<AlarmDto> getAlarms() {
-        List<Alarm> alarms = alarmRespository.findAll();
+    public List<AlarmDto> getAlarms() throws Exception {
+        User user = userService.findById(Long.valueOf(3));
+        List<Alarm> alarms = user.getAlarms();
         return alarms.stream()
                 .map(AlarmDto::convertToDto)
                 .toList();

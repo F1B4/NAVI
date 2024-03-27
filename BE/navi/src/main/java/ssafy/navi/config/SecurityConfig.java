@@ -40,11 +40,11 @@ public class SecurityConfig {
                 .requestMatchers("/users/**")
                 .requestMatchers("/main/**")
                 .requestMatchers("/noraebangs/**")
+                .requestMatchers("/alarms")
                 .requestMatchers("/alarms/**")
 //                .requestMatchers("/users/profile/**")
                 ;
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 

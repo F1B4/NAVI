@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ssafy.navi.dto.noraebang.NoraebangDto;
-import ssafy.navi.dto.noraebang.NoraebangReviewDto;
+import ssafy.navi.dto.noraebang.*;
+import ssafy.navi.entity.cover.CoverLike;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
 import ssafy.navi.entity.noraebang.NoraebangReview;
@@ -43,23 +43,30 @@ public class NoraebangService {
     /*
     모든 노래방 게시글 가져오기
      */
-    public List<NoraebangDto> getNoraebang() {
+    public List<NoraebangAllDto> getNoraebang() {
         List<Noraebang> noraebangs = noraebangRepository.findAll();
 
         return noraebangs.stream()
-                .map(NoraebangDto::convertToDtoNoraebangs)
+                .map(NoraebangAllDto::convertToDto)
                 .toList();
     }
 
     /*
     노래방 게시글 디테일 정보 가져오기
      */
-    public NoraebangDto getNoraebangDetail(Long pk) {
+    public NoraebangDetailDto getNoraebangDetail(Long pk) {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
 
-        return NoraebangDto.convertToDtoDetail(noraebang);
+        // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
+        Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, Long.valueOf(2));
+
+        NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
+        noraebangDetailDto.updateExists(exists.isPresent());
+
+        return noraebangDetailDto;
     }
+
 
     /*
      게시글 작성하기.
@@ -87,6 +94,7 @@ public class NoraebangService {
     /*
     노래방 게시글 내용 수정하기.
      */
+    @Transactional
     public void updateNoraebang(String content, Long NoraebangPk) {
         Optional<Noraebang> byId = noraebangRepository.findById(NoraebangPk);
         byId.ifPresent(norae -> {
@@ -97,7 +105,10 @@ public class NoraebangService {
     /*
     노래방 게시글 삭제하기
      */
-    public void deleteNoraebang(Long noraebangPk) {
+    public void deleteNoraebang(Long noraebangPk) throws Exception {
+        Noraebang noraebang = noraebangRepository.findById(noraebangPk)
+                .orElseThrow(() -> new Exception("노래방 게시글을 찾을 수 없습니다."));
+        s3Service.deleteImage(noraebang.getRecord());
         noraebangRepository.deleteById(noraebangPk);
     }
 
@@ -130,11 +141,11 @@ public class NoraebangService {
     /*
     게시글 댓글 모두 조회
      */
-    public List<NoraebangReviewDto> getNoraebangReviews(Long noraebangPk) {
+    public List<NoraebangReviewAllDto> getNoraebangReviews(Long noraebangPk) {
         Noraebang noraebang = noraebangRepository.getById(noraebangPk);
         List<NoraebangReview> noraebangReviews = noraebang.getNoraebangReviews();
         return noraebangReviews.stream()
-                .map(NoraebangReviewDto::convertToDto)
+                .map(NoraebangReviewAllDto::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -156,6 +167,7 @@ public class NoraebangService {
     /*
     게시글 좋아요 기능.
      */
+    @Transactional
     public void toggleNoraebangLike(Long noraebangPk, Long userPk) {
         Noraebang noraebang = noraebangRepository.getById(noraebangPk);
         Optional<User> userOptional = userRepository.findById(userPk);
@@ -165,11 +177,15 @@ public class NoraebangService {
             Optional<NoraebangLike> byNoraebangIdAndUserId = noraebangLikeRepository.findByNoraebangIdAndUserId(noraebangPk, userPk);
             if (byNoraebangIdAndUserId.isPresent()) {
                 noraebangLikeRepository.delete(byNoraebangIdAndUserId.get());
+                Integer likeCount = noraebang.getLikeCount();
+                noraebang.setLikeCount(likeCount-1);
             } else {
                 NoraebangLike like = NoraebangLike.builder()
                         .noraebang(noraebang)
                         .user(user)
                         .build();
+                Integer likeCount = noraebang.getLikeCount();
+                noraebang.setLikeCount(likeCount+1);
                 noraebangLikeRepository.save(like);
             }
         }
