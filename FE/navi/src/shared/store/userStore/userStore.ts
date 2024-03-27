@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { baseApi } from '@/shared/api';
 import axios from 'axios';
 
 interface userState {
@@ -25,12 +26,10 @@ const useUserStore = create(
       isLogin: false,
       getData: async () => {
         try {
-          const response = await axios.get(
-            'https://j10d107.p.ssafy.io/api/users/info',
-            {
-              withCredentials: true,
-            },
-          );
+          const response = await axios.get(`${baseApi}/users/info`, {
+            withCredentials: true,
+          });
+          console.log(response);
           set({
             userId: response.data.userId,
             nickname: response.data.nickname,
