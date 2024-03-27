@@ -7,6 +7,7 @@ import ssafy.navi.entity.cover.Cover;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter @Setter
@@ -57,6 +58,14 @@ public class CoverDto implements TimeDto {
         coverDto.setCreatedAt(cover.getCreatedAt());
         coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
         coverDto.setCoverUserDtos(cover.getCoverUsers().stream()
+                // User의 ID를 기준으로 중복 제거
+                .collect(Collectors.toMap(
+                        coverUser -> coverUser.getUser().getId(), // 중복 판별 기준 (Key Mapper)
+                        Function.identity(), // Value Mapper
+                        (existing, replacement) -> existing // 중복 발생 시 처리 방식
+                ))
+                .values() // Map의 Value 컬렉션 가져오기
+                .stream() // Stream으로 변환
                 .map(CoverUserDto::convertToDto)
                 .collect(Collectors.toList()));
         return coverDto;

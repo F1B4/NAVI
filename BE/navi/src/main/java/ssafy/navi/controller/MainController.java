@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ssafy.navi.dto.cover.CoverDto;
+import ssafy.navi.dto.noraebang.NoraebangAllDto;
 import ssafy.navi.dto.noraebang.NoraebangDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.util.TimeDto;
@@ -39,7 +40,7 @@ public class MainController {
     최근 1주일간 조회수를 기준으로 조회수가 가장 높은 6개의 게시글을 가져옴
      */
     @GetMapping("/noraebangs/hot")
-    public Response<List<NoraebangDto>> getHotNoraebang() throws Exception{
+    public Response<List<NoraebangAllDto>> getHotNoraebang() throws Exception{
         return Response.of("OK","Hot 게시글 가져오기",mainService.getHotNoraebang());
     }
 

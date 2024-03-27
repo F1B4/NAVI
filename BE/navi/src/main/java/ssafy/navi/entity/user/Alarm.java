@@ -1,15 +1,16 @@
 package ssafy.navi.entity.user;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.transaction.Transactional;
+import lombok.*;
 import ssafy.navi.entity.util.BaseTimeEntity;
+import ssafy.navi.service.AlarmService;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE) //builder패턴을 사용하기 위해 추가
 public class Alarm extends BaseTimeEntity {
 
     @Id
@@ -28,5 +29,9 @@ public class Alarm extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_pk")
     private User user;
+
+    public void updateAlarmStatus(AlarmStatus alarmStatus) {
+        this.alarmStatus = alarmStatus;
+    }
 
 }

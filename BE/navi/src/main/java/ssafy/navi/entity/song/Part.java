@@ -42,5 +42,4 @@ public class Part {
     // 매칭 중계 테이블
     @OneToMany(mappedBy = "part", cascade = CascadeType.ALL)
     private List<MatchingUser> matchingUsers;
-
 }

@@ -1,8 +1,34 @@
+@import url('@/shared/colors');
+
 .root {
-  height: 68px;
-  padding: 16px 0;
-  margin-bottom: 16px;
+  height: 75px;
+  border-bottom: solid 1px var(--main_line);
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-right: auto;
+  padding-left: 24px;
+}
+
+.left > :first-child {
+  margin-right: 200px;
+}
+
+.right {
+  display: flex;
+  margin-left: auto;
+  margin-right: 85px;
+  padding-right: 20px;
+}
+
+.right > :first-child {
+  margin-right: 24px;
 }

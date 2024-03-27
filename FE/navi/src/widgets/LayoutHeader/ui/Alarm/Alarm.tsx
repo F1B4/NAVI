@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import css from './UserImage.module.css';
+import css from './Alarm.module.css';
 
-export function UserImage() {
+export function Alarm() {
   return (
-    <Link to={'/cover'}>
+    <Link to={'/noraebang'}>
       <div className={css.root}></div>
     </Link>
   );

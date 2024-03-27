@@ -4,14 +4,14 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('daisyui'),],
+  plugins: [require('daisyui')],
   daisyui: {
-    themes: ["cupcake", "dark", "cmyk"],
-    darkTheme: "dark",
+    themes: ['cupcake', 'dark', 'cmyk'],
+    darkTheme: 'dark',
     base: true,
     styled: true,
     utils: true,
     logs: true,
-    themeRoot: ":root",
+    themeRoot: ':root',
   },
 };

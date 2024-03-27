@@ -16,6 +16,6 @@ public class CustomClientRegistrationRepository {
 
     // InMemoryClientRegistrationRepository 클래스를 사용하여 인메모리 방식으로 관리를 진행
     public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(socialClientRegistration.naverClientRegistration(), socialClientRegistration.googleClientRegistration());
+        return new InMemoryClientRegistrationRepository(socialClientRegistration.kakaoClientRegistration(), socialClientRegistration.naverClientRegistration(), socialClientRegistration.googleClientRegistration());
     }
 }
