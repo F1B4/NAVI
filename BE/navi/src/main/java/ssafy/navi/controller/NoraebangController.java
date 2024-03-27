@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ssafy.navi.dto.noraebang.NoraebangReviewDto;
+import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
-import ssafy.navi.dto.noraebang.NoraebangDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.service.ArtistService;
@@ -52,7 +51,7 @@ public class NoraebangController {
     모든 노래방 게시글 가져오기
      */
     @GetMapping("")
-    public Response<List<NoraebangDto>> getNoraebangs() {
+    public Response<List<NoraebangAllDto>> getNoraebangs() {
         return Response.of("OK", "모든 노래방 게시글 가져오기", noraebangService.getNoraebang());
     }
 
@@ -60,7 +59,7 @@ public class NoraebangController {
     노래방 게시글 디테일 정보 가져오기
      */
     @GetMapping("/{noraebang_pk}")
-    public Response<NoraebangDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) {
+    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) {
         return Response.of("Ok", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
 
@@ -112,7 +111,7 @@ public class NoraebangController {
     게시글 댓글 모두 조회
      */
     @GetMapping("/{noraebang_pk}/review")
-    public Response<List<NoraebangReviewDto>> getNoraebangReviews(@PathVariable("noraebang_pk") Long noraebangPk) {
+    public Response<List<NoraebangReviewAllDto>> getNoraebangReviews(@PathVariable("noraebang_pk") Long noraebangPk) {
         return Response.of("Ok", "댓글 조회", noraebangService.getNoraebangReviews(noraebangPk));
     }
 

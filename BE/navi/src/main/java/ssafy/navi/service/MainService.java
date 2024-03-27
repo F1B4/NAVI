@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.cover.CoverDto;
+import ssafy.navi.dto.noraebang.NoraebangAllDto;
 import ssafy.navi.dto.noraebang.NoraebangDto;
 import ssafy.navi.dto.util.TimeDto;
 import ssafy.navi.entity.cover.Cover;
@@ -48,14 +49,14 @@ public class MainService {
         오늘 날짜로 부터 1주일 이내의 게시글 중 조회수가 가장 높은 10개를 조회함
         LocalDate타입에서 LocalDateTime으로 변환하는 이유 : 1주일 전의 자정을 기준으로 조회하기 위해서 시간개념이 포함된 LocalDateTime으로 변환함
          */
-    public List<NoraebangDto> getHotNoraebang() {
+    public List<NoraebangAllDto> getHotNoraebang() {
         //1주일 전 날짜를 알아냄
         LocalDate oneWeek = LocalDate.now().minus(Period.ofWeeks(1));
         //1주일 전 날짜의 자정으로 값 지정
         LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
         List<Noraebang> noraebangs = noraebangRepository.findTop10ByCreatedAtAfterOrderByHitDesc(oneWeekAgo);
         return noraebangs.stream()
-                .map(NoraebangDto::convertToDtoNoraebangs)
+                .map(NoraebangAllDto::convertToDto)
                 .collect(Collectors.toList());
     }
 
