@@ -29,6 +29,6 @@
   padding-right: 20px;
 }
 
-.right > :first-child {
+.right > :child {
   margin-right: 24px;
 }

@@ -14,7 +14,9 @@ export function HotNoraebangList() {
         if (response !== null) {
           setNoraebangs(response);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error get hot noraebangs list');
+      }
     };
     AxiosHotNoraebangs();
   }, []);
