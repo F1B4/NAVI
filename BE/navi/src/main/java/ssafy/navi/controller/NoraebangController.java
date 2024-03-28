@@ -65,14 +65,13 @@ public class NoraebangController {
 
     /*
      게시글 작성하기.
-     formData 형식으로 file과 게시글 내용, songPk, userPk필요
+     formData 형식으로 file과 게시글 내용, songPk 필요
      */
     @PostMapping("")
     public Response<?> createNoraebang(@RequestParam MultipartFile file,
                                        @RequestParam String content,
-                                       @RequestParam("song_pk") Long songPk,
-                                       @RequestParam("user_pk") Long userPk) throws IOException {
-        noraebangService.createNoraebang(file, content, songPk, userPk);
+                                       @RequestParam("song_pk") Long songPk) throws IOException {
+        noraebangService.createNoraebang(file, content, songPk);
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
     }
 
@@ -119,19 +118,17 @@ public class NoraebangController {
     게시글 댓글 삭제.
     작성자만 삭제할 수 있음.
      */
-    @DeleteMapping("/{review_pk}/{user_pk}/review")
-    public Response<?> deleteNoraebangReview(@PathVariable("noraebang_pk") Long reviewPk,
-                                             @PathVariable("user_pk") Long userPk) {
-        return Response.of("OK", "댓글 삭제", noraebangService.deleteNoraebangReview(reviewPk, userPk));
+    @DeleteMapping("/{review_pk}review")
+    public Response<?> deleteNoraebangReview(@PathVariable("noraebang_pk") Long reviewPk) {
+        return Response.of("OK", "댓글 삭제", noraebangService.deleteNoraebangReview(reviewPk));
     }
 
     /*
     게시글 좋아요 기능.
      */
-    @PostMapping("/{noraebang_pk}/{user_pk}/like")
-    public Response<?> toggleNoraebangLike(@PathVariable("noraebang_pk") Long noraebangPk,
-                                           @PathVariable("user_pk") Long userPk) {
-        noraebangService.toggleNoraebangLike(noraebangPk, userPk);
+    @PostMapping("/{noraebang_pk}/like")
+    public Response<?> toggleNoraebangLike(@PathVariable("noraebang_pk") Long noraebangPk) {
+        noraebangService.toggleNoraebangLike(noraebangPk);
         return Response.of("Ok", "좋아요 성공 및 삭제", null);
     }
 }

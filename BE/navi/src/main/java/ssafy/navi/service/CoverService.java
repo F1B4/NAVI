@@ -6,11 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.cover.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.entity.cover.*;
 import ssafy.navi.entity.song.Artist;
@@ -81,7 +84,12 @@ public class CoverService {
                 .map(PartDto::convertToDto)
                 .collect(Collectors.toList());
 
-        List<UserDto> mutualFollow=followRepository.findMutualFollowers(1L).stream()
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        List<UserDto> mutualFollow=followRepository.findMutualFollowers(user.getId()).stream()
                 .map(UserDto::convertToDto)
                 .collect(Collectors.toList());
 
@@ -284,8 +292,12 @@ public class CoverService {
     public CoverReviewDto createCoverReview(Long coverPk, CoverReviewDto coverReviewDto) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
         CoverReview coverReview=CoverReview.builder()
                 .content(coverReviewDto.getContent())
                 .cover(cover)
@@ -296,14 +308,10 @@ public class CoverService {
     }
 
     /*
-    게시글 체크, 유저 체크, 댓글 유무 체크
+    댓글 유무 체크
     댓글 삭제
      */
-    public String deleteCoverReview(Long coverPk, Long coverReviewPk) throws Exception {
-        Cover cover = coverRepository.findById(coverPk)
-                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+    public String deleteCoverReview(Long coverReviewPk) throws Exception {
         CoverReview coverReview = coverReviewRepository.findById(coverReviewPk)
                 .orElseThrow(() -> new Exception("댓글이 존재하지 않음"));
         coverReviewRepository.delete(coverReview);
@@ -318,8 +326,12 @@ public class CoverService {
     public CoverLikeDto toggleCoverLike(Long coverPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
         Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
 
         if (exists.isPresent()) {

@@ -36,14 +36,10 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-//                .requestMatchers("/")
-//                .requestMatchers("/users/**")
                 .requestMatchers("/main/**")
-                .requestMatchers("/noraebangs/**")
+                .requestMatchers("/covers")
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/alarms")
                 .requestMatchers("/alarms/**")
-//                .requestMatchers("/users/profile/**")
                 ;
     }
     @Bean
@@ -59,9 +55,9 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
-                        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                        configuration.setAllowedMethods(Arrays.asList("*"));
                         configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type"));
+                        configuration.setAllowedHeaders(Arrays.asList("*"));
                         configuration.setMaxAge(3600L);
 
                         configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
