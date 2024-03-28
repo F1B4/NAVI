@@ -1,11 +1,16 @@
 import { Link } from 'react-router-dom';
 import { UserImage } from '@/shared/ui';
+import { useUserStore } from '@/shared/store';
 import css from './LayoutHeaderUserImage.module.css';
 
 export function LayoutHeaderUserImage() {
-  return (
-    <Link to={'/cover'}>
-      <UserImage className={css.root} />
-    </Link>
-  );
+  const store = useUserStore();
+  if (store.isLogin) {
+    return (
+      <Link to={'/cover'}>
+        <UserImage image={store.image} className={css.root} />
+      </Link>
+    );
+  }
+  return null;
 }

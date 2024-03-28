@@ -1,28 +1,68 @@
 @import url('@/shared/colors');
 
 .container {
-  height: 260px;
+  margin-top: 20px;
+  margin-bottom: 100px;
+  height: 300px;
+  width: calc(100vw - 420px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   overflow-x: auto;
 }
 
-.card {
-  width: 200px;
+.container::-webkit-scrollbar {
+  height: 20px;
+  background-color: transparent;
+}
+
+.container:hover::-webkit-scrollbar-thumb {
+  background-color: var(--main_line);
+}
+
+.coverCard,
+.noraebangCard {
+  margin-right: 80px;
   height: 260px;
 }
 
-.img {
+.container :last-child {
+  margin-right: 0;
+}
+
+.noraebangImg img {
   width: 200px;
   height: 200px;
   border-radius: 5px;
+  object-fit: cover;
 }
 
-.desc {
+.coverImg img {
+  width: 320px;
+  height: 200px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.coverDesc {
+  width: 320px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.noraebangDesc {
   width: 200px;
   height: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.coverDesc :hover,
+.noraebangDesc :hover {
+  text-decoration: underline;
 }

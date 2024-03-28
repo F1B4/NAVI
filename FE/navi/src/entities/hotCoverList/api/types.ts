@@ -7,6 +7,12 @@ interface User {
   followerCount: number;
 }
 
+interface Part {
+  id: number;
+  image: string;
+  name: string;
+}
+
 interface SongInfo {
   songPk: number;
   title: string;
@@ -17,11 +23,7 @@ interface SongInfo {
 interface CoverUser {
   id: number;
   userDto: User;
-  partDto: {
-    id: number;
-    image: string;
-    name: string;
-  };
+  partDto: Part;
 }
 
 interface CoverItem {
@@ -32,9 +34,19 @@ interface CoverItem {
   likeCount: number;
   songDto: SongInfo;
   createdAt: string;
-  // coverReviewDots?: []
-  coverUserDtos: CoverUser[];
+  coverReviewDots?: [];
+  coverUserDtos: CoverUser;
   likeExsits: boolean;
 }
 
-export type CoverList = CoverItem[];
+interface CoverList {
+  data: CoverItem[];
+}
+
+interface Response {
+  resultCode: string;
+  message: string;
+  data: CoverList;
+}
+
+export type { Response, CoverList, CoverUser };

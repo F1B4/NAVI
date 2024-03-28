@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { newContentsListApi } from '@/entities/newContentsList';
-import type { NewContentsList } from '@/entities/newContentsList/api/types';
+import type { NewContentsList, CoverUser } from '@/entities/newContentsList';
 import { Card } from '@/shared/ui';
 import css from './NewContentsList.module.css';
 
 export function NewContentsList() {
-  const [noraebangs, setNewContents] = useState<NewContentsList>([]);
+  const [newContents, setNewContents] = useState<NewContentsList>();
 
   useEffect(() => {
     const AxiosNewContents = async () => {
@@ -14,23 +14,43 @@ export function NewContentsList() {
         if (response !== null) {
           setNewContents(response);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error get new contents list');
+      }
     };
     AxiosNewContents();
   }, []);
+
   return (
     <div className={css.container}>
-      {noraebangs.map((noraebang, index) => (
-        // 이쪽에서 type에 따라 처리해줘야 할 듯 계산하거나
-        <Card
-          key={index}
-          classCard={css.card}
-          classImg={css.img}
-          classDesc={css.desc}
-          type=""
-          info={noraebang.songDto}
-        />
-      ))}
+      {Array.isArray(newContents) &&
+        newContents.map((newContent, index) => {
+          const type = newContent.thumbnail ? 'cover' : 'noraebang';
+
+          const coverUserNicknames = newContent.coverUserDtos
+            ? Array.from(
+                new Set(
+                  newContent.coverUserDtos.map(
+                    (coverUserDto: CoverUser) => coverUserDto.userDto.nickname,
+                  ),
+                ),
+              ).join(', ')
+            : '';
+          const user = newContent.thumbnail
+            ? coverUserNicknames
+            : newContent.userDto.nickname;
+          return (
+            <Card
+              key={index}
+              classCard={type === 'cover' ? css.coverCard : css.noraebangCard}
+              classImg={type === 'cover' ? css.coverImg : css.noraebangImg}
+              classDesc={type === 'cover' ? css.coverDesc : css.noraebangDesc}
+              user={user}
+              type={type}
+              info={newContent.songDto}
+            />
+          );
+        })}
     </div>
   );
 }

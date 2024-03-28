@@ -1,22 +1,40 @@
 @import url('@/shared/colors');
 
 .container {
-  height: 260px;
+  margin-top: 20px;
+  margin-bottom: 100px;
+  height: 300px;
+  width: calc(100vw - 420px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   overflow-x: auto;
 }
 
+.container::-webkit-scrollbar {
+  height: 20px;
+  background-color: transparent;
+}
+
+.container:hover::-webkit-scrollbar-thumb {
+  background-color: var(--main_line);
+}
+
 .card {
+  margin-right: 80px;
   width: 200px;
   height: 260px;
 }
 
-.img {
+.container :last-child {
+  margin-right: 0;
+}
+
+.img img {
   width: 200px;
   height: 200px;
   border-radius: 5px;
+  object-fit: cover;
 }
 
 .desc {
@@ -25,4 +43,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.desc :hover {
+  text-decoration: underline;
 }

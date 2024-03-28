@@ -1,4 +1,3 @@
-// import { Layout } from '@/shared/ui
 import { LayoutHeader } from '@/widgets/LayoutHeader';
 import { LayoutSidebar } from '@/widgets/LayoutSidebar';
 
@@ -9,11 +8,11 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
-  <div>
+  <div style={{ maxWidth: '100vw', overflow: 'hidden' }}>
     <LayoutHeader />
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', paddingTop: '75px' }}>
       <LayoutSidebar />
-      <div style={{ flex: 1, marginLeft: '80px' }}>{children}</div>
+      <div style={{ flex: 1, marginLeft: '320px' }}>{children}</div>
     </div>
   </div>
 );

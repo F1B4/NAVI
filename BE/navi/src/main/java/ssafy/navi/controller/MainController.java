@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.NoraebangAllDto;
 import ssafy.navi.dto.noraebang.NoraebangDto;
+import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.util.TimeDto;
 import ssafy.navi.service.CoverService;
@@ -103,5 +104,14 @@ public class MainController {
     @GetMapping("/cover/artist")
     public Response<List<CoverDto>> searchMoreCoverArtist(@RequestParam("keyword") String keyword) throws Exception{
         return Response.of("OK","커버 원곡자 더보기",mainService.getSearchMoreCoverArtist(keyword));
+    }
+
+    /*
+    사용자 더보기
+    쿼리스트링 keyword
+     */
+    @GetMapping("/user")
+    public Response<List<UserDto>> searchMoreUser(@RequestParam("keyword") String keyword) throws Exception{
+        return Response.of("OK","유저 닉네임 더보기",mainService.getSearchMoreUser(keyword));
     }
 }

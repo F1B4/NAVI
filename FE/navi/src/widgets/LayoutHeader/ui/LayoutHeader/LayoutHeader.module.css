@@ -2,11 +2,13 @@
 
 .root {
   height: 75px;
+  width: 100vw;
   border-bottom: solid 1px var(--main_line);
-
+  background-color: var(--main_bg);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
 }
 
 .left {
@@ -29,6 +31,6 @@
   padding-right: 20px;
 }
 
-.right > :first-child {
+.right > :child {
   margin-right: 24px;
 }

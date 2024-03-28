@@ -1,8 +1,19 @@
+import { Link } from 'react-router-dom';
+
 interface ButtonProps {
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  to: string;
   className: string;
+  icon?: string;
+  content: string;
 }
 
 export function Btn(props: ButtonProps) {
-  return <button className={props.className} onClick={props.onClick}></button>;
+  return (
+    <Link to={props.to}>
+      <button className={props.className}>
+        {props.icon && <img src={props.icon} alt="icon" />}
+        <span>{props.content}</span>
+      </button>
+    </Link>
+  );
 }

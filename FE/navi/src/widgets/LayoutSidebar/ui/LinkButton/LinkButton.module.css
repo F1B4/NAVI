@@ -1,8 +1,0 @@
-@import url('@/shared/colors.css');
-
-.root {
-  width: 200px;
-  height: 100px;
-
-  display: flex;
-}
