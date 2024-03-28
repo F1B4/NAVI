@@ -111,9 +111,9 @@ public class CoverController {
     클라이언트에서 댓글 작성자의 정보와 로그인한 유저의 정보가 일치할 때만 삭제할 수 있도록 하기
     게시글 정보와 유저 정보 받아와서 처리하기
      */
-    @DeleteMapping("/{cover_pk}/review/{cover_review_pk}")
-    public Response<String> deleteCoverReview(@PathVariable("cover_pk")Long coverPk,@PathVariable("cover_review_pk")Long coverReviewPk) throws Exception{
-        return Response.of("OK","댓글 삭제",coverService.deleteCoverReview(coverPk,coverReviewPk));
+    @DeleteMapping("/review/{cover_review_pk}")
+    public Response<String> deleteCoverReview(@PathVariable("cover_review_pk")Long coverReviewPk) throws Exception{
+        return Response.of("OK","댓글 삭제",coverService.deleteCoverReview(coverReviewPk));
     }
 
     /*

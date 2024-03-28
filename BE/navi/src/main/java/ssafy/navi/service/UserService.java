@@ -45,28 +45,25 @@ public class UserService {
         authorization.setPath("/"); // 쿠키의 경로 설정
         authorization.setMaxAge(0); // 쿠키의 유효 시간을 0으로 설정하여 바로 만료
         response.addCookie(authorization); // 응답에 쿠키 추가하여 클라이언트에 전송, 쿠키 삭제 지시
-        
-        // 세션 무효화
-        request.getSession().invalidate();
 
         // JSESSIONID 쿠키 수동 무효화
         Cookie jsessionid = new Cookie("JSESSIONID", null);
         jsessionid.setPath(request.getContextPath());
         jsessionid.setMaxAge(0);
         response.addCookie(jsessionid);
+
+        // 세션 무효화
+        request.getSession().invalidate();
     }
 
     /*
     인가된 토큰에서 유저 정보 획득
      */
-    public UserDto getUserInfo() throws Exception{
+    public UserDto getUserInfo() throws Exception {
         // 현재 인가에서 유저 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
         User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        //==테스트용임시정보==//
-//        User user = userRepository.findById(1L)
-//                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
 
         return UserDto.convertToDto(user);
     }
@@ -85,6 +82,9 @@ public class UserService {
         return UserProfileDto.convertToDto(user, covers);
     }
 
+    /*
+    유저 검색
+     */
     public User findById(Long userPk) throws Exception {
         Optional<User> user = userRepository.findById(userPk);
         return user.orElseThrow(() -> new Exception("유저를 찾을 수 없습니다."));
@@ -97,12 +97,9 @@ public class UserService {
     @Transactional
     public UserDto updateUserImage(MultipartFile file) throws Exception {
         // 현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        //==테스트용임시정보==//
-        User user = userRepository.findById(6L)
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
         // 해당 유저의 예전 프로필 사진을 S3에서 삭제
         String oldFileNmae = user.getImage();
@@ -122,12 +119,9 @@ public class UserService {
     @Transactional
     public UserDto updateUserNickname(String nickname) throws Exception {
         // 현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        //==테스트용임시정보==//
-        User user = userRepository.findById(6L)
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
         user.updateNickname(nickname);
 
@@ -141,12 +135,9 @@ public class UserService {
     @Transactional
     public FollowingDto follow(Long userPk) throws Exception{
         // 현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User fromUser = userRepository.findByUsername(customOAuth2User.getUsername());
-        //==테스트용임시정보==//
-        User fromUser = userRepository.findById(6L)
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User fromUser = userRepository.findByUsername(customOAuth2User.getUsername());
 
         User toUser = userRepository.findById(userPk)
                 .orElseThrow(() -> new Exception("팔로우 할 유저가 존재하지 않음"));
