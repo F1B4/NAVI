@@ -36,6 +36,10 @@ public class MainController {
         return Response.of("OK","최신 컨텐츠 가져오기",mainService.getNewContents());
     }
 
+    @GetMapping("/test")
+    public void ssss() {
+        
+    }
     /*
     HOT 노래방 게시글 목록 가져오기
     최근 1주일간 조회수를 기준으로 조회수가 가장 높은 6개의 게시글을 가져옴

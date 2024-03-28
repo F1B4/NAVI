@@ -1,6 +1,7 @@
 package ssafy.navi.dto.noraebang;
 
 import lombok.*;
+import ssafy.navi.dto.song.LyricDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.entity.noraebang.Noraebang;
@@ -24,6 +25,8 @@ public class NoraebangDetailDto {
     private LocalDateTime createdAt;
     private Boolean likeExsits;
     private List<NoraebangReviewAllDto> noraebangReviewDtos;
+    private List<LyricDto> lyricDtos;
+
     public static NoraebangDetailDto convertToDto(Noraebang noraebang) {
         NoraebangDetailDto noraebangDto = new NoraebangDetailDto();
 
@@ -39,7 +42,9 @@ public class NoraebangDetailDto {
         noraebangDto.setNoraebangReviewDtos(noraebang.getNoraebangReviews()
                 .stream().map(NoraebangReviewAllDto::convertToDto)
                 .collect(Collectors.toList()));
-
+        noraebangDto.setLyricDtos(noraebang.getSong().getLyrics()
+                .stream().map(LyricDto::convertToDto)
+                .collect(Collectors.toList()));
         return noraebangDto;
     }
 
