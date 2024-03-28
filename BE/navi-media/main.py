@@ -7,7 +7,7 @@ from datetime import datetime
 
 app = FastAPI()
 
-@app.get("/ss")
+@app.get("/media/ss")
 def read_root():
     return {"Hello": "FastAPI"}
 
