@@ -58,7 +58,7 @@ public class NoraebangController {
     /*
     노래방 게시글 디테일 정보 가져오기
      */
-    @GetMapping("/{noraebang_pk}")
+    @GetMapping("/detail/{noraebang_pk}")
     public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) {
         return Response.of("Ok", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
@@ -67,7 +67,7 @@ public class NoraebangController {
      게시글 작성하기.
      formData 형식으로 file과 게시글 내용, songPk 필요
      */
-    @PostMapping("")
+    @PostMapping("/create")
     public Response<?> createNoraebang(@RequestParam MultipartFile file,
                                        @RequestParam String content,
                                        @RequestParam("song_pk") Long songPk) throws IOException {
@@ -79,7 +79,7 @@ public class NoraebangController {
     /*
     노래방 게시글 내용 수정하기.
      */
-    @PutMapping("")
+    @PutMapping("/update")
     public Response<?> updateNoraebang(@RequestParam String content,
                                        @RequestParam Long noraebangPk) {
         noraebangService.updateNoraebang(content, noraebangPk);
@@ -107,18 +107,10 @@ public class NoraebangController {
     }
 
     /*
-    게시글 댓글 모두 조회
-     */
-    @GetMapping("/{noraebang_pk}/review")
-    public Response<List<NoraebangReviewAllDto>> getNoraebangReviews(@PathVariable("noraebang_pk") Long noraebangPk) {
-        return Response.of("Ok", "댓글 조회", noraebangService.getNoraebangReviews(noraebangPk));
-    }
-
-    /*
     게시글 댓글 삭제.
     작성자만 삭제할 수 있음.
      */
-    @DeleteMapping("/{review_pk}review")
+    @DeleteMapping("/review/{review_pk}")
     public Response<?> deleteNoraebangReview(@PathVariable("noraebang_pk") Long reviewPk) {
         return Response.of("OK", "댓글 삭제", noraebangService.deleteNoraebangReview(reviewPk));
     }

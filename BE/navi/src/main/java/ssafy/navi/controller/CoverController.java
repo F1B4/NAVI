@@ -91,7 +91,7 @@ public class CoverController {
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
     커버 정보, 커버 댓글, 커버 좋아요, 원곡 정보, 맡은 파트
      */
-    @GetMapping("/{cover_pk}")
+    @GetMapping("/detail/{cover_pk}")
     public Response<CoverDto> getCoverDetail(@PathVariable("cover_pk") Long coverPk) throws Exception {
         return Response.of("OK","게시글 상세보기",coverService.getCoverDetail(coverPk));
     }
@@ -101,7 +101,7 @@ public class CoverController {
     클라이언트에서 댓글 작성자의 정보를 어떻게 넘겨주냐에 따라 바뀔예정
     RequestBody에 내용을 받아옴
      */
-    @PostMapping("/{cover_pk}/review")
+    @PostMapping("/{cover_pk}/reivew")
     public Response<CoverReviewDto> createCoverReview(@PathVariable("cover_pk") Long coverPk, @RequestBody CoverReviewDto coverReviewDto) throws Exception {
         return Response.of("OK","댓글 작성",coverService.createCoverReview(coverPk, coverReviewDto));
     }
