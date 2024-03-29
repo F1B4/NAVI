@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -38,6 +37,7 @@ public class SecurityConfig {
         return web -> web.ignoring()
 //                .requestMatchers("/")
 //                .requestMatchers("/users/**")
+                .requestMatchers("/covers/**")
                 .requestMatchers("/main/**")
                 .requestMatchers("/noraebangs/**")
                 .requestMatchers("/alarms")
