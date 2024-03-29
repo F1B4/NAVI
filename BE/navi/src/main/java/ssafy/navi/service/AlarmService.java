@@ -15,6 +15,7 @@ import ssafy.navi.repository.AlarmRespository;
 import ssafy.navi.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,9 @@ public class AlarmService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
         User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        //알람 잘 오는지 확인용
+//        User user = userRepository.findById(Long.valueOf(2)).get();
 
         List<Alarm> alarms = user.getAlarms();
         return alarms.stream()

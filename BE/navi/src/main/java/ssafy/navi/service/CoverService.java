@@ -398,4 +398,23 @@ public class CoverService {
 
         return matchDtoList;
     }
+
+    public void completeCoverVideo(Long coverPk) throws Exception {
+        Cover cover = coverRepository.findById(coverPk).orElseThrow(() -> new Exception("커버가 없습니다"));
+        List<CoverUser> coverUsers = cover.getCoverUsers();
+        Set<Long> users = new HashSet<>();
+        for (CoverUser coverUser : coverUsers) {
+            Long pk = coverUser.getUser().getId();
+            users.add(pk);
+        }
+        for (Long user : users) {
+            User userObject = userRepository.findById(user).orElseThrow(() -> new Exception("유저가 없습니다."));
+            notificationService.sendNotificationToUser(userObject.getId(), "커버가 생성 되었습니다.");
+        }
+    }
+
+    public void completeTrain(Long userPk) throws Exception {
+        userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
+        notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 생성이 가능합니다.");
+    }
 }

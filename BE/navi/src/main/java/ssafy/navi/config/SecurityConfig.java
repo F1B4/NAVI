@@ -49,7 +49,11 @@ public class SecurityConfig {
                 // NotificationController
                 .requestMatchers("/notification/**")
                 // fastAPIController
-                .requestMatchers("/fastapi/**")
+                .requestMatchers("/ai/**")
+                .requestMatchers("/ai/cover")
+                .requestMatchers("/ai/train")
+                // alarmController
+                .requestMatchers("/alarms/**")
                 ;
     }
     @Bean
