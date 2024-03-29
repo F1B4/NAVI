@@ -8,9 +8,8 @@ export function LogOutBtn() {
   const store = useUserStore();
   const navigate = useNavigate();
 
-  const handleLogOut = () => {
-    console.log('handletry');
-    logOut(store);
+  const handleLogOut = async () => {
+    await logOut(store);
     navigate('/');
   };
 

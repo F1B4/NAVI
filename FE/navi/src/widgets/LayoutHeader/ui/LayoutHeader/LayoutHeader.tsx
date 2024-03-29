@@ -1,6 +1,7 @@
 import { Logo } from '../Logo/Logo';
 import { Searchbar } from '../Searchbar/Searchbar';
 import { LogOutBtn } from '@/features/logout/ui/LogoutBtn/LogoutBtn';
+import SSEComponent from '@/features/notification/ui/Noti/Noti';
 import { Alarm } from '../Alarm/Alarm';
 import { LayoutHeaderUserImage } from '../LayoutHeaderUserImage/LayoutHeaderUserImage';
 import css from './LayoutHeader.module.css';
@@ -10,6 +11,7 @@ export function LayoutHeader() {
   return (
     <div className={css.root}>
       <div className={css.left}>
+        <SSEComponent />
         <Logo />
         <Searchbar />
       </div>
