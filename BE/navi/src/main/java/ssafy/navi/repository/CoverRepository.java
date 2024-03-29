@@ -1,5 +1,6 @@
 package ssafy.navi.repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,10 @@ import java.util.Set;
 
 @Repository
 public interface CoverRepository extends JpaRepository<Cover,Long> {
+
+    @Query("SELECT c FROM Cover c WHERE c.video IS NOT NULL")
+    List<Cover> findAllByVideoIsNotNull(Sort sort);
+
     // TopN을 사용하면 N만큼의 결과만을 조회함
     List<Cover> findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(LocalDateTime startDate);
 
