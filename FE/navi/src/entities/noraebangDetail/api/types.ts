@@ -47,7 +47,7 @@ interface Noraebang {
   userDto: User;
   createdAt: Date;
   likeExsits: boolean;
-  noraebangreviewDtos: ReviewInfo[];
+  noraebangReviewDtos: ReviewInfo[];
   lyricDtos: LyricInfo[];
 }
 

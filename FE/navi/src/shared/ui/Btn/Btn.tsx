@@ -1,9 +1,10 @@
+import { MouseEventHandler } from 'react';
 import { Link } from 'react-router-dom';
 import { baseUrl } from '@/shared/url';
 
 interface ButtonProps {
   to?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   className: string;
   icon?: string;
   content: string;
