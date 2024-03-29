@@ -49,7 +49,6 @@ public class SecurityConfig {
                 .requestMatchers("/covers/detail/**")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/create")
                 .requestMatchers("/noraebangs/byView")
                 .requestMatchers("/noraebangs/byLike")
                 .requestMatchers("/noraebangs/detail/**")

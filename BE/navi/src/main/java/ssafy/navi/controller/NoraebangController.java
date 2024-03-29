@@ -81,7 +81,7 @@ public class NoraebangController {
      */
     @PutMapping("/update")
     public Response<?> updateNoraebang(@RequestParam String content,
-                                       @RequestParam Long noraebangPk) {
+                                       @RequestParam("noraebnag_pk") Long noraebangPk) {
         noraebangService.updateNoraebang(content, noraebangPk);
         return Response.of("Ok", "노래방 게시글 수정", new ArrayList<>());
     }
@@ -111,7 +111,7 @@ public class NoraebangController {
     작성자만 삭제할 수 있음.
      */
     @DeleteMapping("/review/{review_pk}")
-    public Response<?> deleteNoraebangReview(@PathVariable("review_pk") Long reviewPk) {
+    public Response<?> deleteNoraebangReview(@PathVariable("review_pk") Long reviewPk) throws Exception {
         return Response.of("OK", "댓글 삭제", noraebangService.deleteNoraebangReview(reviewPk));
     }
 
