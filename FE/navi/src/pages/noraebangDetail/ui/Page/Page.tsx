@@ -27,17 +27,17 @@ export function NoraebangDetailPage() {
     AxiosNoraebang();
   }, [props]);
 
-  if (load) {
+  if (load && noraebang) {
     return (
       <div className={css.root}>
         <div className={css.left}>
-          <NoraebangDetail image={noraebang!.songDto.image} />
+          <NoraebangDetail image={noraebang.songDto.image} />
         </div>
         <div className={css.right}>
           <Info
-            title={noraebang!.songDto.title}
-            user={noraebang!.userDto.nickname}
-            content={noraebang!.content}
+            title={noraebang.songDto.title}
+            user={noraebang.userDto.nickname}
+            content={noraebang.content}
           />
           <div>댓 글</div>
           {/* <Comments /> */}
