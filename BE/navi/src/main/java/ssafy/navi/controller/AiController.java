@@ -17,9 +17,9 @@ public class AiController {
     private final WebClient webClient = WebClient.create();
 
     @GetMapping("/cover") //커버 생성 완료
-    public Mono<String> complete() {
-        String url = "https://j10d107.p.ssafy.io/media/ss";
-        return webClient.get().uri(url).retrieve().bodyToMono(String.class);
+    public String complete() {
+        System.out.println("=================oj---===========");
+        return "OK";
     }
 
     @GetMapping("/train")

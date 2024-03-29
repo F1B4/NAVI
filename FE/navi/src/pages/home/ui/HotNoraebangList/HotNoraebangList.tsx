@@ -11,8 +11,8 @@ export function HotNoraebangList() {
     const AxiosHotNoraebangs = async () => {
       try {
         const response = await hotNoraebangListApi();
-        if (response !== null) {
-          setNoraebangs(response);
+        if (response?.resultCode === 'OK') {
+          setNoraebangs(response.data);
         }
       } catch (error) {
         console.error('Error get hot noraebangs list');

@@ -11,9 +11,8 @@ export function HotCoverList() {
     const AxiosHotCovers = async () => {
       try {
         const response = await hotCoverListApi();
-        if (response !== null) {
-          setCovers(response);
-          console.log(response);
+        if (response?.resultCode === 'OK') {
+          setCovers(response.data);
         }
       } catch (error) {
         console.error('Error get hot cover list');

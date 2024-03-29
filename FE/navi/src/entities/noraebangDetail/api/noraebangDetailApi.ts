@@ -2,17 +2,17 @@ import type { Response } from './types';
 import { baseApi } from '@/shared/api';
 import axios, { AxiosResponse } from 'axios';
 
-export const noraebangListApi = async (): Promise<Response | null> => {
+export const noraebangDetailApi = async (
+  props: number,
+): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/noraebangs`,
-      {
-        withCredentials: true,
-      },
+      `${baseApi}/noraebangs/${props}`,
     );
+    console.log(response);
     return response.data;
   } catch (error) {
-    console.error('Error get noraebang list', error);
+    console.error('Error get noraebang detail', error);
     return null;
   }
 };

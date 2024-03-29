@@ -48,7 +48,7 @@ public class CoverService {
      */
     public List<CoverDto> getCover() {
         //커버의 모든 게시글을 조회하고 최신순으로 정렬함
-        List<Cover> covers = coverRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        List<Cover> covers = coverRepository.findAllByVideoIsNotNull(Sort.by(Sort.Direction.DESC, "id"));
         return covers.stream()
                 .map(CoverDto::convertToDtoList)
                 .collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class CoverService {
      */
     public List<CoverDto> getCoverByView() {
         //커버의 모든 게시글을 조회하는데 조회수 순으로 정렬함
-        List<Cover> covers = coverRepository.findAll(Sort.by(Sort.Direction.DESC, "hit")); // 조회수 내림차순 정렬
+        List<Cover> covers = coverRepository.findAllByVideoIsNotNull(Sort.by(Sort.Direction.DESC, "hit")); // 조회수 내림차순 정렬
         return covers.stream()
                 .map(CoverDto::convertToDto)
                 .collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class CoverService {
     좋아요 순
      */
     public List<CoverDto> getCoverByLike(){
-        List<Cover> covers=coverRepository.findAll(Sort.by(Sort.Direction.DESC,"likeCount"));   //좋아요 내림차순 정렬
+        List<Cover> covers=coverRepository.findAllByVideoIsNotNull(Sort.by(Sort.Direction.DESC,"likeCount"));   //좋아요 내림차순 정렬
         return covers.stream()
                 .map(CoverDto::convertToDto)
                 .collect(Collectors.toList());

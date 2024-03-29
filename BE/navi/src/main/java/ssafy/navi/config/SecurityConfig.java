@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -36,11 +35,6 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                // UserControoler
-                .requestMatchers("/users/profile/**")
-                .requestMatchers("/users/following/**")
-                .requestMatchers("/users/follower/**")
-                // MainController
                 .requestMatchers("/main/**")
                 // CoverController
                 .requestMatchers("/covers")
@@ -49,7 +43,6 @@ public class SecurityConfig {
                 .requestMatchers("/covers/detail/**")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/create")
                 .requestMatchers("/noraebangs/byView")
                 .requestMatchers("/noraebangs/byLike")
                 .requestMatchers("/noraebangs/detail/**")

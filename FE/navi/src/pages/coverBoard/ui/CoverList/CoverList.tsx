@@ -11,9 +11,8 @@ export function CoverList() {
     const AxiosCovers = async () => {
       try {
         const response = await coverListApi();
-        if (response !== null) {
-          setCovers(response);
-          console.log(response);
+        if (response?.resultCode === 'OK') {
+          setCovers(response.data);
         }
       } catch (error) {
         console.error('Error get covers list');

@@ -70,12 +70,9 @@ public class NoraebangService {
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
 
         // 현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
-        // postman확인을 위한 부분
-        User user = userRepository.getById(Long.valueOf(2));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
         // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
         Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
@@ -98,11 +95,9 @@ public class NoraebangService {
             Long artistId = songbyId.get().getArtist().getId();
             Optional<Artist> artistById = artistRepository.findById(artistId);
             // 현재 인가에서 유저 가져오기
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
-            User user = userRepository.findById(Long.valueOf(2)).get();
-//            로컬 확인용 user
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
             if (artistById.isPresent() && user!=null) {
                 Noraebang noraebang = Noraebang.builder()
                         .content(content)
@@ -192,7 +187,7 @@ public class NoraebangService {
     게시글 댓글 삭제.
     작성자만 삭제할 수 있음.
      */
-    public String deleteNoraebangReview(Long reviewPk) {
+    public String deleteNoraebangReview(Long reviewPk) throws Exception {
         NoraebangReview review = noraebangReviewRepository.getById(reviewPk);
 
         // 현재 인가에서 유저 가져오기
