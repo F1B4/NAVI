@@ -11,20 +11,20 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/covers")
+@RequestMapping("/ai")
 @Slf4j
-public class fastAPIController {
+public class AiController {
     private final WebClient webClient = WebClient.create();
 
-    @GetMapping("/fastapi")
-    public Mono<String> sendRequest() {
+    @GetMapping("/cover") //커버 생성 완료
+    public Mono<String> complete() {
         String url = "https://j10d107.p.ssafy.io/media/ss";
         return webClient.get().uri(url).retrieve().bodyToMono(String.class);
     }
 
-//    @GetMapping("/fastapi")
-//    public Mono<String> sendRequest() {
-//        String url = "https://j10d107.p.ssafy.io/media/ss";
-//        return webClient.get().uri(url).retrieve().bodyToMono(String.class);
-//    }
+    @GetMapping("/train")
+    public Mono<String> sendRequest() {
+        String url = "https://j10d107.p.ssafy.io/media/ss";
+        return webClient.get().uri(url).retrieve().bodyToMono(String.class);
+    }
 }

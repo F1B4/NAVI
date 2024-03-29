@@ -5,13 +5,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
+import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.user.CustomOAuth2User;
+import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.cover.CoverLike;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
@@ -231,5 +234,30 @@ public class NoraebangService {
             noraebangLikeRepository.save(like);
         }
     }
+
+    /*
+    노래방 게시판 전체 게시글 조회
+    조회순
+     */
+    public List<NoraebangAllDto> getNoraebangByView() {
+        //노래방의 모든 게시글을 조회하는데 조회수 순으로 정렬함
+        List<Noraebang> noraebangs = noraebangRepository.findAll(Sort.by(Sort.Direction.DESC, "hit")); // 조회수 내림차순 정렬
+        return  noraebangs.stream()
+                .map(NoraebangAllDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    노래방 게시판 전체 게시글 조회
+    좋아요 순
+     */
+    public List<NoraebangAllDto> getNoraebangByLike() {
+        //노래방의 모든 게시글을 조회하는데 조회수 순으로 정렬함
+        List<Noraebang> noraebangs = noraebangRepository.findAll(Sort.by(Sort.Direction.DESC,"likeCount")); // 조회수 내림차순 정렬
+        return  noraebangs.stream()
+                .map(NoraebangAllDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.util.Response;
@@ -122,5 +123,23 @@ public class NoraebangController {
     public Response<?> toggleNoraebangLike(@PathVariable("noraebang_pk") Long noraebangPk) {
         noraebangService.toggleNoraebangLike(noraebangPk);
         return Response.of("Ok", "좋아요 성공 및 삭제", null);
+    }
+
+    /*
+커버 게시판 목록 가져오기
+조회수 순
+ */
+    @GetMapping("/byView")
+    public Response<List<NoraebangAllDto>> getNoraebangByView() throws Exception{
+        return Response.of("OK","게시글 목록 조회순으로 가져오기",noraebangService.getNoraebangByView());
+    }
+
+    /*
+    커버 게시판 정렬하기
+    좋아요 순
+     */
+    @GetMapping("/byLike")
+    public Response<List<NoraebangAllDto>> getNoraebangByLike() throws Exception{
+        return Response.of("OK","게시글 목록 좋아요 순으로 가져오기",noraebangService.getNoraebangByLike());
     }
 }

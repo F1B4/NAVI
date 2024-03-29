@@ -238,6 +238,7 @@ public class CoverService {
                         for (Long user : users) {
                             notificationService.sendNotificationToUser(user, "커버 생성을 시작합니다.");
                         }
+
                         fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
                         return "Cover 생성 완료";
                     }else{
