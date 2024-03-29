@@ -26,4 +26,14 @@ interface NoraebangItem {
   likeExsits: boolean;
 }
 
-export type NoraebangList = NoraebangItem[];
+interface NoraebangList {
+  data: NoraebangItem[];
+}
+
+interface Response {
+  resultCode: string;
+  message: string;
+  data: NoraebangList;
+}
+
+export type { Response, NoraebangList };

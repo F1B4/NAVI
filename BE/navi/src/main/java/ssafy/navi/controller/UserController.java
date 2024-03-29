@@ -1,5 +1,7 @@
 package ssafy.navi.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,15 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    /*
+    로그아웃 (쿠키 삭제)
+     */
+    @GetMapping("/logout")
+    public Response<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        userService.deleteCookie(request, response);
+        return Response.of("OK", "로그아웃 성공", "");
+    }
 
     /*
     토큰에서 유저 정보 획득
@@ -63,7 +74,7 @@ public class UserController {
      */
     @PostMapping("/follow/{user_pk}")
     public Response<FollowingDto> follow(@PathVariable("user_pk") Long userPk) throws Exception {
-        FollowingDto res = userService.follow(userPk);
+        FollowingDto res = userService.follow(userPk); //내가 userPk에게 팔로우 거는거
         if(res!=null) {
             return Response.of("OK","유저 팔로우 성공", res);
         } else {

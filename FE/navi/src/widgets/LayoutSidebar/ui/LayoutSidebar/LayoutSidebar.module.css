@@ -4,7 +4,31 @@
   width: 240px;
   height: 100vh;
   border-right: solid 1px var(--main_line);
-
   display: flex;
   flex-direction: column;
+  position: fixed;
+}
+
+.btn {
+  width: 100px;
+  height: 60px;
+  display: flex;
+  margin-left: 30px;
+  align-items: center;
+}
+
+.btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.btn span {
+  margin-left: 20px;
+}
+
+hr {
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 80%;
+  border-color: var(--main_line);
 }

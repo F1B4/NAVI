@@ -36,17 +36,27 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                .requestMatchers("/")
-                .requestMatchers("/users/**")
+                // UserControoler
+                .requestMatchers("/users/profile/**")
+                .requestMatchers("/users/following/**")
+                .requestMatchers("/users/follower/**")
+                // MainController
                 .requestMatchers("/main/**")
-                .requestMatchers("/noraebangs/**")
-                .requestMatchers("/alarms")
+                // CoverController
                 .requestMatchers("/covers")
-                .requestMatchers("/covers/**")
-                .requestMatchers("/match")
+                .requestMatchers("/covers/byView")
+                .requestMatchers("/covers/byLike")
+                .requestMatchers("/covers/detail/**")
+                // NoraebangController
+                .requestMatchers("/noraebangs")
+                .requestMatchers("/noraebangs/create")
+                .requestMatchers("/noraebangs/byView")
+                .requestMatchers("/noraebangs/byLike")
+                .requestMatchers("/noraebangs/detail/**")
+                // NotificationController
                 .requestMatchers("/notification/**")
-                .requestMatchers("/alarms/**")
-//                .requestMatchers("/users/profile/**")
+                // fastAPIController
+                .requestMatchers("/fastapi/**")
                 ;
     }
     @Bean
@@ -61,15 +71,13 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173/"));
-                        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        configuration.setAllowedMethods(Arrays.asList("*"));
                         configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type"));
+                        configuration.setAllowedHeaders(Arrays.asList("*"));
                         configuration.setMaxAge(3600L);
 
                         configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
-//                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-//                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
                         return configuration;
                     }
@@ -89,7 +97,7 @@ public class SecurityConfig {
 
         //JWTFilter 추가
         http
-                .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         //oauth2
         http

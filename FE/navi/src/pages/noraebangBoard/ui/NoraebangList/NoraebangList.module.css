@@ -1,0 +1,36 @@
+.container {
+  margin-top: 20px;
+  height: auto;
+  width: calc(100vw - 420px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.card {
+  margin-top: 20px;
+  width: calc(20% - 25px);
+  height: 260px;
+}
+
+.img img {
+  width: 200px;
+  height: 200px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.desc {
+  width: 200px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.desc :hover {
+  text-decoration: underline;
+}

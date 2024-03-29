@@ -7,6 +7,12 @@ interface User {
   followerCount: number;
 }
 
+interface Part {
+  id: number;
+  image: string;
+  name: string;
+}
+
 interface SongInfo {
   songPk: number;
   title: string;
@@ -21,9 +27,26 @@ interface NewContent {
   hit: number;
   likeCount: number;
   songDto: SongInfo;
-  userDto: User;
+  coverUserDtos?: CoverUser;
+  userDto?: User;
   createdAt: string;
   likeExsits: boolean;
 }
 
-export type NewContentsList = NewContent[];
+interface CoverUser {
+  id: number;
+  userDto: User;
+  partDto: Part;
+}
+
+interface NewContentsList {
+  data: NewContent[];
+}
+
+interface Response {
+  resultCode: string;
+  message: string;
+  data: NewContentsList;
+}
+
+export type { Response, NewContentsList, CoverUser };

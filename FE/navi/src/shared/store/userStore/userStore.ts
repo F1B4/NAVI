@@ -29,14 +29,14 @@ const useUserStore = create(
           const response = await axios.get(`${baseApi}/users/info`, {
             withCredentials: true,
           });
-          console.log(response);
+          const responseData = response.data.data;
           set({
-            userId: response.data.userId,
-            nickname: response.data.nickname,
-            image: response.data.image,
-            followingCount: response.data.followingCount,
-            followerCount: response.data.followerCount,
-            role: response.data.role,
+            userId: responseData.id,
+            nickname: responseData.nickname,
+            image: responseData.image,
+            followingCount: responseData.followingCount,
+            followerCount: responseData.followerCount,
+            role: responseData.role,
             isLogin: true,
           });
         } catch (error) {

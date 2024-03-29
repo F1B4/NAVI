@@ -6,11 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.cover.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.entity.cover.*;
 import ssafy.navi.entity.song.Artist;
@@ -82,7 +85,12 @@ public class CoverService {
                 .map(PartDto::convertToDto)
                 .collect(Collectors.toList());
 
-        List<UserDto> mutualFollow=followRepository.findMutualFollowers(1L).stream()
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        List<UserDto> mutualFollow=followRepository.findMutualFollowers(user.getId()).stream()
                 .map(UserDto::convertToDto)
                 .collect(Collectors.toList());
 
@@ -115,6 +123,8 @@ public class CoverService {
                     .build();
             coverRepository.save(cover);
 
+            Set<Long> users= new HashSet<>();
+
             for (UserPartDto userPartDto : coverRegistDto.getUserPartDtos()) {
                 User user = userRepository.findById(userPartDto.getUserPk())
                         .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
@@ -126,8 +136,11 @@ public class CoverService {
                         .part(part)
                         .build();
                 coverUserRepository.save(newCoverUser);
+                users.add(user.getId());
             }
-            notificationService.sendNotificationToUser(Long.valueOf(2), "매칭이 완료되었습니다.", "createCoverComplete");
+            for (Long pk : users) {
+                notificationService.sendNotificationToUser(pk, "커버 생성을 시작합니다.");
+            }
             return "커버 생성 완료";
         }
 
@@ -216,11 +229,24 @@ public class CoverService {
                         }
                         //매칭테이블에서 삭제
                         matchingRepository.delete(matching);
-                        notificationService.sendNotificationToUser(Long.valueOf(2), "매칭이 완료되었습니다.", "createCoverComplete");
+                        Set<Long> users= new HashSet<>();
+                        for (MatchingUser matchingUser : matchingUsers) {
+                            users.add(matchingUser.getUser().getId());
+                        }
+                        for (Long user : users) {
+                            notificationService.sendNotificationToUser(user, "커버 생성을 시작합니다.");
+                        }
                         return "Cover 생성 완료";
                     }else{
                         matching.updatePartCount(existingPartCount+matchingCount);
-                        notificationService.sendNotificationToUser(Long.valueOf(2), "매칭 인원이 추가 되었습니다.", "createCover");
+                        Set<Long> users= new HashSet<>();
+                        List<MatchingUser> matchingUsers = matching.getMatchingUsers();
+                        for (MatchingUser matchingUser : matchingUsers) {
+                            users.add(matchingUser.getUser().getId());
+                        }
+                        for (Long user : users) {
+                            notificationService.sendNotificationToUser(user, "매칭 인원이 추가 되었습니다.");
+                        }
                         return "매칭 업데이트 완료";
                     }
                 }
@@ -233,6 +259,7 @@ public class CoverService {
                 .build();
         matchingRepository.save(newMatching);
 
+        Set<Long> users= new HashSet<>();
         for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()){
             User user = userRepository.findById(userPartDto.getUserPk())
                     .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
@@ -245,6 +272,10 @@ public class CoverService {
                     .part(part)
                     .build();
             matchingUserRepository.save(newMatchingUser);
+            users.add(user.getId());
+        }
+        for (Long user : users) {
+            notificationService.sendNotificationToUser(user, "새로운 매칭이 생성 되었습니다.");
         }
         return "새로운 매칭 생성 및 매칭유저 추가";
     }
@@ -287,27 +318,27 @@ public class CoverService {
     public CoverReviewDto createCoverReview(Long coverPk, CoverReviewDto coverReviewDto) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
         CoverReview coverReview=CoverReview.builder()
                 .content(coverReviewDto.getContent())
                 .cover(cover)
                 .user(user)
                 .build();
+
         coverReview = coverReviewRepository.save(coverReview);
-        notificationService.sendNotificationToUser(Long.valueOf(2),"커버 게시글에 댓글이 작성 되었습니다.", "CoverReview");
+        notificationService.sendNotificationToUser(user.getId(),"커버 게시글에 댓글이 작성 되었습니다.");
         return CoverReviewDto.convertToDto(coverReview);
     }
 
     /*
-    게시글 체크, 유저 체크, 댓글 유무 체크
+    댓글 유무 체크
     댓글 삭제
      */
-    public String deleteCoverReview(Long coverPk, Long coverReviewPk) throws Exception {
-        Cover cover = coverRepository.findById(coverPk)
-                .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+    public String deleteCoverReview(Long coverReviewPk) throws Exception {
         CoverReview coverReview = coverReviewRepository.findById(coverReviewPk)
                 .orElseThrow(() -> new Exception("댓글이 존재하지 않음"));
         coverReviewRepository.delete(coverReview);
@@ -322,8 +353,12 @@ public class CoverService {
     public CoverLikeDto toggleCoverLike(Long coverPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
         Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
 
         if (exists.isPresent()) {
