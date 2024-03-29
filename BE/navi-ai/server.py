@@ -16,4 +16,8 @@ async def train(pk : str = Form(...)):
 async def infer(cover_pk : int):
     infer_task.delay(cover_pk)
 
-# mr+유저 목소리 합쳐서 s3 올리고 노래방테이블의 record에 s3 주소 저장 
+
+# 노래방 video 생성 엔드포인트
+@app.post("/noraebangs/record")
+async def record(cover_pk : int):
+    infer_task.delay(cover_pk)
