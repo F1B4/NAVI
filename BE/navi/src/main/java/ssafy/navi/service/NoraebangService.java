@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.entity.cover.CoverLike;
@@ -18,6 +19,7 @@ import ssafy.navi.entity.noraebang.NoraebangReview;
 import ssafy.navi.entity.song.Artist;
 import ssafy.navi.entity.song.Song;
 import ssafy.navi.entity.user.User;
+import ssafy.navi.entity.user.Voice;
 import ssafy.navi.repository.*;
 
 import java.io.IOException;
@@ -42,6 +44,8 @@ public class NoraebangService {
     private final NoraebangReviewRepository noraebangReviewRepository;
     private final NoraebangLikeRepository noraebangLikeRepository;
     private final NotificationService notificationService;
+    private final FastApiService fastApiService;
+    private final VoiceRepository voiceRepository;
 
     /*
     모든 노래방 게시글 가져오기
@@ -50,6 +54,7 @@ public class NoraebangService {
         List<Noraebang> noraebangs = noraebangRepository.findAll();
 
         return noraebangs.stream()
+                .filter(noraebang -> !"hyunsuyeonisnewjeansuyeonandmagmagirlsohotgirlyeolbatnaesysflamedonesntgooutyouaregod".equals(noraebang.getContent())) // "not"일 때는 필터링
                 .map(NoraebangAllDto::convertToDto)
                 .toList();
     }
@@ -80,9 +85,9 @@ public class NoraebangService {
      게시글 작성하기.
      formData 형식으로 file과 게시글 내용, songPk, userPk필요
      */
-    public void createNoraebang(MultipartFile file, String content, Long songPk) throws IOException {
-        String fileName = s3Service.saveFile(file);
+    public void createNoraebang(MultipartFile file, String content, Long songPk) throws Exception {
         Optional<Song> songbyId = songRepository.findById(songPk);
+        String fileName = s3Service.saveFile(file);
         if (songbyId.isPresent()) {
             Long artistId = songbyId.get().getArtist().getId();
             Optional<Artist> artistById = artistRepository.findById(artistId);
@@ -93,11 +98,24 @@ public class NoraebangService {
             if (artistById.isPresent() && user!=null) {
                 Noraebang noraebang = Noraebang.builder()
                         .content(content)
-                        .record(fileName)
                         .user(user)
                         .song(songbyId.get())
                         .build();
                 noraebangRepository.save(noraebang);
+
+                Voice voice = Voice.builder()
+                        .path(fileName)
+                        .song(songbyId.get())
+                        .user(user)
+                        .build();
+                voiceRepository.save(voice);
+            }
+
+//             노래방 게시글이 10개가 되었을때 fastAPI에 request요청 보내기
+            int countByUserId = noraebangRepository.countByUserId(user.getId());
+            if (countByUserId == 10) {
+                fastApiService.fetchDataFromFastAPI("/ai/train",user.getId());
+                notificationService.sendNotificationToUser(user.getId(), "최대 24시간 내에 모델 학습이 완료됩니다.");
             }
         }
     }
@@ -147,7 +165,7 @@ public class NoraebangService {
                     .build();
 
             noraebangReviewRepository.save(review);
-            notificationService.sendNotificationToUser(user.getId(), "노래방 게시글에 댓글이 작성 되었습니다.", "noraebangReview");
+            notificationService.sendNotificationToUser(user.getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
         }
     }
 
@@ -166,7 +184,7 @@ public class NoraebangService {
     게시글 댓글 삭제.
     작성자만 삭제할 수 있음.
      */
-    public String deleteNoraebangReview(Long reviewPk) {
+    public String deleteNoraebangReview(Long reviewPk) throws Exception {
         NoraebangReview review = noraebangReviewRepository.getById(reviewPk);
 
         // 현재 인가에서 유저 가져오기

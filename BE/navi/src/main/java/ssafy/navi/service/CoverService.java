@@ -40,6 +40,8 @@ public class CoverService {
     private final MatchingRepository matchingRepository;
     private final MatchingUserRepository matchingUserRepository;
     private final CoverUserRepository coverUserRepository;
+    private final NotificationService notificationService;
+    private final FastApiService fastApiService;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -102,7 +104,7 @@ public class CoverService {
     커버 생성 로직
      */
     @Transactional
-    public String createCover(CoverRegistDto coverRegistDto){
+    public String createCover(CoverRegistDto coverRegistDto) throws Exception {
 
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
@@ -122,6 +124,8 @@ public class CoverService {
                     .build();
             coverRepository.save(cover);
 
+            Set<Long> users= new HashSet<>();
+
             for (UserPartDto userPartDto : coverRegistDto.getUserPartDtos()) {
                 User user = userRepository.findById(userPartDto.getUserPk())
                         .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
@@ -133,8 +137,12 @@ public class CoverService {
                         .part(part)
                         .build();
                 coverUserRepository.save(newCoverUser);
+                users.add(user.getId());
             }
-
+            for (Long pk : users) {
+                notificationService.sendNotificationToUser(pk, "커버 생성을 시작합니다.");
+            }
+            fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
             return "커버 생성 완료";
         }
 
@@ -223,9 +231,25 @@ public class CoverService {
                         }
                         //매칭테이블에서 삭제
                         matchingRepository.delete(matching);
+                        Set<Long> users= new HashSet<>();
+                        for (MatchingUser matchingUser : matchingUsers) {
+                            users.add(matchingUser.getUser().getId());
+                        }
+                        for (Long user : users) {
+                            notificationService.sendNotificationToUser(user, "커버 생성을 시작합니다.");
+                        }
+                        fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
                         return "Cover 생성 완료";
                     }else{
                         matching.updatePartCount(existingPartCount+matchingCount);
+                        Set<Long> users= new HashSet<>();
+                        List<MatchingUser> matchingUsers = matching.getMatchingUsers();
+                        for (MatchingUser matchingUser : matchingUsers) {
+                            users.add(matchingUser.getUser().getId());
+                        }
+                        for (Long user : users) {
+                            notificationService.sendNotificationToUser(user, "매칭 인원이 추가 되었습니다.");
+                        }
                         return "매칭 업데이트 완료";
                     }
                 }
@@ -238,6 +262,7 @@ public class CoverService {
                 .build();
         matchingRepository.save(newMatching);
 
+        Set<Long> users= new HashSet<>();
         for(UserPartDto userPartDto : coverRegistDto.getUserPartDtos()){
             User user = userRepository.findById(userPartDto.getUserPk())
                     .orElseThrow(() -> new RuntimeException("유저가 존재하지 않음"));
@@ -250,6 +275,10 @@ public class CoverService {
                     .part(part)
                     .build();
             matchingUserRepository.save(newMatchingUser);
+            users.add(user.getId());
+        }
+        for (Long user : users) {
+            notificationService.sendNotificationToUser(user, "새로운 매칭이 생성 되었습니다.");
         }
         return "새로운 매칭 생성 및 매칭유저 추가";
     }
@@ -297,13 +326,14 @@ public class CoverService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
         User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
         CoverReview coverReview=CoverReview.builder()
                 .content(coverReviewDto.getContent())
                 .cover(cover)
                 .user(user)
                 .build();
+
         coverReview = coverReviewRepository.save(coverReview);
+        notificationService.sendNotificationToUser(user.getId(),"커버 게시글에 댓글이 작성 되었습니다.");
         return CoverReviewDto.convertToDto(coverReview);
     }
 
@@ -367,5 +397,4 @@ public class CoverService {
 
         return matchDtoList;
     }
-
 }

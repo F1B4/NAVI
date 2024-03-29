@@ -7,7 +7,7 @@ export function LayoutHeaderUserImage() {
   const store = useUserStore();
   if (store.isLogin) {
     return (
-      <Link to={'/cover'}>
+      <Link to={`/profile/${store.userId}`}>
         <UserImage image={store.image} className={css.root} />
       </Link>
     );

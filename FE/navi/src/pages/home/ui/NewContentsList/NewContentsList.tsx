@@ -11,8 +11,8 @@ export function NewContentsList() {
     const AxiosNewContents = async () => {
       try {
         const response = await newContentsListApi();
-        if (response !== null) {
-          setNewContents(response);
+        if (response?.resultCode === 'OK') {
+          setNewContents(response.data);
         }
       } catch (error) {
         console.error('Error get new contents list');

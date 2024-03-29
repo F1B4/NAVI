@@ -22,7 +22,6 @@ import java.util.List;
 public class AlarmService {
 
     private final AlarmRespository alarmRespository;
-    private final UserService userService;
     private final UserRepository userRepository;
 
     public List<AlarmDto> getAlarms() throws Exception {
@@ -44,14 +43,16 @@ public class AlarmService {
 
 
     public void createAlarm(Long userPk, String message) throws Exception {
-        User user = userService.findById(userPk);
-        Alarm alarm = Alarm.builder()
-                .user(user)
-                .content(message)
-                .alarmStatus(AlarmStatus.UNREAD)
-                .build();
+        if (userRepository.findById(userPk).isPresent()) {
+            User user = userRepository.findById(userPk).get();
 
-        alarmRespository.save(alarm);
+            Alarm alarm = Alarm.builder()
+                    .user(user)
+                    .content(message)
+                    .alarmStatus(AlarmStatus.UNREAD)
+                    .build();
+            alarmRespository.save(alarm);
+        }
     }
 
     @Transactional

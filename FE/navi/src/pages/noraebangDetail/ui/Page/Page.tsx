@@ -1,7 +1,48 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { noraebangDetailApi } from '@/entities/noraebangDetail';
+import type { Noraebang } from '@/entities/noraebangDetail';
+import { NoraebangDetail } from '../NoraebangDetail/NoraebangDetail';
+import { Info } from '../Info/Info';
+// import { Comments } from '@/widgets/Comments';
+import css from './Page.module.css';
+
 export function NoraebangDetailPage() {
-  return (
-    <>
-      <div>노래방 디테일</div>
-    </>
-  );
+  const { noraebangPk } = useParams();
+  const props = Number(noraebangPk);
+  const [noraebang, setNoraebang] = useState<Noraebang>();
+  const [load, setLoad] = useState<boolean>(false);
+  useEffect(() => {
+    const AxiosNoraebang = async () => {
+      try {
+        const response = await noraebangDetailApi(props);
+        if (response?.resultCode === 'OK') {
+          setNoraebang(response.data);
+          setLoad(true);
+        }
+      } catch (error) {
+        console.error('Error get norabang detail');
+      }
+    };
+    AxiosNoraebang();
+  }, [props]);
+
+  if (load && noraebang) {
+    return (
+      <div className={css.root}>
+        <div className={css.left}>
+          <NoraebangDetail image={noraebang.songDto.image} />
+        </div>
+        <div className={css.right}>
+          <Info
+            title={noraebang.songDto.title}
+            user={noraebang.userDto.nickname}
+            content={noraebang.content}
+          />
+          <div>댓 글</div>
+          {/* <Comments /> */}
+        </div>
+      </div>
+    );
+  }
 }
