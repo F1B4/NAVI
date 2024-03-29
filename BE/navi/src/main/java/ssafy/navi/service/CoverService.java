@@ -41,6 +41,7 @@ public class CoverService {
     private final MatchingUserRepository matchingUserRepository;
     private final CoverUserRepository coverUserRepository;
     private final NotificationService notificationService;
+    private final FastApiService fastApiService;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -141,6 +142,7 @@ public class CoverService {
             for (Long pk : users) {
                 notificationService.sendNotificationToUser(pk, "커버 생성을 시작합니다.");
             }
+            fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
             return "커버 생성 완료";
         }
 
@@ -236,6 +238,7 @@ public class CoverService {
                         for (Long user : users) {
                             notificationService.sendNotificationToUser(user, "커버 생성을 시작합니다.");
                         }
+                        fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
                         return "Cover 생성 완료";
                     }else{
                         matching.updatePartCount(existingPartCount+matchingCount);
