@@ -111,7 +111,7 @@ public class NoraebangController {
     작성자만 삭제할 수 있음.
      */
     @DeleteMapping("/review/{review_pk}")
-    public Response<?> deleteNoraebangReview(@PathVariable("noraebang_pk") Long reviewPk) {
+    public Response<?> deleteNoraebangReview(@PathVariable("review_pk") Long reviewPk) {
         return Response.of("OK", "댓글 삭제", noraebangService.deleteNoraebangReview(reviewPk));
     }
 

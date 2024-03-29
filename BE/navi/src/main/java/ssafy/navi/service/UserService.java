@@ -202,7 +202,7 @@ public class UserService {
     유저 녹음된 목소리 파일 개수 조회
     Integer
      */
-    public Integer getUserVoiceCount() {
+    public Integer getUserVoiceCount() throws Exception{
         // 현재 인가에서 유저 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
