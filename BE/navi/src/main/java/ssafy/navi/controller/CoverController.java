@@ -91,7 +91,7 @@ public class CoverController {
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
     커버 정보, 커버 댓글, 커버 좋아요, 원곡 정보, 맡은 파트
      */
-    @GetMapping("/{cover_pk}")
+    @GetMapping("/detail/{cover_pk}")
     public Response<CoverDto> getCoverDetail(@PathVariable("cover_pk") Long coverPk) throws Exception {
         return Response.of("OK","게시글 상세보기",coverService.getCoverDetail(coverPk));
     }
@@ -101,7 +101,7 @@ public class CoverController {
     클라이언트에서 댓글 작성자의 정보를 어떻게 넘겨주냐에 따라 바뀔예정
     RequestBody에 내용을 받아옴
      */
-    @PostMapping("/{cover_pk}/review")
+    @PostMapping("/{cover_pk}/reivew")
     public Response<CoverReviewDto> createCoverReview(@PathVariable("cover_pk") Long coverPk, @RequestBody CoverReviewDto coverReviewDto) throws Exception {
         return Response.of("OK","댓글 작성",coverService.createCoverReview(coverPk, coverReviewDto));
     }
@@ -111,9 +111,9 @@ public class CoverController {
     클라이언트에서 댓글 작성자의 정보와 로그인한 유저의 정보가 일치할 때만 삭제할 수 있도록 하기
     게시글 정보와 유저 정보 받아와서 처리하기
      */
-    @DeleteMapping("/{cover_pk}/review/{cover_review_pk}")
-    public Response<String> deleteCoverReview(@PathVariable("cover_pk")Long coverPk,@PathVariable("cover_review_pk")Long coverReviewPk) throws Exception{
-        return Response.of("OK","댓글 삭제",coverService.deleteCoverReview(coverPk,coverReviewPk));
+    @DeleteMapping("/review/{cover_review_pk}")
+    public Response<String> deleteCoverReview(@PathVariable("cover_review_pk")Long coverReviewPk) throws Exception{
+        return Response.of("OK","댓글 삭제",coverService.deleteCoverReview(coverReviewPk));
     }
 
     /*
