@@ -352,4 +352,20 @@ public class CoverService {
             return CoverLikeDto.convertToDto(like);
         }
     }
+
+    public List<MatchDto> getMatchings() throws Exception {
+        Long userPk = Long.valueOf(2);
+        List<MatchingUser> matchings = matchingUserRepository.findAllByUser(userRepository.findById(userPk)
+                .orElseThrow(() -> new Exception("유저가 없습니다.")));
+
+        List<MatchDto> matchDtoList = new ArrayList<>();
+        for (MatchingUser matching : matchings) {
+            Matching match = matching.getMatching();
+            MatchDto matchDto = MatchDto.convertToDto(match);
+            matchDtoList.add(matchDto);
+        }
+
+        return matchDtoList;
+    }
+
 }

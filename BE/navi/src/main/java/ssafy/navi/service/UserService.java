@@ -35,6 +35,7 @@ public class UserService {
     private final CoverRepository coverRepository;
     private final S3Service s3Service;
     private final FollowRepository followRepository;
+    private final NotificationService notificationService;
 
     /*
     쿠키 삭제
@@ -151,6 +152,9 @@ public class UserService {
             // 카운트 조정
             fromUser.updateFollowingCount(-1);
             toUser.updateFollowerCount(-1);
+            // 여기서 toUser에게(내가 팔로우 하는 상대방) 언팔로우 메세지 보내기
+            String s = fromUser.getNickname() + "님이 팔로우를 해제 하셨습니다.";
+            notificationService.sendNotificationToUser(toUser.getId(), s, "follow");
 
             return null;
         }
@@ -165,6 +169,9 @@ public class UserService {
             // 카운트 조정
             fromUser.updateFollowingCount(1);
             toUser.updateFollowerCount(1);
+            // 여기서 toUser에게(내가 팔로우 하는 상대방) 팔로우 메세지 보내기
+            String s = fromUser.getNickname() + "님이 팔로우 하셨습니다.";
+            notificationService.sendNotificationToUser(toUser.getId(), s, "follow");
             return FollowingDto.convertToDto(follow);
         }
     }
