@@ -14,7 +14,8 @@ public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
 
     // TopN을 사용하면 N만큼의 결과만을 조회함
     List<Noraebang> findTop10ByCreatedAtAfterOrderByHitDesc(LocalDateTime startDate);
-
+    @Query(value = "SELECT COUNT(*) FROM noraebang WHERE user_pk = :userId", nativeQuery = true)
+    int countByUserId(@Param("userId") Long userId);
 
     //노래방 제목으로 조회 3개
     @Query("SELECT n FROM Noraebang n WHERE n.song.title LIKE %:keyword% ORDER BY n.createdAt DESC LIMIT 3")

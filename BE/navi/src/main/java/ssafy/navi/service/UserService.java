@@ -82,14 +82,6 @@ public class UserService {
     }
 
     /*
-    유저 검색
-     */
-    public User findById(Long userPk) throws Exception {
-        Optional<User> user = userRepository.findById(userPk);
-        return user.orElseThrow(() -> new Exception("유저를 찾을 수 없습니다."));
-    }
-
-    /*
     프로필 이미지 수정
     UserDto
      */
@@ -151,8 +143,6 @@ public class UserService {
             fromUser.updateFollowingCount(-1);
             toUser.updateFollowerCount(-1);
             // 여기서 toUser에게(내가 팔로우 하는 상대방) 언팔로우 메세지 보내기
-            String s = fromUser.getNickname() + "님이 팔로우를 해제 하셨습니다.";
-            notificationService.sendNotificationToUser(toUser.getId(), s, "follow");
 
             return null;
         }
@@ -169,7 +159,7 @@ public class UserService {
             toUser.updateFollowerCount(1);
             // 여기서 toUser에게(내가 팔로우 하는 상대방) 팔로우 메세지 보내기
             String s = fromUser.getNickname() + "님이 팔로우 하셨습니다.";
-            notificationService.sendNotificationToUser(toUser.getId(), s, "follow");
+            notificationService.sendNotificationToUser(toUser.getId(), s);
             return FollowingDto.convertToDto(follow);
         }
     }

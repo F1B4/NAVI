@@ -70,7 +70,7 @@ public class NoraebangController {
     @PostMapping("/create")
     public Response<?> createNoraebang(@RequestParam MultipartFile file,
                                        @RequestParam String content,
-                                       @RequestParam("song_pk") Long songPk) throws IOException {
+                                       @RequestParam("song_pk") Long songPk) throws Exception {
         noraebangService.createNoraebang(file, content, songPk);
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
     }
