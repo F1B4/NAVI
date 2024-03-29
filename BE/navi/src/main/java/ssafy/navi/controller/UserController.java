@@ -74,7 +74,7 @@ public class UserController {
      */
     @PostMapping("/follow/{user_pk}")
     public Response<FollowingDto> follow(@PathVariable("user_pk") Long userPk) throws Exception {
-        FollowingDto res = userService.follow(userPk);
+        FollowingDto res = userService.follow(userPk); //내가 userPk에게 팔로우 거는거
         if(res!=null) {
             return Response.of("OK","유저 팔로우 성공", res);
         } else {

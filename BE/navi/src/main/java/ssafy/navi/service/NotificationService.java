@@ -18,11 +18,11 @@ public class NotificationService {
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final AlarmService alarmService;
 
-    public void sendNotificationToUser(Long userId, String message) throws Exception {
+    public void sendNotificationToUser(Long userId, String message, String eventName) throws Exception {
         SseEmitter emitter = emitters.get(userId);
         if (emitter != null) {
             try {
-                emitter.send(SseEmitter.event().name("notification").data(message));
+                emitter.send(SseEmitter.event().name(eventName).data(message));
             } catch (IOException e) {
                 emitters.remove(userId);
             }
