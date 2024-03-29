@@ -1,6 +1,10 @@
 package ssafy.navi.service;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -13,14 +17,17 @@ public class FastApiService {
         this.webClient = WebClient.create("http://navi.iptime.org:8085"); // FastAPI 서버의 URL을 여기에 입력합니다.
     }
 
-    public Mono<String> fetchDataFromFastAPI(String endPoint, Long pk) {
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path(endPoint)
-                        .queryParam("pk", pk) // 사용자 PK를 쿼리 매개변수로 추가합니다.
-                        .build())
-                .retrieve()
-                .bodyToMono(String.class);
-    }
+    public String fetchDataFromFastAPI(String endPoint, Long pkValue) {
+        String pk = String.valueOf(pkValue);
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("pk", pk);
 
+        return webClient.post()
+                .uri(endPoint)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData(formData))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
 }

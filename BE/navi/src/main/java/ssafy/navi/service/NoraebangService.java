@@ -113,7 +113,7 @@ public class NoraebangService {
 
 //             노래방 게시글이 10개가 되었을때 fastAPI에 request요청 보내기
             int countByUserId = noraebangRepository.countByUserId(user.getId());
-            if (countByUserId >= 10) {
+            if (countByUserId == 10) {
                 fastApiService.fetchDataFromFastAPI("/ai/train",user.getId());
                 notificationService.sendNotificationToUser(user.getId(), "최대 24시간 내에 모델 학습이 완료됩니다.");
             }
