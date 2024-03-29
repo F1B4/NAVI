@@ -53,6 +53,7 @@ public class UserService {
 
         // 세션 무효화
         request.getSession().invalidate();
+
     }
 
     /*

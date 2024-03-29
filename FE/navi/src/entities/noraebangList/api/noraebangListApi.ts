@@ -1,8 +1,8 @@
-import type { Response, NoraebangList } from './types';
+import type { Response } from './types';
 import { baseApi } from '@/shared/api';
 import axios, { AxiosResponse } from 'axios';
 
-export const noraebangListApi = async (): Promise<NoraebangList | null> => {
+export const noraebangListApi = async (): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
       `${baseApi}/noraebangs`,
@@ -10,7 +10,7 @@ export const noraebangListApi = async (): Promise<NoraebangList | null> => {
         withCredentials: true,
       },
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error('Error get noraebang list', error);
     return null;

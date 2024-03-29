@@ -4,7 +4,6 @@ import { HotCoverList } from '../HotCoverList/HotCoverList';
 import { HotNoraebangList } from '../HotNoraebangList/HotNoraebangList';
 import { useUserStore } from '@/shared/store';
 import css from './Page.module.css';
-// import { logOut } from '@/features/logout';
 
 export function HomePage() {
   const store = useUserStore();
@@ -18,11 +17,10 @@ export function HomePage() {
       }
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <div className={css.root}>
-      {/* <div onClick={logOut}>로그아웃</div> */}
       <h1>최신 컨텐츠</h1>
       <NewContentsList />
       <h1>인기 커버</h1>

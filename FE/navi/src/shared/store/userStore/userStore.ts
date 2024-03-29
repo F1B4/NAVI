@@ -12,6 +12,7 @@ interface userState {
   role: string;
   isLogin: boolean;
   getData: () => void;
+  resetData: () => void;
 }
 
 const useUserStore = create(
@@ -43,6 +44,17 @@ const useUserStore = create(
           console.error('Error get user info');
         }
       },
+      resetData: () => {
+        set({
+          userId: 0,
+          nickname: '',
+          image: '',
+          followingCount: 0,
+          followerCount: 0,
+          role: '',
+          isLogin: false,
+        });
+      },
     }),
     {
       name: 'userStorage',
@@ -51,3 +63,4 @@ const useUserStore = create(
 );
 
 export { useUserStore };
+export type { userState };
