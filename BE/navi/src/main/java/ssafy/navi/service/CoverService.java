@@ -304,8 +304,11 @@ public class CoverService {
     public CoverDto getCoverDetail(Long coverPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        //인가에서 user가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
         cover.updateCover(cover.getHit()+1,cover.getWeeklyHit()+1);
         CoverDto coverDto= CoverDto.convertToDto(cover);
 
@@ -385,7 +388,11 @@ public class CoverService {
     }
 
     public List<MatchDto> getMatchings() throws Exception {
-        Long userPk = Long.valueOf(2);
+        //인가에서 user가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        Long userPk = userRepository.findByUsername(customOAuth2User.getUsername()).getId();
+
         List<MatchingUser> matchings = matchingUserRepository.findAllByUser(userRepository.findById(userPk)
                 .orElseThrow(() -> new Exception("유저가 없습니다.")));
 
