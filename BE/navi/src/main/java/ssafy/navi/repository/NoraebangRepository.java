@@ -30,4 +30,6 @@ public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
     List<Noraebang> findByArtistNameContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
     List<Noraebang> findTop10ByOrderByCreatedAtDesc();
+
+    Integer countByUserId(Long UserPk);
 }

@@ -100,4 +100,13 @@ public class UserController {
         return Response.of("OK", "유저 팔로워 리스트 조회 성공", userService.getFollowerList(userPk));
     }
 
+    /*
+    유저 녹음된 목소리 파일 개수 조회
+    Integer
+     */
+    @GetMapping("/voice/count")
+    public Response<Integer> getUserVoiceCount() throws Exception {
+        return Response.of("OK","유저 녹음된 목소리 파일 개수 조회 성공", userService.getUserVoiceCount());
+    }
+
 }

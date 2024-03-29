@@ -15,10 +15,7 @@ import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.cover.CoverUser;
 import ssafy.navi.entity.user.Follow;
 import ssafy.navi.entity.user.User;
-import ssafy.navi.repository.CoverRepository;
-import ssafy.navi.repository.CoverUserRepository;
-import ssafy.navi.repository.FollowRepository;
-import ssafy.navi.repository.UserRepository;
+import ssafy.navi.repository.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +33,7 @@ public class UserService {
     private final S3Service s3Service;
     private final FollowRepository followRepository;
     private final NotificationService notificationService;
+    private final NoraebangRepository noraebangRepository;
 
     /*
     쿠키 삭제
@@ -210,4 +208,16 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    유저 녹음된 목소리 파일 개수 조회
+    Integer
+     */
+    public Integer getUserVoiceCount() {
+        // 현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        return noraebangRepository.countByUserId(user.getId());
+    }
 }
