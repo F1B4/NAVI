@@ -48,7 +48,7 @@ public class SecurityConfig {
 //                .requestMatchers("/noraebangs/byLike")
 //                .requestMatchers("/noraebangs/detail/**")
                 // NotificationController
-                .requestMatchers("/notification/**")
+                .requestMatchers("/sse/notification/**")
                 // fastAPIController
                 .requestMatchers("/ai/**")
                 .requestMatchers("/ai/cover")
@@ -69,7 +69,8 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("https://j10d107.p.ssafy.io"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("https://j10d107.p.ssafy.io"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
                         configuration.setAllowedMethods(Arrays.asList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Arrays.asList("*"));

@@ -58,7 +58,8 @@ public class NoraebangController {
     노래방 게시글 디테일 정보 가져오기
      */
     @GetMapping("/detail/{noraebang_pk}")
-    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) {
+    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
+        notificationService.sendNotificationToUser(Long.valueOf(8), "sse확인용 보내기");
         return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
 
