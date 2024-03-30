@@ -27,7 +27,6 @@ public class AiController {
     @PostMapping("/train/{user_pk}")
     public Response<?> train(@PathVariable("user_pk") Long userPk) throws Exception {
         coverService.completeTrain(userPk);
-        System.out.println("userPk =~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " + userPk);
-        return Response.of("OK", "커버 영상 제작 완료, 유저에게 알람 보내기 성공", null);
+        return Response.of("OK", "훈련 완료, 유저에게 알람 보내기 성공", null);
     }
 }

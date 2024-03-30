@@ -42,6 +42,7 @@ public class CoverService {
     private final CoverUserRepository coverUserRepository;
     private final NotificationService notificationService;
     private final FastApiService fastApiService;
+    private final UserService userService;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -305,17 +306,18 @@ public class CoverService {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
         //인가에서 user가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
+        if (userService.userState()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+            Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
+            CoverDto coverDto= CoverDto.convertToDto(cover);
+            coverDto.updateExists(exists.isPresent());
+        }
         cover.updateCover(cover.getHit()+1,cover.getWeeklyHit()+1);
-        CoverDto coverDto= CoverDto.convertToDto(cover);
 
         //내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
-        Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
-        coverDto.updateExists(exists.isPresent());
-        return coverDto;
+        return CoverDto.convertToDto(cover);
     }
 
     /*

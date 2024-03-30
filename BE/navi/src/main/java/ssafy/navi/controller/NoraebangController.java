@@ -9,10 +9,7 @@ import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.song.SongDto;
-import ssafy.navi.service.ArtistService;
-import ssafy.navi.service.NoraebangService;
-import ssafy.navi.service.S3Service;
-import ssafy.navi.service.SongService;
+import ssafy.navi.service.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ public class NoraebangController {
     public final SongService songService;
     public final ArtistService artistService;
     public final S3Service s3Service;
+    public final NotificationService notificationService;
 
 
     /*
