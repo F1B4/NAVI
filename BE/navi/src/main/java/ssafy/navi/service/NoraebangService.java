@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NoraebangService {
+public class    NoraebangService {
 
     private final NoraebangRepository noraebangRepository;
     private final SongRepository songRepository;
