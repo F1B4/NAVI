@@ -14,7 +14,7 @@ export function HomePage() {
   const loginSuccess = params.get('loginSuccess');
 
   const noti = () => {
-    axios.get(`${baseApi}/notification/subscribe/${store.userId}`, {
+    axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
       headers: {
         Accept: 'text/event-stream',
         'Cache-Control': 'no-cache',

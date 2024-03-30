@@ -8,7 +8,7 @@ const SSEComponent = () => {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${baseApi}/notification/subscribe/${store.userId}`,
+      `${baseApi}/sse/notification/subscribe/${store.userId}`,
     );
 
     eventSource.addEventListener('open', function () {
