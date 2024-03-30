@@ -32,6 +32,7 @@ public class UserDto {
         userDto.setRole(user.getRole());
         return userDto;
     }
+
     public static UserDto convertToDtoCoverDetail(User user){
         UserDto userDto = new UserDto();
         // set
@@ -39,6 +40,15 @@ public class UserDto {
         userDto.setImage(user.getImage());
         return userDto;
     }
+    public static UserDto convertToDtoMutualFollow(User user){
+        UserDto userDto=new UserDto();
+        //set
+        userDto.setId(user.getId());
+        userDto.setNickname(user.getNickname());
+        userDto.setImage(user.getImage());
+        return userDto;
+    }
+
     //==빌더 패턴==//
     @Builder
     public UserDto(String username, Role role) {

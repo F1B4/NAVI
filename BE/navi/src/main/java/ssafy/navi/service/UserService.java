@@ -203,6 +203,20 @@ public class UserService {
     }
 
     /*
+    맞팔 유저 검색하기
+    UserDto
+     */
+    public List<UserDto> getSearchMutualFollow(String keyword){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User=(CustomOAuth2User) authentication.getPrincipal();
+        User user=userRepository.findByUsername(customOAuth2User.getUsername());
+        List<UserDto> userDtos = followRepository.findMutualFollowersByKeyword(user.getId(),keyword).stream()
+                .map(UserDto::convertToDtoMutualFollow)
+                .collect(Collectors.toList());
+        return userDtos;
+    }
+
+    /*
     유저 녹음된 목소리 파일 개수 조회
     Integer
      */
