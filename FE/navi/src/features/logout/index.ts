@@ -1,1 +1,1 @@
-export { LogoutBtn } from './ui/LogoutBtn/LogoutBtn';
+export { LogOutBtn } from './ui/LogoutBtn/LogoutBtn';
