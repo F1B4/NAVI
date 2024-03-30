@@ -14,7 +14,12 @@ export function HomePage() {
   const loginSuccess = params.get('loginSuccess');
 
   const noti = () => {
-    axios.get(`${baseApi}/notification/subscribe/${store.userId}`);
+    axios.get(`${baseApi}/notification/subscribe/${store.userId}`, {
+      headers: {
+        Accept: 'text/event-stream',
+        'Cache-Control': 'no-cache',
+      },
+    });
   };
 
   useEffect(() => {
@@ -23,7 +28,6 @@ export function HomePage() {
         store.getData();
         console.log('check');
         noti();
-        console.log('check2');
       }
     };
     fetchData();

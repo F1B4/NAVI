@@ -37,6 +37,7 @@ export function CoverList() {
 
           return (
             <Card
+              id={cover.id}
               key={index}
               classCard={css.card}
               classImg={css.img}

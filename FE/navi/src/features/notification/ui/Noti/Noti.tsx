@@ -9,17 +9,24 @@ const SSEComponent = () => {
   useEffect(() => {
     const eventSource = new EventSource(
       `${baseApi}/notification/subscribe/${store.userId}`,
-    ); // SSE 엔드포인트 경로
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.event === 'notification') {
-        setNotification(data.data);
-        console.log('setNoti');
-      }
-    };
+    );
+
+    eventSource.addEventListener('open', function () {
+      console.log('Connection opened');
+    });
+
+    eventSource.addEventListener('notification', function (event) {
+      console.log('Notification received:', event.data);
+      setNotification(event.data); // 이벤트 데이터를 상태에 업데이트
+    });
+
+    eventSource.addEventListener('error', function () {
+      console.log('Error occurred');
+    });
 
     return () => {
-      eventSource.close(); // 컴포넌트가 언마운트될 때 EventSource 연결을 닫습니다.
+      console.log('Cleaning up...');
+      eventSource.close(); // 컴포넌트가 언마운트되면 SSE 연결 종료
     };
   }, []);
 
@@ -29,5 +36,4 @@ const SSEComponent = () => {
     </div>
   );
 };
-
 export default SSEComponent;
