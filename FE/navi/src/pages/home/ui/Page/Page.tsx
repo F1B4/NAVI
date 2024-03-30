@@ -26,12 +26,11 @@ export function HomePage() {
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
         store.getData();
-        console.log('check');
         noti();
       }
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <div className={css.root}>
