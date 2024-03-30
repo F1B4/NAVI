@@ -69,16 +69,16 @@ public class NoraebangService {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
 
-        // 현재 인가에서 유저 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
-        // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
-        Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
+//        // 현재 인가에서 유저 가져오기
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//
+//        // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
+//        Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
 
         NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
-        noraebangDetailDto.updateExists(exists.isPresent());
+//        noraebangDetailDto.updateExists(exists.isPresent());
 
         return noraebangDetailDto;
     }
