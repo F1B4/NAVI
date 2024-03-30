@@ -7,9 +7,8 @@ export const noraebangDetailApi = async (
 ): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/noraebangs/${props}`,
+      `${baseApi}/noraebangs/detail/${props}`,
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error('Error get noraebang detail', error);

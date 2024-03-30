@@ -5,13 +5,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
+import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.user.CustomOAuth2User;
+import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.cover.CoverLike;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
@@ -46,6 +49,7 @@ public class    NoraebangService {
     private final NotificationService notificationService;
     private final FastApiService fastApiService;
     private final VoiceRepository voiceRepository;
+    private final UserService userService;
 
     /*
     모든 노래방 게시글 가져오기
@@ -66,18 +70,20 @@ public class    NoraebangService {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
 
-        // 현재 인가에서 유저 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+        if (userService.userState()) {
+            // 인가 확인
+            System.out.println("noraebang =================== " + noraebang);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
-        // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
-        Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
+            // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
+            Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
+            NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
+            noraebangDetailDto.updateExists(exists.isPresent());
+        }
 
-        NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
-        noraebangDetailDto.updateExists(exists.isPresent());
-
-        return noraebangDetailDto;
+        return NoraebangDetailDto.convertToDto(noraebang);
     }
 
 
@@ -169,16 +175,6 @@ public class    NoraebangService {
         }
     }
 
-    /*
-    게시글 댓글 모두 조회
-     */
-    public List<NoraebangReviewAllDto> getNoraebangReviews(Long noraebangPk) {
-        Noraebang noraebang = noraebangRepository.getById(noraebangPk);
-        List<NoraebangReview> noraebangReviews = noraebang.getNoraebangReviews();
-        return noraebangReviews.stream()
-                .map(NoraebangReviewAllDto::convertToDto)
-                .collect(Collectors.toList());
-    }
 
     /*
     게시글 댓글 삭제.
@@ -207,24 +203,50 @@ public class    NoraebangService {
     public void toggleNoraebangLike(Long noraebangPk) {
         Noraebang noraebang = noraebangRepository.getById(noraebangPk);
         // 현재 인가에서 유저 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
-        Optional<NoraebangLike> byNoraebangIdAndUserId = noraebangLikeRepository.findByNoraebangIdAndUserId(noraebangPk, user.getId());
-        if (byNoraebangIdAndUserId.isPresent()) {
-            noraebangLikeRepository.delete(byNoraebangIdAndUserId.get());
-            Integer likeCount = noraebang.getLikeCount();
-            noraebang.setLikeCount(likeCount-1);
-        } else {
-            NoraebangLike like = NoraebangLike.builder()
-                    .noraebang(noraebang)
-                    .user(user)
-                    .build();
-            Integer likeCount = noraebang.getLikeCount();
-            noraebang.setLikeCount(likeCount+1);
-            noraebangLikeRepository.save(like);
+        if (userService.userState()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+            Optional<NoraebangLike> byNoraebangIdAndUserId = noraebangLikeRepository.findByNoraebangIdAndUserId(noraebangPk, user.getId());
+            if (byNoraebangIdAndUserId.isPresent()) {
+                noraebangLikeRepository.delete(byNoraebangIdAndUserId.get());
+                Integer likeCount = noraebang.getLikeCount();
+                noraebang.setLikeCount(likeCount-1);
+            } else {
+                NoraebangLike like = NoraebangLike.builder()
+                        .noraebang(noraebang)
+                        .user(user)
+                        .build();
+                Integer likeCount = noraebang.getLikeCount();
+                noraebang.setLikeCount(likeCount+1);
+                noraebangLikeRepository.save(like);
+            }
         }
     }
+
+    /*
+    노래방 게시판 전체 게시글 조회
+    조회순
+     */
+    public List<NoraebangAllDto> getNoraebangByView() {
+        //노래방의 모든 게시글을 조회하는데 조회수 순으로 정렬함
+        List<Noraebang> noraebangs = noraebangRepository.findAll(Sort.by(Sort.Direction.DESC, "hit")); // 조회수 내림차순 정렬
+        return  noraebangs.stream()
+                .map(NoraebangAllDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    노래방 게시판 전체 게시글 조회
+    좋아요 순
+     */
+    public List<NoraebangAllDto> getNoraebangByLike() {
+        //노래방의 모든 게시글을 조회하는데 조회수 순으로 정렬함
+        List<Noraebang> noraebangs = noraebangRepository.findAll(Sort.by(Sort.Direction.DESC,"likeCount")); // 조회수 내림차순 정렬
+        return  noraebangs.stream()
+                .map(NoraebangAllDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 
 }

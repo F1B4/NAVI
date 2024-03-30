@@ -6,9 +6,6 @@ export const noraebangListApi = async (): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
       `${baseApi}/noraebangs`,
-      {
-        withCredentials: true,
-      },
     );
     return response.data;
   } catch (error) {

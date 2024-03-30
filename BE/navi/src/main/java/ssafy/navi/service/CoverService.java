@@ -42,6 +42,7 @@ public class CoverService {
     private final CoverUserRepository coverUserRepository;
     private final NotificationService notificationService;
     private final FastApiService fastApiService;
+    private final UserService userService;
 
     /*
     커버 게시판 전체 게시글 조회
@@ -238,6 +239,7 @@ public class CoverService {
                         for (Long user : users) {
                             notificationService.sendNotificationToUser(user, "커버 생성을 시작합니다.");
                         }
+
                         fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
                         return "Cover 생성 완료";
                     }else{
@@ -303,15 +305,19 @@ public class CoverService {
     public CoverDto getCoverDetail(Long coverPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        User user = userRepository.findById(Long.valueOf(1))
-                .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        //인가에서 user가져오기
+        if (userService.userState()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+            Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
+            CoverDto coverDto= CoverDto.convertToDto(cover);
+            coverDto.updateExists(exists.isPresent());
+        }
         cover.updateCover(cover.getHit()+1,cover.getWeeklyHit()+1);
-        CoverDto coverDto= CoverDto.convertToDto(cover);
 
         //내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
-        Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
-        coverDto.updateExists(exists.isPresent());
-        return coverDto;
+        return CoverDto.convertToDto(cover);
     }
 
     /*
@@ -384,7 +390,11 @@ public class CoverService {
     }
 
     public List<MatchDto> getMatchings() throws Exception {
-        Long userPk = Long.valueOf(2);
+        //인가에서 user가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        Long userPk = userRepository.findByUsername(customOAuth2User.getUsername()).getId();
+
         List<MatchingUser> matchings = matchingUserRepository.findAllByUser(userRepository.findById(userPk)
                 .orElseThrow(() -> new Exception("유저가 없습니다.")));
 
@@ -396,5 +406,24 @@ public class CoverService {
         }
 
         return matchDtoList;
+    }
+
+    public void completeCoverVideo(Long coverPk) throws Exception {
+        Cover cover = coverRepository.findById(coverPk).orElseThrow(() -> new Exception("커버가 없습니다"));
+        List<CoverUser> coverUsers = cover.getCoverUsers();
+        Set<Long> users = new HashSet<>();
+        for (CoverUser coverUser : coverUsers) {
+            Long pk = coverUser.getUser().getId();
+            users.add(pk);
+        }
+        for (Long user : users) {
+            User userObject = userRepository.findById(user).orElseThrow(() -> new Exception("유저가 없습니다."));
+            notificationService.sendNotificationToUser(userObject.getId(), "커버가 생성 되었습니다.");
+        }
+    }
+
+    public void completeTrain(Long userPk) throws Exception {
+        userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
+        notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 생성이 가능합니다.");
     }
 }

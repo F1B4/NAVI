@@ -43,13 +43,18 @@ public class SecurityConfig {
                 .requestMatchers("/covers/detail/**")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/byView")
-                .requestMatchers("/noraebangs/byLike")
-                .requestMatchers("/noraebangs/detail/**")
+                .requestMatchers("/noraebangs/**")
+//                .requestMatchers("/noraebangs/byView")
+//                .requestMatchers("/noraebangs/byLike")
+//                .requestMatchers("/noraebangs/detail/**")
                 // NotificationController
                 .requestMatchers("/notification/**")
                 // fastAPIController
-                .requestMatchers("/fastapi/**")
+                .requestMatchers("/ai/**")
+                .requestMatchers("/ai/cover")
+                .requestMatchers("/ai/train")
+                // alarmController
+                .requestMatchers("/alarms/**")
                 ;
     }
     @Bean

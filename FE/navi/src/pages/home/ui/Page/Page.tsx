@@ -3,21 +3,35 @@ import { NewContentsList } from '../NewContentsList/NewContentsList';
 import { HotCoverList } from '../HotCoverList/HotCoverList';
 import { HotNoraebangList } from '../HotNoraebangList/HotNoraebangList';
 import { useUserStore } from '@/shared/store';
+import axios from 'axios';
 import css from './Page.module.css';
+import { baseApi } from '@/shared/api';
 
 export function HomePage() {
   const store = useUserStore();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const loginSuccess = params.get('loginSuccess');
+
+  const noti = () => {
+    axios.get(`${baseApi}/notification/subscribe/${store.userId}`, {
+      headers: {
+        Accept: 'text/event-stream',
+        'Cache-Control': 'no-cache',
+      },
+    });
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
         store.getData();
+        console.log('check');
+        noti();
       }
     };
     fetchData();
-  }, []);
+  });
 
   return (
     <div className={css.root}>
