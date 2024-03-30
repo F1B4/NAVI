@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/notification")
+@RequestMapping("/sse/notification")
 @RestController
 public class NotificationController {
 

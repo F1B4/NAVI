@@ -38,7 +38,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createJwt(username, role, 60*60*60*60L);
 
         response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("https://j10d107.p.ssafy.io/?loginSuccess=true");
+//        response.sendRedirect("https://j10d107.p.ssafy.io/?loginSuccess=true");
+        response.sendRedirect("http://localhost:5173/?loginSuccess=true");
+
     }
 
     private Cookie createCookie(String key, String value) {
