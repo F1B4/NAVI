@@ -1,17 +1,17 @@
 import css from './Info.module.css';
 
 interface InfoProps {
-  title: string | null;
-  user: string | null;
-  content: string | null;
+  title: string;
+  user: string;
+  content: string;
 }
 
 export function Info(props: InfoProps) {
   return (
     <div className={css.root}>
-      <div>{props.title}</div>
-      <div>{props.user}</div>
-      <div>{props.content}</div>
+      <div className={css.title}>{props.title}</div>
+      <div className={css.user}>{props.user}</div>
+      <div className={css.content}>{props.content}</div>
     </div>
   );
 }

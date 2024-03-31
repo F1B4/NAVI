@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/covers")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
-                .requestMatchers("/covers/detail/**")
+//                .requestMatchers("/covers/detail/**")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
                 .requestMatchers("/noraebangs/**")
@@ -108,10 +108,10 @@ public class SecurityConfig {
                 );
 
         //경로별 인가 작업
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/").permitAll()
-//                        .anyRequest().authenticated());
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
         http
