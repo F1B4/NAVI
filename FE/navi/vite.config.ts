@@ -23,12 +23,8 @@ export default defineConfig({
     strictPort: false,
     proxy: {
       // 프록시 설정
-      '/wss': {
-        target: 'https://j10d107.p.ssafy.io', // WebSocket을 사용하는 경우의 타겟 설정
-        ws: true,
-      },
       '/ws': {
-        target: 'http://j10d107.p.ssafy.io', // WebSocket을 사용하는 경우의 타겟 설정
+        target: 'http://j10d107.p.ssafy.io:5173', // WebSocket을 사용하는 경우의 타겟 설정
         ws: true,
       },
     },
