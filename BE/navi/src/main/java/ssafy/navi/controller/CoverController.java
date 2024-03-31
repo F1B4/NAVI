@@ -8,11 +8,9 @@ import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
+import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.user.User;
-import ssafy.navi.service.ArtistService;
-import ssafy.navi.service.CoverService;
-import ssafy.navi.service.SongService;
-import ssafy.navi.service.UserService;
+import ssafy.navi.service.*;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +25,7 @@ public class CoverController {
     private final ArtistService artistService;
     private final SongService songService;
     private final UserService userService;
+    private final FastApiService fastApiService;
     /*
     커버 게시판 목록 가져오기
     최신순
@@ -93,7 +92,16 @@ public class CoverController {
      */
     @PostMapping("")
     public Response<?> createCover(@RequestBody CoverRegistDto coverRegistDto) throws Exception{
-        return Response.of("OK","Make a Song 시작하기",coverService.createCover(coverRegistDto));
+        Response<Long> result = coverService.createCover(coverRegistDto);
+        if (result.getMessage().equals("1")) {
+            System.out.println("result.getData() @@@@@@@@@@@@@ " + result.getData());
+            fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
+        } else if (result.getMessage() == "2") {
+            fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
+        }
+
+
+        return Response.of("OK","Make a Song 시작하기",null);
     }
 
     /*
