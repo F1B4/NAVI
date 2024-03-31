@@ -1,4 +1,4 @@
-import { Card } from '@/shared/ui';
+// import { Card } from '@/shared/ui';
 import css from './MySongList.module.css';
 
 interface MySongProps {
@@ -6,6 +6,7 @@ interface MySongProps {
 }
 
 export function MySongList(props: MySongProps) {
+  console.log(props)
   return (
     <div className={css.container}>
       {/* {Array.isArray(props.mySongList) &&

@@ -5,7 +5,7 @@ import type { Profile } from '@/entities/profile';
 import { useUserStore } from '@/shared/store';
 import { Info } from '../Info/Info';
 // import { LikeList } from '../LikeList/LikeList';
-import { MySongList } from '../MySongList/MySongList';
+// import { MySongList } from '../MySongList/MySongList';
 import css from './Page.module.css';
 
 export function ProfilePage() {
@@ -54,4 +54,5 @@ export function ProfilePage() {
       </div>
     );
   }
+  return null;
 }
