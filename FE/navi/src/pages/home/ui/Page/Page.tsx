@@ -15,12 +15,16 @@ export function HomePage() {
 
   useEffect(() => {
     const noti = async () => {
-      await axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
-        headers: {
-          Accept: 'text/event-stream',
-          'Cache-Control': 'no-cache',
+      // await axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
+      await axios.get(
+        `wss://j10d107.p.ssafy.io/sse/notification/subscribe/${store.userId}`,
+        {
+          headers: {
+            Accept: 'text/event-stream',
+            'Cache-Control': 'no-cache',
+          },
         },
-      });
+      );
     };
 
     const fetchData = async () => {
