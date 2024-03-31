@@ -66,21 +66,36 @@ public class    NoraebangService {
     /*
     노래방 게시글 디테일 정보 가져오기
      */
-    public NoraebangDetailDto getNoraebangDetail(Long pk) {
+    public NoraebangDetailDto getNoraebangDetail(Long pk, Long userPk) throws Exception {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
+        Integer hit = noraebang.getHit();
+        noraebang.setHit(hit+1);
 
-        if (userService.userState()) {
-            // 인가 확인
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+        Optional<User> userOptional = userRepository.findById(userPk);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+//        if (userService.userState()) {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+            String s = user.getNickname() + "디테일 정보 확인" + noraebang.getHit();
 
+            notificationService.sendNotificationToUser(user.getId(), s);
             // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
             Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
             NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
             noraebangDetailDto.updateExists(exists.isPresent());
+            System.out.println("user.getNickname() + user.getId() = " + user.getNickname() + user.getId());
         }
+//            String s = user.getNickname() + "디테일 정보 확인" + noraebang.getHit();
+//
+//            notificationService.sendNotificationToUser(user.getId(), s);
+//            // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
+//            Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
+//            NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
+//            noraebangDetailDto.updateExists(exists.isPresent());
+//        }
 
         return NoraebangDetailDto.convertToDto(noraebang);
     }
