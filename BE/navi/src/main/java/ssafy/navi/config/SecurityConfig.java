@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/main/**")
                 // CoverController
                 .requestMatchers("/covers")
+                .requestMatchers("/covers/detail/**")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
                 // NoraebangController
