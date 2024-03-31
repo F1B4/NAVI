@@ -5,9 +5,11 @@ import type { Noraebang } from '@/entities/noraebangDetail';
 import { NoraebangDetail } from '../NoraebangDetail/NoraebangDetail';
 import { Info } from '../Info/Info';
 import { Reviews } from '@/widgets/Reviews';
+import { useUserStore } from '@/shared/store';
 import css from './Page.module.css';
 
 export function NoraebangDetailPage() {
+  const store = useUserStore();
   const { noraebangPk } = useParams();
   const props = Number(noraebangPk);
   const [noraebang, setNoraebang] = useState<Noraebang>();
@@ -15,7 +17,10 @@ export function NoraebangDetailPage() {
   useEffect(() => {
     const AxiosNoraebang = async () => {
       try {
-        const response = await noraebangDetailApi(props);
+        const response = await noraebangDetailApi({
+          detailPk: props,
+          userId: store.userId,
+        });
         if (response?.resultCode === 'OK') {
           setNoraebang(response.data);
           setLoad(true);

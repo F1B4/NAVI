@@ -100,9 +100,9 @@ public class CoverController {
     커버 게시판 디테일 보기, pathvariable로 온 cover_pk를 통해 조회해서 Map형식으로 필요한 정보를 클라이언트로 보냄
     커버 정보, 커버 댓글, 커버 좋아요, 원곡 정보, 맡은 파트
      */
-    @GetMapping("/detail/{cover_pk}")
-    public Response<CoverDto> getCoverDetail(@PathVariable("cover_pk") Long coverPk) throws Exception {
-        return Response.of("OK","게시글 상세보기",coverService.getCoverDetail(coverPk));
+    @GetMapping("/detail/{cover_pk}/{user_pk}")
+    public Response<CoverDto> getCoverDetail(@PathVariable("cover_pk") Long coverPk, @PathVariable("user_pk") Long userPk) throws Exception {
+        return Response.of("OK","게시글 상세보기",coverService.getCoverDetail(coverPk, userPk));
     }
 
     /*

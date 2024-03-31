@@ -26,6 +26,7 @@ public class NoraebangController {
     public final ArtistService artistService;
     public final S3Service s3Service;
     public final NotificationService notificationService;
+    public final UserService userService;
 
 
     /*
@@ -57,9 +58,11 @@ public class NoraebangController {
     /*
     노래방 게시글 디테일 정보 가져오기
      */
-    @GetMapping("/detail/{noraebang_pk}")
-    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
-        return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
+    @GetMapping("/detail/{noraebang_pk}/{user_pk}")
+    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk,
+                                                           @PathVariable("user_pk") Long userPk) throws Exception {
+        System.out.println("userPk =@@@@@@@@@@@@@@@@@@@@ " + userPk);
+        return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk,userPk));
     }
 
     /*
