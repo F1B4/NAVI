@@ -35,18 +35,19 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
+                // UserController
+                .requestMatchers("/users/following/**")
+                .requestMatchers("/users/follower/**")
+                // MainController
                 .requestMatchers("/main/**")
                 // CoverController
                 .requestMatchers("/covers")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
-//                .requestMatchers("/covers/detail/**")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/**")
-//                .requestMatchers("/noraebangs/byView")
-//                .requestMatchers("/noraebangs/byLike")
-//                .requestMatchers("/noraebangs/detail/**")
+                .requestMatchers("/noraebangs/byView")
+                .requestMatchers("/noraebangs/byLike")
                 // NotificationController
                 .requestMatchers("/sse/notification/**")
                 // fastAPIController

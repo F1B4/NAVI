@@ -33,12 +33,13 @@ const Playbar: React.FC<PlaybarProps> = ({ url }) => {
         right: 0,
         backgroundColor: '#020715',
         transition: 'height 0.5s ease', // 부드럽게 올라가는 효과
-        height: expanded ? '90%' : '50px', // 높이 조정 -> 퍼센트로 했는데 우째 조정해야할지 모르겟어요
+        height: expanded ? '100%' : '75px', // 높이 조정 -> 퍼센트로 했는데 우째 조정해야할지 모르겟어요
         zIndex: 10,
         display: 'flex',
         flexDirection: 'column',
       }}
     >
+      {/* 전체 */}
       <div
         style={{
           display: expanded ? 'flex' : 'none',
@@ -56,6 +57,7 @@ const Playbar: React.FC<PlaybarProps> = ({ url }) => {
           width="70%" // 비디오의 너비
           height="70%" // 비디오의 높이
         />
+        {/* 우측 */}
         <div
           style={{
             width: '30%',
@@ -67,6 +69,7 @@ const Playbar: React.FC<PlaybarProps> = ({ url }) => {
           <p>이노래는익바오와황금윤기나는종이의우리의꿈AI커버입니다우</p>
         </div>
       </div>
+      {/* 하단 */}
       <div
         style={{
           position: 'absolute',
