@@ -174,7 +174,9 @@ public class    NoraebangService {
                         .build();
 
                 noraebangReviewRepository.save(review);
-                notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
+                if (!Objects.equals(noraebang.getUser().getId(), user.getId())) {
+                    notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
+                }
             }
         }
     }
