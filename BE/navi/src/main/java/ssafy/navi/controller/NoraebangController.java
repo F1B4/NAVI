@@ -28,6 +28,19 @@ public class NoraebangController {
     public final NotificationService notificationService;
 
 
+    public static class RecordRequest {
+        private String s3_path;
+
+        // s3_path의 getter와 setter
+        public String getS3_path() {
+            return s3_path;
+        }
+
+        public void setS3_path(String s3_path) {
+            this.s3_path = s3_path;
+        }
+    }
+
     /*
     아티스트 정보 가져오기
     노래방 생성 화면으로 갔을 때 처음엔 아티스트 정보들을 보내줘야 아티스트를 선택할 수 있기 때문에 아티스트를 담아서 보냄
@@ -74,6 +87,13 @@ public class NoraebangController {
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
     }
 
+    @PostMapping("/complete")
+    public void recordNoraebang() throws Exception {
+        // 여기에서 request 객체를 사용하여 필요한 로직 처리
+        // 예: s3_path 값을 사용하는 로직
+        System.out.println("fastAPI가 보낸거 받았습니다~~~~~~~~~~ 이제 알림 보냄!!!");
+        notificationService.sendNotificationToUser(8L, "노래방 생성 완료");
+    }
 
     /*
     노래방 게시글 내용 수정하기.

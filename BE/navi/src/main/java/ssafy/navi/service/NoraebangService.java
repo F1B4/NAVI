@@ -97,16 +97,17 @@ public class    NoraebangService {
             Long artistId = songbyId.get().getArtist().getId();
             Optional<Artist> artistById = artistRepository.findById(artistId);
             // 현재 인가에서 유저 가져오기
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+            User user = userRepository.findById(8L).get();
             if (artistById.isPresent() && user!=null) {
                 Noraebang noraebang = Noraebang.builder()
                         .content(content)
                         .user(user)
                         .song(songbyId.get())
                         .build();
-                noraebangRepository.save(noraebang);
+                Noraebang save = noraebangRepository.save(noraebang);
 
                 Voice voice = Voice.builder()
                         .path(fileName)
@@ -114,6 +115,8 @@ public class    NoraebangService {
                         .user(user)
                         .build();
                 voiceRepository.save(voice);
+                System.out.println("save.getId() =@@@@@@@@@@@@@@@@@@@@@@@@@ " + save.getId());
+                fastApiService.fetchDataFromFastAPI("/noraebangs/record",songbyId.get().getId(), fileName, save.getId());
             }
 
 //             노래방 게시글이 10개가 되었을때 fastAPI에 request요청 보내기
@@ -200,6 +203,11 @@ public class    NoraebangService {
         noraebangReviewRepository.deleteById(reviewPk);
 
         return "댓글 삭제 완료";
+    }
+
+    @Transactional
+    public void createRecord(String filePath) {
+
     }
 
     /*

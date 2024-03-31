@@ -30,4 +30,20 @@ public class FastApiService {
                 .bodyToMono(String.class)
                 .block();
     }
+
+    public String fetchDataFromFastAPI(String endPoint, Long pkValue, String path, Long noraebangPk) {
+        String pk = String.valueOf(pkValue);
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("pk", pk);
+        formData.add("path", path);
+        formData.add("noraebangPk", String.valueOf(noraebangPk));
+
+        return webClient.post()
+                .uri(endPoint)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData(formData))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
 }
