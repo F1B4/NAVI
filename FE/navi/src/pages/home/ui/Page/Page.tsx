@@ -17,8 +17,7 @@ export function HomePage() {
     const noti = async () => {
       await axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
         headers: {
-          'Content-Type': 'text/event-stream',
-          Connection: 'keep-alive',
+          Accept: 'text/event-stream',
           'Cache-Control': 'no-cache',
         },
       });
