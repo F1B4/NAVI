@@ -3,9 +3,17 @@ import ReactPlayer from 'react-player';
 
 interface PlaybarProps {
   url: string;
+  title: string; // 곡 제목
+  coverImage: string; // 곡 커버 이미지 URL
+  artist: string;
 }
 
-const Playbar: React.FC<PlaybarProps> = ({ url }) => {
+const Playbar: React.FC<PlaybarProps> = ({
+  url,
+  title,
+  coverImage,
+  artist,
+}) => {
   const [playing, setPlaying] = useState<boolean>(false); // 재생 중 여부
   const [played, setPlayed] = useState<number>(0); // 현재 진행 상태
   const [volume, setVolume] = useState<number>(0.5); // 볼륨 상태
@@ -49,7 +57,7 @@ const Playbar: React.FC<PlaybarProps> = ({ url }) => {
         right: 0,
         backgroundColor: '#020715',
         transition: 'height 0.5s ease', // 부드럽게 올라가는 효과
-        height: expanded ? '100%' : '75px', // 높이 조정 -> 퍼센트로 했는데 우째 조정해야할지 모르겟어요
+        height: expanded ? '100%' : '105px', // 높이 조정 -> 퍼센트로 했는데 우째 조정해야할지 모르겟어요
         zIndex: 10,
         display: 'flex',
         flexDirection: 'column',
@@ -85,6 +93,41 @@ const Playbar: React.FC<PlaybarProps> = ({ url }) => {
         >
           <h2>커버정보입니다우</h2>
           <p>이노래는익바오와황금윤기나는종이의우리의꿈AI커버입니다우</p>
+        </div>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: '30px',
+          padding: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* 곡 정보 표시 */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <img
+            src={coverImage}
+            alt="Cover"
+            style={{
+              width: '50px',
+              height: '50px',
+              marginRight: '10px',
+            }}
+          />
+          <span
+            style={{
+              marginRight: '10px',
+              marginBottom: '5px',
+              fontSize: '25px',
+            }}
+          >
+            {title}
+          </span>
+          <span>{artist}</span>
         </div>
       </div>
       {/* 하단 */}
