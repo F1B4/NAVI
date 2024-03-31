@@ -48,7 +48,7 @@ public class SecurityConfig {
 //                .requestMatchers("/noraebangs/byLike")
 //                .requestMatchers("/noraebangs/detail/**")
                 // NotificationController
-                .requestMatchers("/sse/notification/**")
+                .requestMatchers("/sse/**")
                 // fastAPIController
                 .requestMatchers("/ai/**")
                 .requestMatchers("/ai/cover")
