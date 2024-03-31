@@ -62,6 +62,7 @@ public class NoraebangController {
         notificationService.sendNotificationToUser(Long.valueOf(8), "sse확인용 보내기");
 
 
+
         return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
 
@@ -75,6 +76,7 @@ public class NoraebangController {
                                        @RequestParam("song_pk") Long songPk) throws Exception {
         noraebangService.createNoraebang(file, content, songPk);
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
+
 
 
     }
@@ -153,6 +155,7 @@ public class NoraebangController {
     @GetMapping("/byLike")
     public Response<List<NoraebangAllDto>> getNoraebangByLike() throws Exception{
         return Response.of("OK","게시글 목록 좋아요 순으로 가져오기",noraebangService.getNoraebangByLike());
+
 
 
     }
