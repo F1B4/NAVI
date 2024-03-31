@@ -1,14 +1,17 @@
 import css from './Info.module.css';
 
-interface InfoProps {}
+interface InfoProps {
+  title: string;
+  singer: string;
+}
 
 export function Info(props: InfoProps) {
   return (
     <div className={css.root}>
       <h1>커버 정보</h1>
       <div className={css.songInfo}>
-        <div className={css.title}></div>
-        <div className={css.singer}></div>
+        <div className={css.title}>{props.title}</div>
+        <div className={css.singer}>{props.singer}</div>
       </div>
       <div className={css.userInfo}>
         <div>
