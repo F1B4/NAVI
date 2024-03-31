@@ -78,7 +78,7 @@ public class NoraebangController {
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
     }
 
-    @PostMapping("/complete")
+    @GetMapping("/complete")
     public void recordNoraebang() throws Exception {
         // 여기에서 request 객체를 사용하여 필요한 로직 처리
         // 예: s3_path 값을 사용하는 로직
