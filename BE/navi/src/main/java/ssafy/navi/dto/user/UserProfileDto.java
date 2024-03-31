@@ -20,12 +20,13 @@ public class UserProfileDto {
     private String image;
     private Integer followingCount;
     private Integer followerCount;
+    private Boolean isFollow;
     private List<CoverDto> coverDtos;
     private List<NoraebangDto> noraebangDtos;
     private List<CoverLikeDto> coverLikeDtos;
     private List<NoraebangLikeDto> noraebangLikeDtos;
     // 엔티티 Dto로 변환
-    public static UserProfileDto convertToDto(User user, List<Cover> covers) {
+    public static UserProfileDto convertToDto(User user, Boolean isFollow, List<Cover> covers) {
         UserProfileDto userInfoDto = new UserProfileDto();
 
         // set
@@ -33,6 +34,7 @@ public class UserProfileDto {
         userInfoDto.setImage(user.getImage());
         userInfoDto.setFollowingCount(user.getFollowingCount());
         userInfoDto.setFollowerCount(user.getFollowerCount());
+        userInfoDto.setIsFollow(isFollow);
         userInfoDto.setCoverDtos(covers.stream()
                 .map(CoverDto::convertToDtoList)
                 .collect(Collectors.toList()));

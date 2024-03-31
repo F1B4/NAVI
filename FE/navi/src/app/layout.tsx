@@ -2,7 +2,7 @@
 import React from 'react';
 import { LayoutHeader } from '@/widgets/LayoutHeader';
 import { LayoutSidebar } from '@/widgets/LayoutSidebar';
-import { PlayBar } from '@/widgets/Playbar'; // PlayBar 컴포넌트 임포트
+import { PlayBar } from '@/widgets/Playbar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,7 +10,9 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
   <div style={{ maxWidth: '100vw', overflow: 'hidden' }}>
-    <LayoutHeader />
+    <div style={{ position: 'relative', zIndex: 20 }}>
+      <LayoutHeader />
+    </div>
     <div style={{ display: 'flex', paddingTop: '75px' }}>
       <LayoutSidebar />
       <div style={{ flex: 1, marginLeft: '320px' }}>{children}</div>
