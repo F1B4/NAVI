@@ -5,6 +5,7 @@ import { baseUrl } from '@/shared/url';
 interface ButtonProps {
   to?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+
   className: string;
   icon?: string;
   content: string;
