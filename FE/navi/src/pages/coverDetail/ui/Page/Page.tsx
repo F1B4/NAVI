@@ -5,9 +5,11 @@ import type { Cover } from '@/entities/coverDetail';
 import { CoverDetail } from '../CoverDetail/CoverDetail';
 // import { Info } from '../Info/Info';
 // import { Reviews } from '@/widgets/Reviews';
+import { useUserStore } from '@/shared/store';
 import css from './Page.module.css';
 
 export function CoverDetailPage() {
+  const store = useUserStore();
   const { coverPk } = useParams();
   const props = Number(coverPk);
   const [cover, setCover] = useState<Cover>();
@@ -15,7 +17,10 @@ export function CoverDetailPage() {
   useEffect(() => {
     const AxiosCover = async () => {
       try {
-        const response = await coverDetailApi(props);
+        const response = await coverDetailApi({
+          detailPk: props,
+          userId: store.userId,
+        });
         if (response?.resultCode === 'OK') {
           setCover(response.data);
           setLoad(true);

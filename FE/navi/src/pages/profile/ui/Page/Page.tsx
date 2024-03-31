@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { profileApi } from '@/entities/profile';
 import type { Profile } from '@/entities/profile';
+import { useUserStore } from '@/shared/store';
 import { Info } from '../Info/Info';
 // import { LikeList } from '../LikeList/LikeList';
 import { MySongList } from '../MySongList/MySongList';
 import css from './Page.module.css';
 
 export function ProfilePage() {
+  const store = useUserStore();
   const { userPk } = useParams();
   const props = Number(userPk);
   const [profile, setProfile] = useState<Profile>();
@@ -16,7 +18,10 @@ export function ProfilePage() {
   useEffect(() => {
     const AxiosProfile = async () => {
       try {
-        const response = await profileApi(props);
+        const response = await profileApi({
+          detailPk: props,
+          userId: store.userId,
+        });
         if (response?.resultCode === 'OK') {
           setProfile(response.data);
           setLoad(true);
