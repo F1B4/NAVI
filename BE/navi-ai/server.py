@@ -22,6 +22,7 @@ async def infer(pk : str = Form(...)):
 
 # 노래방 video 생성 엔드포인트
 @app.post("/noraebangs/record")
-async def record(pk : str = Form(...)):
+async def record(pk : str = Form(...), path: str = Form(...), noraebangPk : str = Form(...)):
     # pk: noraebang_pk
-    combine.audioCombine(pk)
+    print(pk,path,noraebangPk)
+    combine.audioCombine(pk, path, noraebangPk)
