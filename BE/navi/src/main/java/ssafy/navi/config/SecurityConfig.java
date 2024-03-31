@@ -38,10 +38,12 @@ public class SecurityConfig {
                 // UserController
                 .requestMatchers("/users/following/**")
                 .requestMatchers("/users/follower/**")
+                .requestMatchers("/users/profile/**")
                 // MainController
                 .requestMatchers("/main/**")
                 // CoverController
                 .requestMatchers("/covers")
+                .requestMatchers("/covers/detail/**")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
                 // NoraebangController

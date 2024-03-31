@@ -12,7 +12,7 @@ export const coverDetailApi = async (
 ): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/covers/${props.detailPk}/${props.userId}`,
+      `${baseApi}/covers/detail/${props.detailPk}/${props.userId}`,
     );
     return response.data;
   } catch (error) {

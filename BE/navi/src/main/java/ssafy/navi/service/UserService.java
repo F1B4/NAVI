@@ -73,7 +73,7 @@ public class UserService {
     유저 피드
     userPk
      */
-    public UserProfileDto getUserProfile(Long userPk) throws Exception {
+    public UserProfileDto getUserProfile(Long userPk, Long loginUserPk) throws Exception {
         User user = userRepository.findById(userPk)
                 .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
         
@@ -81,12 +81,9 @@ public class UserService {
         // 로그인 안하고있으면 디폴트값 false로 받음
         Boolean isFollow = false;
         // 로그인했을 경우 isFollow 갱신
-        if(userState()){
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User loginUser = userRepository.findByUsername(customOAuth2User.getUsername());
-
-            Follow follow = followRepository.findByFromUserIdAndToUserId(loginUser.getId(), user.getId());
+        Optional<User> loginUser = userRepository.findById(loginUserPk);
+        if(loginUser.isPresent()){
+            Follow follow = followRepository.findByFromUserIdAndToUserId(loginUser.get().getId(), user.getId());
             if(follow!=null)
                 isFollow = true;
         }
