@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { coverDetailApi } from '@/entities/coverDetail';
 import type { Cover } from '@/entities/coverDetail';
 import { CoverDetail } from '../CoverDetail/CoverDetail';
-import { Info } from '../Info/Info';
-import { Reviews } from '@/widgets/Reviews';
+// import { Info } from '../Info/Info';
+// import { Reviews } from '@/widgets/Reviews';
 import css from './Page.module.css';
 
 export function CoverDetailPage() {
@@ -30,9 +30,12 @@ export function CoverDetailPage() {
   if (load && cover) {
     return (
       <div className={css.root}>
-        <div className={css.left}>{/* <CoverDetail /> */}</div>
+        <div className={css.left}>
+          <CoverDetail video={cover.video} />
+          바보
+        </div>
         <div className={css.right}>
-          <Info />
+          {/* <Info /> */}
           {/* <Reviews type="covers" data={cover.coverReviewDtos} /> */}
         </div>
       </div>
