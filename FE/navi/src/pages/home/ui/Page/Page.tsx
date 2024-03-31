@@ -13,8 +13,8 @@ export function HomePage() {
   const params = new URLSearchParams(search);
   const loginSuccess = params.get('loginSuccess');
 
-  const noti = () => {
-    axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
+  const noti = async () => {
+    await axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
       headers: {
         Accept: 'text/event-stream',
         'Cache-Control': 'no-cache',
@@ -26,7 +26,7 @@ export function HomePage() {
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
         store.getData();
-        noti();
+        await noti();
       }
     };
     fetchData();
