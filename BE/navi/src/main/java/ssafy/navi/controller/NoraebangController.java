@@ -9,10 +9,7 @@ import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.song.SongDto;
-import ssafy.navi.service.ArtistService;
-import ssafy.navi.service.NoraebangService;
-import ssafy.navi.service.S3Service;
-import ssafy.navi.service.SongService;
+import ssafy.navi.service.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ public class NoraebangController {
     public final SongService songService;
     public final ArtistService artistService;
     public final S3Service s3Service;
+    public final NotificationService notificationService;
 
 
     /*
@@ -60,7 +58,8 @@ public class NoraebangController {
     노래방 게시글 디테일 정보 가져오기
      */
     @GetMapping("/detail/{noraebang_pk}")
-    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) {
+    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
+        notificationService.sendNotificationToUser(Long.valueOf(8), "sse확인용 보내기");
         return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
 
@@ -74,7 +73,6 @@ public class NoraebangController {
                                        @RequestParam("song_pk") Long songPk) throws Exception {
         noraebangService.createNoraebang(file, content, songPk);
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
-
     }
 
 
@@ -106,6 +104,14 @@ public class NoraebangController {
     public Response<?> createNoraebangReview(@PathVariable("noraebang_pk") Long noraebangPk, @RequestBody NoraebangReviewDto noraebangReviewDto) throws Exception {
         noraebangService.createNoraebangReview(noraebangPk, noraebangReviewDto);
         return Response.of("OK", "댓글 작성", null);
+    }
+
+    /*
+    게시글 댓글 모두 조회
+     */
+    @GetMapping("/{noraebang_pk}/review")
+    public Response<List<NoraebangReviewAllDto>> getNoraebangReviews(@PathVariable("noraebang_pk") Long noraebangPk) {
+        return Response.of("OK", "댓글 조회", noraebangService.getNoraebangReviews(noraebangPk));
     }
 
     /*

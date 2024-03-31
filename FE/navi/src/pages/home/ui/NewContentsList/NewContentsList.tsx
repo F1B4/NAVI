@@ -41,6 +41,7 @@ export function NewContentsList() {
             : newContent.userDto.nickname;
           return (
             <Card
+              id={newContent.id}
               key={index}
               classCard={type === 'cover' ? css.coverCard : css.noraebangCard}
               classImg={type === 'cover' ? css.coverImg : css.noraebangImg}

@@ -14,20 +14,23 @@ export function HomePage() {
   const loginSuccess = params.get('loginSuccess');
 
   const noti = () => {
-    axios.get(`${baseApi}/notification/subscribe/${store.userId}`);
+    axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
+      headers: {
+        Accept: 'text/event-stream',
+        'Cache-Control': 'no-cache',
+      },
+    });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
         store.getData();
-        console.log('check');
         noti();
-        console.log('check2');
       }
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <div className={css.root}>

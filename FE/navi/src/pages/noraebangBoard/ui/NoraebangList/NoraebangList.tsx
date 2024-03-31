@@ -26,6 +26,7 @@ export function NoraebangList() {
       {Array.isArray(noraebangs) &&
         noraebangs.map((noraebang, index) => (
           <Card
+            id={noraebang.id}
             key={index}
             classCard={css.card}
             classImg={css.img}

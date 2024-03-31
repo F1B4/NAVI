@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,42 +128,44 @@ public class UserService {
     @Transactional
     public FollowingDto follow(Long userPk) throws Exception{
         // 현재 인가에서 유저 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User fromUser = userRepository.findByUsername(customOAuth2User.getUsername());
+        if (userState()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User fromUser = userRepository.findByUsername(customOAuth2User.getUsername());
 
-        User toUser = userRepository.findById(userPk)
-                .orElseThrow(() -> new Exception("팔로우 할 유저가 존재하지 않음"));
+            User toUser = userRepository.findById(userPk)
+                    .orElseThrow(() -> new Exception("팔로우 할 유저가 존재하지 않음"));
 
-        Follow follow = followRepository.findByFromUserIdAndToUserId(fromUser.getId(),toUser.getId());
+            Follow follow = followRepository.findByFromUserIdAndToUserId(fromUser.getId(),toUser.getId());
+            // 이미 팔로우하고 있을 경우, 언팔로우 후 카운트 조정
+            if (follow!=null) {
+                // 언팔로우
+                followRepository.delete(follow);
+                // 카운트 조정
+                fromUser.updateFollowingCount(-1);
+                toUser.updateFollowerCount(-1);
+                // 여기서 toUser에게(내가 팔로우 하는 상대방) 언팔로우 메세지 보내기
 
-        // 이미 팔로우하고 있을 경우, 언팔로우 후 카운트 조정
-        if (follow!=null) {
-            // 언팔로우
-            followRepository.delete(follow);
-            // 카운트 조정
-            fromUser.updateFollowingCount(-1);
-            toUser.updateFollowerCount(-1);
-            // 여기서 toUser에게(내가 팔로우 하는 상대방) 언팔로우 메세지 보내기
-
-            return null;
+                return null;
+            }
+            // 팔로우하고 있지 않을 경우, 팔로우 후 카운트 조정
+            else {
+                // 팔로우
+                follow = Follow.builder()
+                        .fromUser(fromUser)
+                        .toUser(toUser)
+                        .build();
+                followRepository.save(follow);
+                // 카운트 조정
+                fromUser.updateFollowingCount(1);
+                toUser.updateFollowerCount(1);
+                // 여기서 toUser에게(내가 팔로우 하는 상대방) 팔로우 메세지 보내기
+                String s = fromUser.getNickname() + "님이 팔로우 하셨습니다.";
+                notificationService.sendNotificationToUser(toUser.getId(), s);
+                return FollowingDto.convertToDto(follow);
+            }
         }
-        // 팔로우하고 있지 않을 경우, 팔로우 후 카운트 조정
-        else {
-            // 팔로우
-            follow = Follow.builder()
-                    .fromUser(fromUser)
-                    .toUser(toUser)
-                    .build();
-            followRepository.save(follow);
-            // 카운트 조정
-            fromUser.updateFollowingCount(1);
-            toUser.updateFollowerCount(1);
-            // 여기서 toUser에게(내가 팔로우 하는 상대방) 팔로우 메세지 보내기
-            String s = fromUser.getNickname() + "님이 팔로우 하셨습니다.";
-            notificationService.sendNotificationToUser(toUser.getId(), s);
-            return FollowingDto.convertToDto(follow);
-        }
+        return null;
     }
 
     /*
@@ -200,15 +203,49 @@ public class UserService {
     }
 
     /*
+    맞팔 유저 검색하기
+    UserDto
+     */
+    public List<UserDto> getSearchMutualFollow(String keyword){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User=(CustomOAuth2User) authentication.getPrincipal();
+        User user=userRepository.findByUsername(customOAuth2User.getUsername());
+        List<UserDto> userDtos = followRepository.findMutualFollowersByKeyword(user.getId(),keyword).stream()
+                .map(UserDto::convertToDtoMutualFollow)
+                .collect(Collectors.toList());
+        return userDtos;
+    }
+
+    /*
     유저 녹음된 목소리 파일 개수 조회
     Integer
      */
-    public Integer getUserVoiceCount() throws Exception{
+    public Integer getUserVoiceCount() {
         // 현재 인가에서 유저 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
         User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
         return noraebangRepository.countByUserId(user.getId());
+    }
+
+
+    /*
+    유저가 로그인 했는지 안했는지 확인
+    */
+    public Boolean userState() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null) {
+            System.out.println("SecurityContext가 설정되지 않았습니다.");
+            return false; // 또는 예외를 던질 수 있습니다.
+        }
+
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null || authentication.getPrincipal().toString().equals("anonymousUser")) {
+            System.out.println("유저 상태: 로그인 되어있지 않음");
+            // 임시 사용자 반환(제거)
+            return false;
+        }
+        return true;
     }
 }

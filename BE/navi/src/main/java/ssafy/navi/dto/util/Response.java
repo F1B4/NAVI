@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor(staticName = "of")
 public class Response<D> {
-
     private final String resultCode;
     private final String message;
     private final D data;

@@ -40,14 +40,15 @@ public class SecurityConfig {
                 .requestMatchers("/covers")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
-                .requestMatchers("/covers/detail/**")
+//                .requestMatchers("/covers/detail/**")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/byView")
-                .requestMatchers("/noraebangs/byLike")
-                .requestMatchers("/noraebangs/detail/**")
+                .requestMatchers("/noraebangs/**")
+//                .requestMatchers("/noraebangs/byView")
+//                .requestMatchers("/noraebangs/byLike")
+//                .requestMatchers("/noraebangs/detail/**")
                 // NotificationController
-                .requestMatchers("/notification/**")
+                .requestMatchers("/sse/notification/**")
                 // fastAPIController
                 .requestMatchers("/ai/**")
                 .requestMatchers("/ai/cover")
@@ -68,6 +69,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
+//                        configuration.setAllowedOrigins(Collections.singletonList("https://j10d107.p.ssafy.io"));
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
                         configuration.setAllowedMethods(Arrays.asList("*"));
                         configuration.setAllowCredentials(true);
@@ -106,10 +108,10 @@ public class SecurityConfig {
                 );
 
         //경로별 인가 작업
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/").permitAll()
-//                        .anyRequest().authenticated());
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
         http

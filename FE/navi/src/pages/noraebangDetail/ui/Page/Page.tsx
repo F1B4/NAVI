@@ -4,7 +4,7 @@ import { noraebangDetailApi } from '@/entities/noraebangDetail';
 import type { Noraebang } from '@/entities/noraebangDetail';
 import { NoraebangDetail } from '../NoraebangDetail/NoraebangDetail';
 import { Info } from '../Info/Info';
-// import { Comments } from '@/widgets/Comments';
+import { Reviews } from '@/widgets/Reviews';
 import css from './Page.module.css';
 
 export function NoraebangDetailPage() {
@@ -25,7 +25,7 @@ export function NoraebangDetailPage() {
       }
     };
     AxiosNoraebang();
-  }, [props]);
+  }, []);
 
   if (load && noraebang) {
     return (
@@ -39,10 +39,10 @@ export function NoraebangDetailPage() {
             user={noraebang.userDto.nickname}
             content={noraebang.content}
           />
-          <div>댓 글</div>
-          {/* <Comments /> */}
+          <Reviews type="noraebangs" data={noraebang.noraebangReviewDtos} />
         </div>
       </div>
     );
   }
+  return null;
 }

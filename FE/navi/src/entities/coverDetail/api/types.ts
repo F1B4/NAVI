@@ -17,17 +17,12 @@ interface SongInfo {
 interface ReviewInfo {
   id: number;
   content: string;
-  userId: number;
-  nickname: string;
-  image: string;
+  userDto: User;
 }
 
-interface LyricInfo {
+interface CoverInfo {
   id: number;
-  startTime: string;
-  endTime: string;
-  content: string;
-  sequence: number;
+  userDto: User;
   partDto: PartInfo;
 }
 
@@ -37,24 +32,23 @@ interface PartInfo {
   name: string;
 }
 
-interface Noraebang {
+interface Cover {
   id: number;
-  content: string;
-  record: string;
+  title: string;
+  video: string;
   hit: number;
   likeCount: number;
   songDto: SongInfo;
-  userDto: User;
   createdAt: Date;
+  coverReviewDtos: ReviewInfo[];
+  coverUserDtos: CoverInfo[];
   likeExsits: boolean;
-  noraebangReviewDtos: ReviewInfo[];
-  lyricDtos: LyricInfo[];
 }
 
 interface Response {
   resultCode: string;
   message: string;
-  data: Noraebang;
+  data: Cover;
 }
 
-export type { Response, Noraebang };
+export type { Response, Cover };

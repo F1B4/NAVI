@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import ssafy.navi.dto.cover.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
+import ssafy.navi.entity.user.User;
 import ssafy.navi.service.ArtistService;
 import ssafy.navi.service.CoverService;
 import ssafy.navi.service.SongService;
+import ssafy.navi.service.UserService;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,7 @@ public class CoverController {
     private final CoverService coverService;
     private final ArtistService artistService;
     private final SongService songService;
+    private final UserService userService;
     /*
     커버 게시판 목록 가져오기
     최신순
@@ -74,6 +78,14 @@ public class CoverController {
     @GetMapping("/{song_pk}/select")
     public Response<Map<String,Object>> getPartAndMutualFollow(@PathVariable("song_pk") Long songPk) throws Exception{
         return Response.of("OK","파트 및 맞팔로우 목록 가져오기",coverService.getPartAndMutualFollow(songPk));
+    }
+
+    /*
+    맞팔로우 검색
+     */
+    @GetMapping("/search/follow")
+    public Response<List<UserDto>> searchMutualFollow(@RequestParam("keyword") String keyword) throws Exception{
+        return Response.of("OK","검색된 맞팔로우 목록 가져오기",userService.getSearchMutualFollow(keyword));
     }
 
     /*
