@@ -13,16 +13,16 @@ export function HomePage() {
   const params = new URLSearchParams(search);
   const loginSuccess = params.get('loginSuccess');
 
-  const noti = async () => {
-    await axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
-      headers: {
-        Accept: 'text/event-stream',
-        'Cache-Control': 'no-cache',
-      },
-    });
-  };
-
   useEffect(() => {
+    const noti = async () => {
+      await axios.get(`${baseApi}/sse/notification/subscribe/${store.userId}`, {
+        headers: {
+          Accept: 'text/event-stream',
+          'Cache-Control': 'no-cache',
+        },
+      });
+    };
+
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
         store.getData();
@@ -30,7 +30,7 @@ export function HomePage() {
       }
     };
     fetchData();
-  }, []);
+  }, [loginSuccess, store]);
 
   return (
     <div className={css.root}>
