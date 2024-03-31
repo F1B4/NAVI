@@ -35,29 +35,29 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                .requestMatchers("/**")
-//                // UserController
-//                .requestMatchers("/users/following/**")
-//                .requestMatchers("/users/follower/**")
-//                // MainController
-//                .requestMatchers("/main/**")
-//                // CoverController
-//                .requestMatchers("/covers")
-//                .requestMatchers("/covers/byView")
-//                .requestMatchers("/covers/byLike")
-//                // NoraebangController
-//                .requestMatchers("/noraebangs")
-//                .requestMatchers("/noraebangs/**")
-////                .requestMatchers("/noraebangs/byView")
-////                .requestMatchers("/noraebangs/byLike")
-//                // NotificationController
-//                .requestMatchers("/sse/notification/**")
-//                // fastAPIController
-//                .requestMatchers("/ai/**")
-//                .requestMatchers("/ai/cover")
-//                .requestMatchers("/ai/train")
-//                // alarmController
-//                .requestMatchers("/alarms/**")
+//                .requestMatchers("/**")
+                // UserController
+                .requestMatchers("/users/following/**")
+                .requestMatchers("/users/follower/**")
+                // MainController
+                .requestMatchers("/main/**")
+                // CoverController
+                .requestMatchers("/covers")
+                .requestMatchers("/covers/byView")
+                .requestMatchers("/covers/byLike")
+                // NoraebangController
+                .requestMatchers("/noraebangs")
+                .requestMatchers("/noraebangs/**")
+//                .requestMatchers("/noraebangs/byView")
+//                .requestMatchers("/noraebangs/byLike")
+                // NotificationController
+                .requestMatchers("/sse/notification/**")
+                // fastAPIController
+                .requestMatchers("/ai/**")
+                .requestMatchers("/ai/cover")
+                .requestMatchers("/ai/train")
+                // alarmController
+                .requestMatchers("/alarms/**")
                 ;
     }
     @Bean
