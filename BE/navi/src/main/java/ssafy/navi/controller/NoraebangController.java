@@ -59,7 +59,6 @@ public class NoraebangController {
      */
     @GetMapping("/detail/{noraebang_pk}")
     public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
-        notificationService.sendNotificationToUser(Long.valueOf(8),"이거 마스터에서 sse확인하는 용임");
         return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
     }
 
