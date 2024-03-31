@@ -32,7 +32,7 @@ const SSEComponent = () => {
 
   return (
     <div>
-      <p>Notification: {notification}</p>
+      <p>Notifications: {notification}</p>
     </div>
   );
 };
