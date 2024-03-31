@@ -5,7 +5,6 @@ import { HotNoraebangList } from '../HotNoraebangList/HotNoraebangList';
 import { useUserStore } from '@/shared/store';
 import axios from 'axios';
 import css from './Page.module.css';
-import { baseApi } from '@/shared/api';
 
 export function HomePage() {
   const store = useUserStore();
