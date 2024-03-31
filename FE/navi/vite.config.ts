@@ -10,26 +10,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // server: {
-  //   port: 5173,
-  //   strictPort: false,
-  //   hmr: {
-  //     port: 5173,
-  //   },
-  // },
   server: {
-    port: 5173, // 포트 설정
-    open: true, // 브라우저 자동 열기
+    port: 5173,
     strictPort: false,
-    proxy: {
-      // 프록시 설정
-      '/ws': {
-        ws: true,
-      },
-    },
     hmr: {
       port: 5173,
     },
-    cors: true, // CORS 허용
   },
 });

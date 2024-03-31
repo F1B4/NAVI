@@ -30,7 +30,7 @@ export function HomePage() {
       }
     };
     fetchData();
-  }, [ ]);
+  }, []);
 
   return (
     <div className={css.root}>
