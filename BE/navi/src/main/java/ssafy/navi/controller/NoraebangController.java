@@ -107,14 +107,6 @@ public class NoraebangController {
     }
 
     /*
-    게시글 댓글 모두 조회
-     */
-    @GetMapping("/{noraebang_pk}/review")
-    public Response<List<NoraebangReviewAllDto>> getNoraebangReviews(@PathVariable("noraebang_pk") Long noraebangPk) {
-        return Response.of("OK", "댓글 조회", noraebangService.getNoraebangReviews(noraebangPk));
-    }
-
-    /*
     게시글 댓글 삭제.
     작성자만 삭제할 수 있음.
      */
