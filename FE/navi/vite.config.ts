@@ -11,10 +11,10 @@ export default defineConfig({
     },
   },
   server: {
-    port: 8082,
+    port: 5173,
     strictPort: true,
     hmr: {
-      port: 8082,
+      port: 5173,
     },
   },
 });
