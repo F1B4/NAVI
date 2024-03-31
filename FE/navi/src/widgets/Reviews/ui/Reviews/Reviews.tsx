@@ -38,18 +38,25 @@ export function Reviews(props: ReviewsProps) {
 
   return (
     <div>
-      <div>
-        <UserImage className={css.img} image={store.image}></UserImage>
-        댓글 입력창,
-        <Btn className={css.Btn} content="등록"></Btn>
-      </div>
-
+      {store.isLogin ? (
+        <div className={css.root}>
+          <UserImage className={css.user} image={store.image}></UserImage>
+          댓글 입력창,
+          <Btn className={css.Btn} content="등록"></Btn>
+        </div>
+      ) : (
+        <div>댓글을 작성하려면 로그인해주세요</div>
+      )}
       <div>
         {props.data && props.data.length > 0 ? (
           props.data.map((review, index) => (
-            <div key={index}>
+            <div key={index} className={css.root}>
               <div>
-                <UserImage className={css.img} image={review.image} />
+                <UserImage
+                  to={review.userId}
+                  className={css.img}
+                  image={review.image}
+                />
               </div>
               <div>
                 <div>{review.nickname}</div>

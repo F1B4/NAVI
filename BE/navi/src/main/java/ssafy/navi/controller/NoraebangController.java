@@ -26,6 +26,8 @@ public class NoraebangController {
     public final ArtistService artistService;
     public final S3Service s3Service;
     public final NotificationService notificationService;
+    public final UserService userService;
+
 
 
     /*
@@ -57,9 +59,11 @@ public class NoraebangController {
     /*
     노래방 게시글 디테일 정보 가져오기
      */
-    @GetMapping("/detail/{noraebang_pk}")
-    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
-        return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk));
+    @GetMapping("/detail/{noraebang_pk}/{user_pk}")
+    public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk,
+                                                           @PathVariable("user_pk") Long userPk) throws Exception {
+        System.out.println("userPk =@@@@@@@@@@@@@@@@@@@@ " + userPk);
+        return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk,userPk));
     }
 
     /*
@@ -72,9 +76,15 @@ public class NoraebangController {
                                        @RequestParam("song_pk") Long songPk) throws Exception {
         noraebangService.createNoraebang(file, content, songPk);
         return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
-
     }
 
+    @PostMapping("/complete")
+    public void recordNoraebang() throws Exception {
+        // 여기에서 request 객체를 사용하여 필요한 로직 처리
+        // 예: s3_path 값을 사용하는 로직
+        System.out.println("fastAPI가 보낸거 받았습니다~~~~~~~~~~ 이제 알림 보냄!!!");
+        notificationService.sendNotificationToUser(8L, "노래방 생성 완료");
+    }
 
     /*
     노래방 게시글 내용 수정하기.

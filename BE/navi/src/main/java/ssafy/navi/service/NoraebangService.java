@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NoraebangService {
+public class    NoraebangService {
 
     private final NoraebangRepository noraebangRepository;
     private final SongRepository songRepository;
@@ -66,22 +66,23 @@ public class NoraebangService {
     /*
     노래방 게시글 디테일 정보 가져오기
      */
-    public NoraebangDetailDto getNoraebangDetail(Long pk) throws Exception {
+    public NoraebangDetailDto getNoraebangDetail(Long pk, Long userPk) throws Exception {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
-        noraebang.setHit(noraebang.getHit() + 1);
-        if (userService.userState()) {
-            // 인가 확인
-            System.out.println("noraebang =================== " + noraebang);
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
-            String s = user.getNickname() + "님이 디테일 확인 함" + noraebang.getHit();
-            notificationService.sendNotificationToUser(user.getId(),s);
+        Integer hit = noraebang.getHit();
+        noraebang.setHit(hit+1);
+
+        Optional<User> userOptional = userRepository.findById(userPk);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String s = user.getNickname() + "디테일 정보 확인" + noraebang.getHit();
+
+            notificationService.sendNotificationToUser(user.getId(), s);
             // 내가 이 게시물을 좋아요 했는지 안했는지 체크하는 부분
             Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
             NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
             noraebangDetailDto.updateExists(exists.isPresent());
+            System.out.println("user.getNickname() + user.getId() = " + user.getNickname() + user.getId());
         }
 
         return NoraebangDetailDto.convertToDto(noraebang);
@@ -99,16 +100,17 @@ public class NoraebangService {
             Long artistId = songbyId.get().getArtist().getId();
             Optional<Artist> artistById = artistRepository.findById(artistId);
             // 현재 인가에서 유저 가져오기
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+            User user = userRepository.findById(8L).get();
             if (artistById.isPresent() && user!=null) {
                 Noraebang noraebang = Noraebang.builder()
                         .content(content)
                         .user(user)
                         .song(songbyId.get())
                         .build();
-                noraebangRepository.save(noraebang);
+                Noraebang save = noraebangRepository.save(noraebang);
 
                 Voice voice = Voice.builder()
                         .path(fileName)
@@ -116,6 +118,8 @@ public class NoraebangService {
                         .user(user)
                         .build();
                 voiceRepository.save(voice);
+                System.out.println("save.getId() =@@@@@@@@@@@@@@@@@@@@@@@@@ " + save.getId());
+                fastApiService.fetchDataFromFastAPI("/noraebangs/record",songbyId.get().getId(), fileName, save.getId());
             }
 
 //             노래방 게시글이 10개가 되었을때 fastAPI에 request요청 보내기
@@ -157,22 +161,29 @@ public class NoraebangService {
         String content = noraebangReviewDto.getContent();
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
 
-        // 현재 인가에서 유저 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+        if (userService.userState()) {
+//             현재 인가에서 유저 가져오기
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
-        if (noraebangOptional.isPresent() && user!=null) {
-            Noraebang noraebang = noraebangOptional.get();
+//            테스트용 유저
+//            User user = userRepository.findById(Long.valueOf(3)).get();
 
-            NoraebangReview review = NoraebangReview.builder()
-                    .user(user)
-                    .content(content)
-                    .noraebang(noraebang)
-                    .build();
+            if (noraebangOptional.isPresent() && user!=null) {
+                Noraebang noraebang = noraebangOptional.get();
 
-            noraebangReviewRepository.save(review);
-            notificationService.sendNotificationToUser(user.getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
+                NoraebangReview review = NoraebangReview.builder()
+                        .user(user)
+                        .content(content)
+                        .noraebang(noraebang)
+                        .build();
+
+                noraebangReviewRepository.save(review);
+                if (!Objects.equals(noraebang.getUser().getId(), user.getId())) {
+                    notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
+                }
+            }
         }
     }
 
@@ -195,6 +206,11 @@ public class NoraebangService {
         noraebangReviewRepository.deleteById(reviewPk);
 
         return "댓글 삭제 완료";
+    }
+
+    @Transactional
+    public void createRecord(String filePath) {
+
     }
 
     /*

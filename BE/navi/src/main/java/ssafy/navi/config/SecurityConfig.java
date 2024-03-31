@@ -35,26 +35,29 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                .requestMatchers("/main/**")
-                // CoverController
-                .requestMatchers("/covers")
-                .requestMatchers("/covers/byView")
-                .requestMatchers("/covers/byLike")
-                .requestMatchers("/covers/detail/**")
-                // NoraebangController
-                .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/**")
-//                .requestMatchers("/noraebangs/byView")
-//                .requestMatchers("/noraebangs/byLike")
-//                .requestMatchers("/noraebangs/detail/**")
-                // NotificationController
-                .requestMatchers("/sse/**")
-                // fastAPIController
-                .requestMatchers("/ai/**")
-                .requestMatchers("/ai/cover")
-                .requestMatchers("/ai/train")
-                // alarmController
-                .requestMatchers("/alarms/**")
+                .requestMatchers("/**")
+//                // UserController
+//                .requestMatchers("/users/following/**")
+//                .requestMatchers("/users/follower/**")
+//                // MainController
+//                .requestMatchers("/main/**")
+//                // CoverController
+//                .requestMatchers("/covers")
+//                .requestMatchers("/covers/byView")
+//                .requestMatchers("/covers/byLike")
+//                // NoraebangController
+//                .requestMatchers("/noraebangs")
+//                .requestMatchers("/noraebangs/**")
+////                .requestMatchers("/noraebangs/byView")
+////                .requestMatchers("/noraebangs/byLike")
+//                // NotificationController
+//                .requestMatchers("/sse/notification/**")
+//                // fastAPIController
+//                .requestMatchers("/ai/**")
+//                .requestMatchers("/ai/cover")
+//                .requestMatchers("/ai/train")
+//                // alarmController
+//                .requestMatchers("/alarms/**")
                 ;
     }
     @Bean
@@ -70,6 +73,7 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         configuration.setAllowedOrigins(Collections.singletonList("https://j10d107.p.ssafy.io"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
                         configuration.setAllowedMethods(Arrays.asList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Arrays.asList("*"));
@@ -107,10 +111,10 @@ public class SecurityConfig {
                 );
 
         //경로별 인가 작업
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/").permitAll()
-//                        .anyRequest().authenticated());
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
         http
