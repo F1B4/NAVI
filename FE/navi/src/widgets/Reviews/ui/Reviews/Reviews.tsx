@@ -38,8 +38,8 @@ export function Reviews(props: ReviewsProps) {
 
   return (
     <div>
-      <div>
-        <UserImage className={css.img} image={store.image}></UserImage>
+      <div className={css.root}>
+        <UserImage className={css.user} image={store.image}></UserImage>
         댓글 입력창,
         <Btn className={css.Btn} content="등록"></Btn>
       </div>
@@ -47,9 +47,13 @@ export function Reviews(props: ReviewsProps) {
       <div>
         {props.data && props.data.length > 0 ? (
           props.data.map((review, index) => (
-            <div key={index}>
+            <div key={index} className={css.root}>
               <div>
-                <UserImage className={css.img} image={review.image} />
+                <UserImage
+                  to={review.userId}
+                  className={css.img}
+                  image={review.image}
+                />
               </div>
               <div>
                 <div>{review.nickname}</div>

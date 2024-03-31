@@ -39,7 +39,6 @@ export function NoraebangDetailPage() {
             user={noraebang.userDto.nickname}
             content={noraebang.content}
           />
-          <div>댓 글</div>
           <Reviews type="noraebangs" data={noraebang.noraebangReviewDtos} />
         </div>
       </div>
