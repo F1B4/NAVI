@@ -6,6 +6,7 @@
 }
 
 .title {
+  font-size: 30px;
   margin: 20px;
 }
 
@@ -17,7 +18,7 @@
 }
 
 .partList {
-  flex: 0.25;
+  flex: 0.4;
 }
 
 .carouselContainer {
@@ -30,7 +31,6 @@
 .carouselControls {
   display: flex;
   align-items: center;
-  margin: 20px 0;
 }
 
 .btn {
@@ -38,12 +38,12 @@
 }
 
 .controlButton {
-  margin: 0 60px;
+  margin: 0 20px;
 }
 
 .imageSlide {
   width: 750px;
-  height: 500px;
+  height: 400px;
 }
 
 .indicator {

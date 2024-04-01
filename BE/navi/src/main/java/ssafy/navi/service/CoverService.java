@@ -15,6 +15,7 @@ import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.user.UserDto;
+import ssafy.navi.dto.util.Response;
 import ssafy.navi.entity.cover.*;
 import ssafy.navi.entity.song.Artist;
 import ssafy.navi.entity.song.Part;
@@ -105,7 +106,7 @@ public class CoverService {
     커버 생성 로직
      */
     @Transactional
-    public String createCover(CoverRegistDto coverRegistDto) throws Exception {
+    public Response<Long> createCover(CoverRegistDto coverRegistDto) throws Exception {
 
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
@@ -143,8 +144,8 @@ public class CoverService {
             for (Long pk : users) {
                 notificationService.sendNotificationToUser(pk, "커버 생성을 시작합니다.");
             }
-            fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
-            return "커버 생성 완료";
+//            fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
+            return Response.of("OK", "1", cover.getId());
         }
 
         //해당 노래를 매칭중인 매칭테이블들 리스트
@@ -240,8 +241,8 @@ public class CoverService {
                             notificationService.sendNotificationToUser(user, "커버 생성을 시작합니다.");
                         }
 
-                        fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
-                        return "Cover 생성 완료";
+//                        fastApiService.fetchDataFromFastAPI("/ai/cover", cover.getId());
+                        return Response.of("OK", "2", cover.getId());
                     }else{
                         matching.updatePartCount(existingPartCount+matchingCount);
                         Set<Long> users= new HashSet<>();
@@ -252,7 +253,7 @@ public class CoverService {
                         for (Long user : users) {
                             notificationService.sendNotificationToUser(user, "매칭 인원이 추가 되었습니다.");
                         }
-                        return "매칭 업데이트 완료";
+                        return Response.of("OK", "매칭 업데이트 완료", 1L);
                     }
                 }
             }
@@ -282,7 +283,7 @@ public class CoverService {
         for (Long user : users) {
             notificationService.sendNotificationToUser(user, "새로운 매칭이 생성 되었습니다.");
         }
-        return "새로운 매칭 생성 및 매칭유저 추가";
+        return Response.of("OK", "새로운 매치 생성 및 매칭 유저 추가", 1L);
     }
 
     /*
@@ -322,23 +323,23 @@ public class CoverService {
     유저와 게시글이 있는지 확인하고 있다면 해당 값을 댓글에 값을 세팅하고 db에 추가함
     게시글이 존재하는지 체크 -> 유저가 존재하는지 체크 -> 둘다 충족한다면 받아온 내용을 저장하고 저장되는 내용을 반환함
      */
-    public CoverReviewDto createCoverReview(Long coverPk, CoverReviewDto coverReviewDto) throws Exception {
+    public void createCoverReview(Long coverPk, String content) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
 
         // 현재 인가에서 유저 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+        User user=userRepository.findById(Long.valueOf(1L)).orElseThrow(()->new RuntimeException("test"));
         CoverReview coverReview=CoverReview.builder()
-                .content(coverReviewDto.getContent())
+                .content(content)
                 .cover(cover)
                 .user(user)
                 .build();
 
         coverReview = coverReviewRepository.save(coverReview);
         notificationService.sendNotificationToUser(user.getId(),"커버 게시글에 댓글이 작성 되었습니다.");
-        return CoverReviewDto.convertToDto(coverReview);
     }
 
     /*

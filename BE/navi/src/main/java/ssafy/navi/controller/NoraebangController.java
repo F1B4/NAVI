@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
+import ssafy.navi.dto.song.LyricDto;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.service.*;
@@ -48,6 +49,12 @@ public class NoraebangController {
         return Response.of("OK", "아티스트의 모든 노래 가져오기", songService.getSongByArtist(artistPk));
     }
 
+    @GetMapping("/{song_pk}/lyrics")
+    public Response<List<LyricDto>> getLyrics(@PathVariable("song_pk") Long songPk) {
+        return Response.of("OK", "가사 가져오기", noraebangService.getLyrics(songPk));
+    }
+
+
     /*
     모든 노래방 게시글 가져오기
      */
@@ -62,7 +69,6 @@ public class NoraebangController {
     @GetMapping("/detail/{noraebang_pk}/{user_pk}")
     public Response<NoraebangDetailDto> getNoraebangDetail(@PathVariable("noraebang_pk") Long noraebangPk,
                                                            @PathVariable("user_pk") Long userPk) throws Exception {
-        System.out.println("userPk =@@@@@@@@@@@@@@@@@@@@ " + userPk);
         return Response.of("OK", "노래방 게시글 디테일 정보 가져오기", noraebangService.getNoraebangDetail(noraebangPk,userPk));
     }
 
@@ -73,8 +79,8 @@ public class NoraebangController {
     @PostMapping("/create")
     public Response<?> createNoraebang(@RequestParam MultipartFile file,
                                        @RequestParam String content,
-                                       @RequestParam("song_pk") Long songPk) throws Exception {
-        noraebangService.createNoraebang(file, content, songPk);
+                                       @RequestParam("song_pk") String songPk) throws Exception {
+        noraebangService.createNoraebang(file, content, Long.valueOf(songPk));
         return Response.of("Ok", "노래방 게시글 작성", null);
     }
 
