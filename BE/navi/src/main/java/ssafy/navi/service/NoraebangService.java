@@ -82,7 +82,6 @@ public class    NoraebangService {
             Optional<NoraebangLike> exists = noraebangLikeRepository.findByNoraebangIdAndUserId(pk, user.getId());
             NoraebangDetailDto noraebangDetailDto = NoraebangDetailDto.convertToDto(noraebang);
             noraebangDetailDto.updateExists(exists.isPresent());
-            System.out.println("user.getNickname() + user.getId() = " + user.getNickname() + user.getId());
         }
 
         return NoraebangDetailDto.convertToDto(noraebang);
