@@ -14,6 +14,5 @@ public class CorsMvcConfig implements WebMvcConfigurer {
                 .exposedHeaders("Set-Cookie")
                 .allowedOrigins("http://localhost:5173","http://navi.iptime.org:8085","https://j10d107.p.ssafy.io")
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
-        //서버용
     }
 }

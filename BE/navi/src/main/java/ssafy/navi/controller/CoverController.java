@@ -110,9 +110,10 @@ public class CoverController {
     클라이언트에서 댓글 작성자의 정보를 어떻게 넘겨주냐에 따라 바뀔예정
     RequestBody에 내용을 받아옴
      */
-    @PostMapping("/{cover_pk}/reivew")
-    public Response<CoverReviewDto> createCoverReview(@PathVariable("cover_pk") Long coverPk, @RequestBody CoverReviewDto coverReviewDto) throws Exception {
-        return Response.of("OK","댓글 작성",coverService.createCoverReview(coverPk, coverReviewDto));
+    @PostMapping("/{cover_pk}/review")
+    public Response<?> createCoverReview(@PathVariable("cover_pk") Long coverPk, @RequestBody String content) throws Exception {
+        coverService.createCoverReview(coverPk, content);
+        return Response.of("OK","댓글 작성",null);
     }
 
     /*

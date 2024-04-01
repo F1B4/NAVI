@@ -36,7 +36,7 @@ public class SecurityConfig {
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
                 .requestMatchers("/**")
-                .requestMatchers("/noraebangs/complete")
+//                .requestMatchers("/noraebangs/complete")
 //                // UserController
 //                .requestMatchers("/users/following/**")
 //                .requestMatchers("/users/follower/**")
@@ -63,6 +63,8 @@ public class SecurityConfig {
 //                .requestMatchers("/ai/train")
 //                // alarmController
 //                .requestMatchers("/alarms/**")
+//                .requestMatchers("/**")
+
                 ;
     }
     @Bean
