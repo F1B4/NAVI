@@ -4,31 +4,24 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
-import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
+import ssafy.navi.dto.song.LyricDto;
 import ssafy.navi.dto.user.CustomOAuth2User;
-import ssafy.navi.entity.cover.Cover;
-import ssafy.navi.entity.cover.CoverLike;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
 import ssafy.navi.entity.noraebang.NoraebangReview;
 import ssafy.navi.entity.song.Artist;
+import ssafy.navi.entity.song.Lyric;
 import ssafy.navi.entity.song.Song;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.user.Voice;
 import ssafy.navi.repository.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -62,6 +55,19 @@ public class    NoraebangService {
                 .map(NoraebangAllDto::convertToDto)
                 .toList();
     }
+
+
+    public List<LyricDto> getLyrics(Long songPk) {
+        Optional<Song> byId = songRepository.findById(songPk);
+        if (byId.isPresent()) {
+            Song song = byId.get();
+            return song.getLyrics().stream()
+                    .map(LyricDto::convertToDto)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
 
     /*
     노래방 게시글 디테일 정보 가져오기
