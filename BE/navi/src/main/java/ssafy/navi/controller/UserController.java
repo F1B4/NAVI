@@ -45,9 +45,9 @@ public class UserController {
     UserPk으로 유저 프로필 조회
     UserProfileDto
      */
-    @GetMapping("/profile/{user_pk}")
-    public Response<UserProfileDto> getUserProfile(@PathVariable("user_pk") Long userPk) throws Exception {
-        return Response.of("OK", "유저 프로필 조회 성공",userService.getUserProfile(userPk));
+    @GetMapping("/profile/{user_pk}/{login_user_pk}")
+    public Response<UserProfileDto> getUserProfile(@PathVariable("user_pk") Long userPk, @PathVariable("login_user_pk") Long loginUserPk) throws Exception {
+        return Response.of("OK", "유저 프로필 조회 성공",userService.getUserProfile(userPk, loginUserPk));
     }
 
     /*

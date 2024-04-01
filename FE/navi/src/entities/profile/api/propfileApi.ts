@@ -7,16 +7,16 @@ interface DetailProps {
   userId: number;
 }
 
-export const noraebangDetailApi = async (
+export const profileApi = async (
   props: DetailProps,
 ): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/noraebangs/detail/${props.detailPk}/${props.userId}`,
+      `${baseApi}/profile/${props.detailPk}/${props.userId}`,
     );
     return response.data;
   } catch (error) {
-    console.error('Error get noraebang detail', error);
+    console.error('Error get profile', error);
     return null;
   }
 };

@@ -302,15 +302,13 @@ public class CoverService {
     Map을 사용하는 이유, 여러 Dto를 한번에 보내주기 위해서
     *****************************댓글도 같이 가져오기************************
      */
-    public CoverDto getCoverDetail(Long coverPk) throws Exception {
+    public CoverDto getCoverDetail(Long coverPk, Long userPk) throws Exception {
         Cover cover = coverRepository.findById(coverPk)
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
-        //인가에서 user가져오기
-        if (userService.userState()) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
-            Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user);
+        //user가져오기
+        Optional<User> user = userRepository.findById(userPk);
+        if (user.isPresent()) {
+            Optional<CoverLike> exists = coverLikeRepository.findByCoverAndUser(cover, user.get());
             CoverDto coverDto= CoverDto.convertToDto(cover);
             coverDto.updateExists(exists.isPresent());
         }

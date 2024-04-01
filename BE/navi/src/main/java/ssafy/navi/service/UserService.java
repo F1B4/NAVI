@@ -69,9 +69,25 @@ public class UserService {
         return UserDto.convertToDto(user);
     }
 
-    public UserProfileDto getUserProfile(Long userPk) throws Exception {
+    /*
+    유저 피드
+    userPk
+     */
+    public UserProfileDto getUserProfile(Long userPk, Long loginUserPk) throws Exception {
         User user = userRepository.findById(userPk)
                 .orElseThrow(() -> new Exception("유저가 존재하지 않음"));
+        
+        // 로그인하고있는 유저가 팔로우하고있는지 검사
+        // 로그인 안하고있으면 디폴트값 false로 받음
+        Boolean isFollow = false;
+        // 로그인했을 경우 isFollow 갱신
+        Optional<User> loginUser = userRepository.findById(loginUserPk);
+        if(loginUser.isPresent()){
+            Follow follow = followRepository.findByFromUserIdAndToUserId(loginUser.get().getId(), user.getId());
+            if(follow!=null)
+                isFollow = true;
+        }
+        
         // 해당 유저의 중계 테이블 모두 조회
         List<CoverUser> coverUsers = coverUserRepository.findByUserId(user.getId());
         Set<Long> coverPks = coverUsers.stream()
@@ -80,7 +96,7 @@ public class UserService {
         // 중복 없는 CoverPk를 사용하여 Cover 객체들을 조회
         List<Cover> covers = coverRepository.findAllById(coverPks);
 
-        return UserProfileDto.convertToDto(user, covers);
+        return UserProfileDto.convertToDto(user, isFollow, covers);
     }
 
     /*
