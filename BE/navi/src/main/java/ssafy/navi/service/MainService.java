@@ -57,7 +57,7 @@ public class MainService {
         LocalDate oneWeek = LocalDate.now().minus(Period.ofWeeks(1));
         //1주일 전 날짜의 자정으로 값 지정
         LocalDateTime oneWeekAgo = oneWeek.atStartOfDay();
-        List<Noraebang> noraebangs = noraebangRepository.findTop10ByCreatedAtAfterOrderByHitDesc(oneWeekAgo);
+        List<Noraebang> noraebangs = noraebangRepository.findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(oneWeekAgo);
         return noraebangs.stream()
                 .map(NoraebangAllDto::convertToDto)
                 .collect(Collectors.toList());

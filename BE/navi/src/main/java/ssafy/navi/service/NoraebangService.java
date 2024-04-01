@@ -76,7 +76,9 @@ public class    NoraebangService {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
         Integer hit = noraebang.getHit();
+        Integer weeklyHit = noraebang.getWeeklyHit();
         noraebang.setHit(hit+1);
+        noraebang.setWeeklyHit(weeklyHit+1);
 
         Optional<User> userOptional = userRepository.findById(userPk);
         if (userOptional.isPresent()) {

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.noraebang.Noraebang;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,8 @@ public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
 
     // TopN을 사용하면 N만큼의 결과만을 조회함
     List<Noraebang> findTop10ByCreatedAtAfterOrderByHitDesc(LocalDateTime startDate);
+    List<Noraebang> findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(LocalDateTime startDate);
+
     @Query(value = "SELECT COUNT(*) FROM noraebang WHERE user_pk = :userId", nativeQuery = true)
     Integer countByUserId(@Param("userId") Long userId);
 
