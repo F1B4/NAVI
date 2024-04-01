@@ -53,9 +53,8 @@ public class SecurityConfig {
                 // NotificationController
                 .requestMatchers("/sse/notification/**")
                 // fastAPIController
-                .requestMatchers("/ai/**")
-                .requestMatchers("/ai/cover")
-                .requestMatchers("/ai/train")
+                .requestMatchers("/ai/cover/{cover_pk}")
+                .requestMatchers("/ai/train/{user_pk}")
                 // alarmController
                 .requestMatchers("/alarms/**")
                 ;
