@@ -75,7 +75,7 @@ public class NoraebangController {
                                        @RequestParam String content,
                                        @RequestParam("song_pk") Long songPk) throws Exception {
         noraebangService.createNoraebang(file, content, songPk);
-        return Response.of("Ok", "노래방 게시글 작성", new ArrayList<>());
+        return Response.of("Ok", "노래방 게시글 작성", null);
     }
 
     @PostMapping("/complete")
@@ -93,7 +93,7 @@ public class NoraebangController {
     public Response<?> updateNoraebang(@RequestParam String content,
                                        @RequestParam("noraebnag_pk") Long noraebangPk) {
         noraebangService.updateNoraebang(content, noraebangPk);
-        return Response.of("OK", "노래방 게시글 수정", new ArrayList<>());
+        return Response.of("OK", "노래방 게시글 수정", null);
     }
 
     /*
@@ -111,8 +111,8 @@ public class NoraebangController {
     게시글 pk, 유저 pk, 댓글 내용 필요.
      */
     @PostMapping("/{noraebang_pk}/review")
-    public Response<?> createNoraebangReview(@PathVariable("noraebang_pk") Long noraebangPk, @RequestBody NoraebangReviewDto noraebangReviewDto) throws Exception {
-        noraebangService.createNoraebangReview(noraebangPk, noraebangReviewDto);
+    public Response<?> createNoraebangReview(@PathVariable("noraebang_pk") Long noraebangPk, @RequestBody String content) throws Exception {
+        noraebangService.createNoraebangReview(noraebangPk, content);
         return Response.of("OK", "댓글 작성", null);
     }
 

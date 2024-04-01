@@ -157,32 +157,29 @@ public class    NoraebangService {
     게시글 pk, 댓글 내용 필요.
      */
     @Transactional
-    public void createNoraebangReview(Long noraebangPk, NoraebangReviewDto noraebangReviewDto) throws Exception {
-        String content = noraebangReviewDto.getContent();
+    public void createNoraebangReview(Long noraebangPk, String content) throws Exception {
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
 
-        if (userService.userState()) {
 //             현재 인가에서 유저 가져오기
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
 //            테스트용 유저
-//            User user = userRepository.findById(Long.valueOf(3)).get();
+        User user = userRepository.findById(Long.valueOf(3)).get();
 
-            if (noraebangOptional.isPresent() && user!=null) {
-                Noraebang noraebang = noraebangOptional.get();
+        if (noraebangOptional.isPresent() && user!=null) {
+            Noraebang noraebang = noraebangOptional.get();
 
-                NoraebangReview review = NoraebangReview.builder()
-                        .user(user)
-                        .content(content)
-                        .noraebang(noraebang)
-                        .build();
+            NoraebangReview review = NoraebangReview.builder()
+                    .user(user)
+                    .content(content)
+                    .noraebang(noraebang)
+                    .build();
 
-                noraebangReviewRepository.save(review);
-                if (!Objects.equals(noraebang.getUser().getId(), user.getId())) {
-                    notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
-                }
+            noraebangReviewRepository.save(review);
+            if (!Objects.equals(noraebang.getUser().getId(), user.getId())) {
+                notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
             }
         }
     }
