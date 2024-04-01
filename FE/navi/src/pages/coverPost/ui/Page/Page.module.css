@@ -1,0 +1,120 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  margin: 20px;
+}
+
+.mainContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.partList {
+  flex: 0.25;
+}
+
+.carouselContainer {
+  flex: 1.75;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carouselControls {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.btn {
+  margin-top: 20px;
+}
+
+.controlButton {
+  margin: 0 60px;
+}
+
+.imageSlide {
+  width: 750px;
+  height: 500px;
+}
+
+.indicator {
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.indicatorActive {
+  color: #22d1ee;
+}
+
+.followListContainer {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px;
+}
+
+.followItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profilePicContainer {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.profilePic {
+  width: 100%;
+  height: auto;
+}
+
+.friendName {
+  text-align: center;
+}
+
+.coverSelectSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.dropdownContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 750px;
+  max-width: 100%;
+}
+
+.dropdown {
+  /* 기존의 스타일 설정 */
+  text-align: center;
+  width: calc(50% - 10px);
+  margin: 0 5px;
+  background-color: #292929;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
+
+  /* 드롭다운 옵션의 배경색 변경은 복잡할 수 있으므로, pseudo-elements와 JavaScript를 사용하여 커스텀 가능합니다. */
+}
+
+.dropdown option {
+  background-color: #292929; /* 드롭다운 옵션의 배경색 설정 */
+}
