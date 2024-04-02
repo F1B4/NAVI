@@ -4,14 +4,9 @@ import { ProfileApi, FollowingApi, FollowerApi } from '@/entities/profile';
 import type { Profile, Follow } from '@/entities/profile';
 import { useUserStore } from '@/shared/store';
 import { Info } from '../Info/Info';
-<<<<<<< HEAD
-// import { LikeList } from '../LikeList/LikeList';
-// import { MySongList } from '../MySongList/MySongList';
-=======
 import { LikeList } from '../LikeList/LikeList';
 import { MySongList } from '../MySongList/MySongList';
 import { FollowList } from '../FollowList/FollowList';
->>>>>>> develop
 import css from './Page.module.css';
 
 export function ProfilePage() {
