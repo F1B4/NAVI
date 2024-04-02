@@ -214,14 +214,14 @@ export function CoverPostPage() {
           {
             method: 'POST',
             body: requestBody,
-            credentials: 'include',
+            // credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
             },
           },
         );
         console.log(requestBody);
-
+        console.log(response);
         if (!response.ok) {
           console.error('Failed to upload cover');
         } else {
