@@ -1,19 +1,15 @@
 package ssafy.navi.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.cover.*;
-import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.PartDto;
-import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
@@ -21,6 +17,7 @@ import ssafy.navi.entity.cover.*;
 import ssafy.navi.entity.song.Artist;
 import ssafy.navi.entity.song.Part;
 import ssafy.navi.entity.song.Song;
+import ssafy.navi.entity.user.Role;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.repository.*;
 
@@ -126,8 +123,12 @@ public class CoverService {
         User userSocial = userRepository.findByUsername(customOAuth2User.getUsername());
 
         if (userSocial.getNoraebangs().size() < 10) {
-            return Response.of("OK", "매칭 업데이트 완료", 3L);
+            return Response.of("OK", "커버 생성 불가능", 3L);
         }
+        if (userSocial.getRole() == Role.ROLE_GUEST) {
+            return Response.of("OK", "훈련중, 커버 생성 불가능", 4L);
+        }
+
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
         //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
@@ -445,19 +446,10 @@ public class CoverService {
     학습 완료 알림
      */
     public void completeTrain(Long userPk) throws Exception {
-        userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
+        User user = userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
+        user.updateRole(Role.ROLE_USER);
+        userRepository.save(user);
+
         notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 기능 이용이 가능합니다.");
-    }
-
-    /*
-    학습 데이터 없는 사용자가 커버 게시글 생성하려 할시
-     */
-
-    public void notTrain() throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
-        notificationService.sendNotificationToUser(user.getId(), "학습 데이터가 충분치 않습니다. 노래방 기능을 사용 해주세요!");
     }
 }
