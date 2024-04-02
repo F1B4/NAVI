@@ -58,7 +58,7 @@ public class SecurityConfig {
                 .requestMatchers("/noraebangs/byView")
                 .requestMatchers("/noraebangs/byLike")
                 .requestMatchers("/noraebangs/detail/{noraebang_pk}/{user_pk}")
-                .requestMatchers("/noraebangs/{noraebang_pk}/review")
+                .requestMatchers("/noraebangs/complete/{noraebang_pk}")
                 // NotificationController
                 .requestMatchers("/sse/notification/subscribe/{userId}")
                 // ai
