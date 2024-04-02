@@ -9,7 +9,7 @@ import ssafy.navi.entity.user.Follow;
 public class FollowerDto {
 
     private Long id;
-    private UserDto fromUser;
+    private UserDto user;
 
     // 엔티티 Dto로 변환
     public static FollowerDto convertToDto(Follow follow) {
@@ -17,7 +17,7 @@ public class FollowerDto {
 
         // set
         followerDto.setId(follow.getId());
-        followerDto.setFromUser(UserDto.convertToDto(follow.getFromUser()));
+        followerDto.setUser(UserDto.convertToDto(follow.getFromUser()));
 
         return followerDto;
     }
