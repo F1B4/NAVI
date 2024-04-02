@@ -76,6 +76,7 @@ public class CoverDto implements TimeDto {
         coverDto.setId(cover.getId());
         coverDto.setThumbnail(cover.getThumbnail());
         coverDto.setTitle(cover.getTitle());
+        coverDto.setSongDto(SongDto.convertToDto(cover.getSong()));
         coverDto.setCoverUserDtos(cover.getCoverUsers().stream()
                 .map(CoverUserDto::convertToDto)
                 .collect(Collectors.toList()));
