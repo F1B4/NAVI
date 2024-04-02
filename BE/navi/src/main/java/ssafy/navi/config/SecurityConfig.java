@@ -35,39 +35,39 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                .requestMatchers("/**")
-//                // UserController
-//                .requestMatchers("/users/following/{user_pk}")
-//                .requestMatchers("/users/follower/{user_pk}")
-//                .requestMatchers("/users/profile/{user_pk}/{login_user_pk}")
-//                // MainController
-//                .requestMatchers("/main/new")
-//                .requestMatchers("/main/noraebangs/hot")
-//                .requestMatchers("/main/covers/hot")
-//                .requestMatchers("/main")
-//                .requestMatchers("/main/noraebang/title")
-//                .requestMatchers("/main/noraebang/artist")
-//                .requestMatchers("/main/cover/title")
-//                .requestMatchers("/main/cover/artist")
-//                .requestMatchers("/main/user")
-//                // CoverController
-//                .requestMatchers("/covers")
-//                .requestMatchers("/covers/byView")
-//                .requestMatchers("/covers/byLike")
-//                .requestMatchers("/covers/detail/{cover_pk}/{user_pk}")
-//                // NoraebangController
-//                .requestMatchers("/noraebangs")
-//                .requestMatchers("/noraebangs/byView")
-//                .requestMatchers("/noraebangs/byLike")
-//                .requestMatchers("/noraebangs/detail/{noraebang_pk}/{user_pk}")
-//                // NotificationController
-//                .requestMatchers("/sse/notification/subscribe/{userId}")
-//                // aiController
-//                .requestMatchers("/ai/cover/{cover_pk}")
-//                .requestMatchers("/ai/train/{user_pk}")
-//                // alarmController
-//                .requestMatchers("/alarms")
-//                .requestMatchers("/alarms/{alarm_pk}")
+//                .requestMatchers("/**")
+                // UserController
+                .requestMatchers("/users/following/{user_pk}")
+                .requestMatchers("/users/follower/{user_pk}")
+                .requestMatchers("/users/profile/{user_pk}/{login_user_pk}")
+                // MainController
+                .requestMatchers("/main/new")
+                .requestMatchers("/main/noraebangs/hot")
+                .requestMatchers("/main/covers/hot")
+                .requestMatchers("/main")
+                .requestMatchers("/main/noraebang/title")
+                .requestMatchers("/main/noraebang/artist")
+                .requestMatchers("/main/cover/title")
+                .requestMatchers("/main/cover/artist")
+                .requestMatchers("/main/user")
+                // CoverController
+                .requestMatchers("/covers")
+                .requestMatchers("/covers/byView")
+                .requestMatchers("/covers/byLike")
+                .requestMatchers("/covers/detail/{cover_pk}/{user_pk}")
+                // NoraebangController
+                .requestMatchers("/noraebangs")
+                .requestMatchers("/noraebangs/byView")
+                .requestMatchers("/noraebangs/byLike")
+                .requestMatchers("/noraebangs/detail/{noraebang_pk}/{user_pk}")
+                // NotificationController
+                .requestMatchers("/sse/notification/subscribe/{userId}")
+                // aiController
+                .requestMatchers("/ai/cover/{cover_pk}")
+                .requestMatchers("/ai/train/{user_pk}")
+                // alarmController
+                .requestMatchers("/alarms")
+                .requestMatchers("/alarms/{alarm_pk}")
                 ;
     }
     @Bean
