@@ -60,7 +60,7 @@ interface CoverLikeDto {
   coverDto: CoverDto;
 }
 
-interface NaraebangLikeDto {
+interface NoraebangLikeDto {
   id: number;
   noraebangDto: NoraebangDto;
 }
@@ -74,7 +74,7 @@ interface Profile {
   coverDtos: CoverDto[];
   noraebangDtos: NoraebangDto[];
   coverLikeDtos: CoverLikeDto[];
-  noraebangLikeDtos: NaraebangLikeDto[];
+  noraebangLikeDtos: NoraebangLikeDto[];
 }
 
 interface Response {
@@ -83,4 +83,12 @@ interface Response {
   data: Profile;
 }
 
-export type { Response, Profile };
+export type {
+  Response,
+  Profile,
+  CoverDto,
+  CoverUserDto,
+  NoraebangDto,
+  CoverLikeDto,
+  NoraebangLikeDto,
+};

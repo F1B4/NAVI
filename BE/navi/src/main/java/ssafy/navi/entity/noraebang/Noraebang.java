@@ -37,6 +37,10 @@ public class Noraebang extends BaseTimeEntity{
     @Builder.Default
     private Integer hit = 0;
 
+    //주간 조회수
+    @Column(name="weekly_hit")
+    private Integer weeklyHit;
+
     // 좋아요 수
     @Column(name = "like_count")
     @Builder.Default

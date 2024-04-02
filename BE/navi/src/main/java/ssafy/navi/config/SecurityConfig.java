@@ -35,28 +35,31 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                // UserController
-                .requestMatchers("/users/following/**")
-                .requestMatchers("/users/follower/**")
+                .requestMatchers("/users/following/{user_pk}")
+                .requestMatchers("/users/follower/{user_pk}")
+                .requestMatchers("/users/profile/{user_pk}/{login_user_pk}")
                 // MainController
-                .requestMatchers("/main/**")
+                .requestMatchers("/main/new")
+                .requestMatchers("/main/noraebangs/hot")
+                .requestMatchers("/main/covers/hot")
+                .requestMatchers("/main")
+                .requestMatchers("/main/noraebang/title")
+                .requestMatchers("/main/noraebang/artist")
+                .requestMatchers("/main/cover/title")
+                .requestMatchers("/main/cover/artist")
+                .requestMatchers("/main/user")
                 // CoverController
                 .requestMatchers("/covers")
-                .requestMatchers("/covers/detail/**")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
+                .requestMatchers("/covers/detail/{cover_pk}/{user_pk}")
                 // NoraebangController
                 .requestMatchers("/noraebangs")
-                .requestMatchers("/noraebangs/detail/**")
                 .requestMatchers("/noraebangs/byView")
                 .requestMatchers("/noraebangs/byLike")
+                .requestMatchers("/noraebangs/detail/{noraebang_pk}/{user_pk}")
                 // NotificationController
-                .requestMatchers("/sse/notification/**")
-                // fastAPIController
-                .requestMatchers("/ai/cover/{cover_pk}")
-                .requestMatchers("/ai/train/{user_pk}")
-                // alarmController
-                .requestMatchers("/alarms/**")
+                .requestMatchers("/sse/notification/subscribe/{userId}")
                 ;
     }
     @Bean
@@ -109,11 +112,14 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                 );
 
-        //경로별 인가 작업
+//        경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated());
+
+
+
 
         //세션 설정 : STATELESS
         http

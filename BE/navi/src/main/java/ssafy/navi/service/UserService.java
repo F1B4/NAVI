@@ -247,6 +247,22 @@ public class UserService {
 
 
     /*
+    맞 팔로우 가져오기
+     */
+    public List<UserDto> getMutualFollow() throws Exception {
+//      현재 인가에서 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        //테스트용
+//        User user = userRepository.findById(7L).get();
+        return followRepository.findMutualFollowers(user.getId()).stream()
+                .map(UserDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /*
     유저가 로그인 했는지 안했는지 확인
     */
     public Boolean userState() {

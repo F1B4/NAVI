@@ -1,1 +1,1 @@
-export { default as PlayBar } from './Playbar';
+export { default as PlayBar } from './ui/Playbar';

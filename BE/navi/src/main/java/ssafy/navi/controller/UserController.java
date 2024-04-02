@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.user.FollowerDto;
 import ssafy.navi.dto.user.FollowingDto;
 import ssafy.navi.dto.user.UserDto;
@@ -31,6 +32,17 @@ public class UserController {
         userService.deleteCookie(request, response);
         return Response.of("OK", "로그아웃 성공", "");
     }
+
+
+    /*
+    맞팔로우 가져오기
+     */
+    @GetMapping("/mutualfollow")
+    public Response<List<UserDto>> getPartAndMutualFollow() throws Exception{
+        return Response.of("OK","맞팔로우 목록 가져오기", userService.getMutualFollow());
+    }
+
+
 
     /*
     토큰에서 유저 정보 획득

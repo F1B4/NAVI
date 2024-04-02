@@ -23,7 +23,7 @@ export function CoverList() {
 
   return (
     <div className={css.container}>
-      {Array.isArray(covers) &&
+      {Array.isArray(covers) ? (
         covers.map((cover, index) => {
           const coverUserNicknames = cover.coverUserDtos
             ? Array.from(
@@ -37,6 +37,7 @@ export function CoverList() {
 
           return (
             <Card
+              video={cover.video}
               id={cover.id}
               key={index}
               classCard={css.card}
@@ -48,7 +49,12 @@ export function CoverList() {
               info={cover.songDto}
             />
           );
-        })}
+        })
+      ) : (
+        <div className={css.center}>
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
     </div>
   );
 }

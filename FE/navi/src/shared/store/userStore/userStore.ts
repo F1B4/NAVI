@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { baseApi } from '@/shared/api';
 import axios from 'axios';
 
-interface userState {
+interface UserState {
   userId: number;
   nickname: string;
   image: string;
@@ -16,7 +16,7 @@ interface userState {
 }
 
 const useUserStore = create(
-  persist<userState>(
+  persist<UserState>(
     (set) => ({
       userId: 0,
       nickname: '',
@@ -63,4 +63,4 @@ const useUserStore = create(
 );
 
 export { useUserStore };
-export type { userState };
+export type { UserState };

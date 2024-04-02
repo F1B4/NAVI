@@ -4,31 +4,24 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
-import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
+import ssafy.navi.dto.song.LyricDto;
 import ssafy.navi.dto.user.CustomOAuth2User;
-import ssafy.navi.entity.cover.Cover;
-import ssafy.navi.entity.cover.CoverLike;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
 import ssafy.navi.entity.noraebang.NoraebangReview;
 import ssafy.navi.entity.song.Artist;
+import ssafy.navi.entity.song.Lyric;
 import ssafy.navi.entity.song.Song;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.user.Voice;
 import ssafy.navi.repository.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -63,6 +56,19 @@ public class    NoraebangService {
                 .toList();
     }
 
+
+    public List<LyricDto> getLyrics(Long songPk) {
+        Optional<Song> byId = songRepository.findById(songPk);
+        if (byId.isPresent()) {
+            Song song = byId.get();
+            return song.getLyrics().stream()
+                    .map(LyricDto::convertToDto)
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+
     /*
     노래방 게시글 디테일 정보 가져오기
      */
@@ -70,7 +76,9 @@ public class    NoraebangService {
         Noraebang noraebang = noraebangRepository.findById(pk)
                 .orElseThrow(() -> new EntityNotFoundException("Norabang not found with id: " + pk));
         Integer hit = noraebang.getHit();
+        Integer weeklyHit = noraebang.getWeeklyHit();
         noraebang.setHit(hit+1);
+        noraebang.setWeeklyHit(weeklyHit+1);
 
         Optional<User> userOptional = userRepository.findById(userPk);
         if (userOptional.isPresent()) {
@@ -156,32 +164,29 @@ public class    NoraebangService {
     게시글 pk, 댓글 내용 필요.
      */
     @Transactional
-    public void createNoraebangReview(Long noraebangPk, NoraebangReviewDto noraebangReviewDto) throws Exception {
-        String content = noraebangReviewDto.getContent();
+    public void createNoraebangReview(Long noraebangPk, String content) throws Exception {
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
 
-        if (userService.userState()) {
 //             현재 인가에서 유저 가져오기
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
 //            테스트용 유저
-//            User user = userRepository.findById(Long.valueOf(3)).get();
+        User user = userRepository.findById(Long.valueOf(3)).get();
 
-            if (noraebangOptional.isPresent() && user!=null) {
-                Noraebang noraebang = noraebangOptional.get();
+        if (noraebangOptional.isPresent() && user!=null) {
+            Noraebang noraebang = noraebangOptional.get();
 
-                NoraebangReview review = NoraebangReview.builder()
-                        .user(user)
-                        .content(content)
-                        .noraebang(noraebang)
-                        .build();
+            NoraebangReview review = NoraebangReview.builder()
+                    .user(user)
+                    .content(content)
+                    .noraebang(noraebang)
+                    .build();
 
-                noraebangReviewRepository.save(review);
-                if (!Objects.equals(noraebang.getUser().getId(), user.getId())) {
-                    notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
-                }
+            noraebangReviewRepository.save(review);
+            if (!Objects.equals(noraebang.getUser().getId(), user.getId())) {
+                notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글에 댓글이 작성 되었습니다.");
             }
         }
     }

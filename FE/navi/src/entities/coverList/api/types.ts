@@ -29,6 +29,7 @@ interface CoverUser {
 interface CoverItem {
   id: number;
   title: string;
+  video: string;
   thumbnail: string;
   hit: number;
   likeCount: number;
