@@ -1,5 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import css from './Page.module.css';
+
+interface Artist {
+  id: number;
+  partCount: number;
+  name: string;
+}
+
+interface Song {
+  id: number;
+  title: string;
+  mr: string;
+  image: string;
+}
+
+interface Part {
+  id: number;
+  image: string;
+  name: string;
+  userId?: number;
+  userImage?: string;
+  userName?: string;
+}
+
+interface Follow {
+  id: number;
+  nickname: string;
+  email: string;
+  image: string;
+  followingCount: number;
+  followerCount: number;
+  username: string;
+  role: string;
+}
 
 const partList = ['파트1', '파트2', '파트3'];
 const followList = [
@@ -24,6 +58,118 @@ const images = [
 ];
 
 export function CoverPostPage() {
+  const [artists, setArtists] = useState<Artist[]>([]);
+  const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
+    undefined,
+  );
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined);
+  const [parts, setParts] = useState<Part[]>([]);
+  const [follows, setFollows] = useState<Follow[]>([]);
+
+  // const [parts, setParts] = useState<>([])
+
+  useEffect(() => {
+    const fetchArtists = async () => {
+      try {
+        const response = await axios.get<{
+          resultCode: string;
+          message: string;
+          data: Artist[];
+        }>('http://localhost:8081/api/covers/info');
+        if (response.data.resultCode === 'OK') {
+          setArtists(response.data.data);
+        } else {
+          console.error(
+            '가수 목록을 가져오는 중 오류 발생:',
+            response.data.message,
+          );
+        }
+      } catch (error) {
+        console.error('가수 목록을 가져오는 중 오류 발생:', error);
+      }
+    };
+    const fetchFollows = async () => {
+      try {
+        const response = await axios.get<{
+          resultCode: string;
+          message: string;
+          data: Follow[];
+        }>('http://localhost:8081/api/users/Follow', {
+          withCredentials: true,
+        });
+        if (response.data.resultCode === 'OK') {
+          setFollows(response.data.data);
+        } else {
+          console.error(
+            '맞팔로우 목록을 가져오는 중 오류 발생:',
+            response.data.message,
+          );
+        }
+      } catch (error) {
+        console.error('맞팔로우 목록을 가져오는 중 오류 발생:', error);
+      }
+    };
+
+    fetchArtists();
+    fetchFollows();
+  }, []);
+
+  const fetchSongsByArtist = async (artistPk: number) => {
+    try {
+      const response = await axios.get<{
+        resultCode: string;
+        message: string;
+        data: Song[];
+      }>(`http://localhost:8081/api/covers/${artistPk}/song`);
+      if (response.data.resultCode === 'OK') {
+        setSongs(response.data.data);
+      } else {
+        console.error(
+          '아티스트의 곡 목록을 가져오는 중 오류 발생:',
+          response.data.message,
+        );
+      }
+    } catch (error) {
+      console.error('아티스트의 곡 목록을 가져오는 중 오류 발생:', error);
+    }
+  };
+
+  const handleArtistChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const artistId = parseInt(event.target.value);
+    setSelectedArtist(event.target.value);
+    if (artistId) {
+      await fetchSongsByArtist(artistId);
+    } else {
+      setSongs([]);
+    }
+  };
+
+  const handleSongChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const songId = parseInt(event.target.value);
+    const song = songs.find((song) => song.id === songId);
+    setSelectedSong(song);
+    if (song) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8081/api/covers/select/${songId}`,
+        );
+        if (response.data.resultCode === 'OK') {
+          // 여기서 파트랑 팔로우 목록 넣어줘야함
+        } else {
+          console.error('가사를 가져오는 중 오류 발생:', response.data.message);
+        }
+      } catch (error) {
+        console.error('가사를 가져오는 중 오류 발생:', error);
+      }
+    } else {
+    }
+  };
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -45,20 +191,42 @@ export function CoverPostPage() {
         </div>
         <div className={css.carouselContainer}>
           <div className={css.title}>커버 선택</div>
+
           <div className={css.coverSelectSection}>
             <div className={css.dropdownContainer}>
-              <select className={css.dropdown}>
-                <option value="가수1">부석순</option>
-                <option value="가수2">트와이스</option>
-                <option value="가수3">투마로우바이투게더</option>
-                {/* 추가 옵션... */}
+              <select
+                className={css.dropdown}
+                onChange={handleArtistChange}
+                value={selectedArtist || ''}
+              >
+                <option value="" disabled hidden>
+                  가수 선택
+                </option>
+                {artists.map((artist) => (
+                  <option key={artist.id} value={artist.id.toString()}>
+                    {artist.name}
+                  </option>
+                ))}
               </select>
-              <select className={css.dropdown}>
-                <option value="cover1">파이팅 해야지</option>
-                <option value="cover2">거침없이</option>
-                <option value="cover3">7시에 들어줘</option>
-                {/* 추가 옵션... */}
-              </select>
+
+              {selectedArtist ? (
+                <select
+                  className={css.dropdown}
+                  onChange={handleSongChange}
+                  value={selectedSong ? selectedSong.id.toString() : ''}
+                >
+                  <option value="" disabled hidden>
+                    노래 선택
+                  </option>
+                  {songs.map((song) => (
+                    <option key={song.id} value={song.id.toString()}>
+                      {song.title}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <div className={css.dropdown}>가수를 선택해주세요</div>
+              )}
             </div>
           </div>
           <div className={css.carouselControls}>
@@ -89,16 +257,16 @@ export function CoverPostPage() {
           </div>
         </div>
         <div className={css.followListContainer}>
-          {followList.map((friend, index) => (
+          {follows.map((follow, index) => (
             <div key={index} className={css.followItem}>
               <div className={css.profilePicContainer}>
                 <img
-                  src={friend.img}
-                  alt={`${friend.name}의 프로필 사진`}
+                  src={follow.image}
+                  alt={`${follow.nickname}의 프로필 사진`}
                   className={css.profilePic}
                 />
               </div>
-              <div className={css.friendName}>{friend.name}</div>
+              <div className={css.friendName}>{follow.nickname}</div>
             </div>
           ))}
         </div>

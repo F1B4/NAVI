@@ -1,3 +1,5 @@
+@import url('@/shared/colors.css');
+
 .root {
   display: flex;
   flex-direction: column;
@@ -15,6 +17,7 @@
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  height: 100%;
 }
 
 .partList {
@@ -56,12 +59,16 @@
 }
 
 .followListContainer {
+  height: 400px;
   flex: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   margin: 20px;
+  padding: 20px;
+  background-color: var(--main_line);
+  border-radius: 10px;
 }
 
 .followItem {

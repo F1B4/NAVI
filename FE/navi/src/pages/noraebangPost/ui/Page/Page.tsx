@@ -32,7 +32,7 @@ export function NoraebangPostPage() {
   const [showTextBox, setShowTextBox] = useState<boolean>(false); // 텍스트 박스 보이기 여부를 나타내는 상태 추가
   const [isRecording, setIsRecording] = useState<boolean>(false); // isRecording 타입 지정
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
-  const [songPk, setSongPk] = useState<number | null>(5);
+  const [songPk] = useState<number | null>(5);
   const [content, setContent] = useState<string | null>('');
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -110,6 +110,7 @@ export function NoraebangPostPage() {
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
           setRecordedChunks((prevChunks) => [...prevChunks, e.data]);
+          console.log(recordedChunks);
         }
       };
       mediaRecorder.onstop = () => {
@@ -242,19 +243,24 @@ export function NoraebangPostPage() {
             onChange={handleArtistChange}
             value={selectedArtist}
           >
-            <option value="">가수 선택</option>
+            <option value="" disabled hidden>
+              가수 선택
+            </option>
             {artists.map((artist) => (
               <option key={artist.id} value={artist.id.toString()}>
                 {artist.name}
               </option>
             ))}
           </select>
+
           <select
             style={{ margin: '0 10px', width: '90%' }}
             onChange={handleSongChange}
             value={selectedSong ? selectedSong.id.toString() : ''}
           >
-            <option value="">곡 선택</option>
+            <option value="" disabled hidden>
+              노래 선택
+            </option>
             {songs.map((song) => (
               <option key={song.id} value={song.id.toString()}>
                 {song.title}
