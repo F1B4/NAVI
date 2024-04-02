@@ -45,6 +45,16 @@ public class    NoraebangService {
     private final UserService userService;
 
     /*
+    노래방 생성 알람
+     */
+    public void completeNoraebang(Long noraebangPk) throws Exception {
+        Noraebang noraebang = noraebangRepository.findById(noraebangPk)
+                .orElseThrow(() -> new Exception("노래방 게시글을 찾을 수 없습니다."));
+        notificationService.sendNotificationToUser(noraebang.getUser().getId(), "노래방 게시글이 생성 되었습니다.");
+    }
+
+
+    /*
     모든 노래방 게시글 가져오기
      */
     public List<NoraebangAllDto> getNoraebang() {
@@ -170,12 +180,9 @@ public class    NoraebangService {
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
 
 //             현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-
-//            테스트용 유저
-        User user = userRepository.findById(Long.valueOf(3)).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
         if (noraebangOptional.isPresent() && user!=null) {
             Noraebang noraebang = noraebangOptional.get();

@@ -33,8 +33,6 @@ public class NoraebangController {
     public final S3Service s3Service;
     public final NotificationService notificationService;
     public final UserService userService;
-    private final UserRepository userRepository;
-
 
 
     /*
@@ -54,6 +52,7 @@ public class NoraebangController {
     public Response<List<SongDto>> InfoSongs(@PathVariable("artist_pk") Long artistPk) {
         return Response.of("OK", "아티스트의 모든 노래 가져오기", songService.getSongByArtist(artistPk));
     }
+
 
     @GetMapping("/{song_pk}/lyrics")
     public Response<List<LyricDto>> getLyrics(@PathVariable("song_pk") Long songPk) {
@@ -90,12 +89,9 @@ public class NoraebangController {
         return Response.of("Ok", "노래방 게시글 작성", null);
     }
 
-    @PostMapping("/complete")
-    public void recordNoraebang() throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        notificationService.sendNotificationToUser(user.getId(), "노래방 생성 완료");
+    @PostMapping("/complete/{noraebang_pk}")
+    public void recordNoraebang(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
+        noraebangService.completeNoraebang(noraebangPk);
     }
 
     /*
