@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/shared/store';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { baseApi } from '@/shared/api';
 import css from './Page.module.css';
 
