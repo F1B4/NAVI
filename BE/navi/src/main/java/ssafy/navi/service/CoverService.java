@@ -422,13 +422,11 @@ public class CoverService {
     }
 
     public void completeCoverVideo(Long coverPk) throws Exception {
-        System.out.println(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         Cover cover = coverRepository.findById(coverPk).orElseThrow(() -> new Exception("커버가 없습니다"));
         List<CoverUser> coverUsers = cover.getCoverUsers();
         Set<Long> users = new HashSet<>();
         for (CoverUser coverUser : coverUsers) {
             Long pk = coverUser.getUser().getId();
-            System.out.println("pk @@@@@@@@@@@@@@@@@@@@@@@@= " + pk);
             users.add(pk);
         }
         for (Long user : users) {

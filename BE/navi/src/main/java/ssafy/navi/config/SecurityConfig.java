@@ -61,6 +61,9 @@ public class SecurityConfig {
                 .requestMatchers("/noraebangs/{noraebang_pk}/review")
                 // NotificationController
                 .requestMatchers("/sse/notification/subscribe/{userId}")
+                // ai
+                .requestMatchers("ai/cover/{cover_pk}")
+                .requestMatchers("ai/train/{user_pk}")
                 ;
     }
     @Bean
