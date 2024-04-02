@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ssafy.navi.dto.cover.*;
 import ssafy.navi.dto.song.ArtistDto;
+import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
@@ -71,11 +72,11 @@ public class CoverController {
     }
 
     /*
-    파트와 맞팔로우 목록 가져오기
+    파트 가져오기
      */
     @GetMapping("/{song_pk}/select")
-    public Response<Map<String,Object>> getPartAndMutualFollow(@PathVariable("song_pk") Long songPk) throws Exception{
-        return Response.of("OK","파트 및 맞팔로우 목록 가져오기",coverService.getPartAndMutualFollow(songPk));
+    public Response<List<PartDto>> getPartAndMutualFollow(@PathVariable("song_pk") Long songPk) throws Exception{
+        return Response.of("OK","파트 가져오기",coverService.getPart(songPk));
     }
 
     /*

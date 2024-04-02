@@ -102,6 +102,19 @@ public class CoverService {
         return partAndMutualFollow;
     }
 
+
+
+    /*
+    파트 가져오기
+     */
+    public List<PartDto> getPart(Long songPk) throws Exception{
+        return partRepository.findBySongId(songPk).stream()
+                .map(PartDto::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+
+
     /*
     커버 생성 로직
      */
