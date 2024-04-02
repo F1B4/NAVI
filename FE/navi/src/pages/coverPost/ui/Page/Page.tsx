@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useUserStore } from '@/shared/store';
 import axios from 'axios';
 import css from './Page.module.css';
 
@@ -36,6 +37,7 @@ interface Follow {
 }
 
 export function CoverPostPage() {
+  const store = useUserStore();
   const [artists, setArtists] = useState<Artist[]>([]);
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
     undefined,
@@ -44,8 +46,8 @@ export function CoverPostPage() {
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined);
   const [parts, setParts] = useState<Part[]>([]);
   const [follows, setFollows] = useState<Follow[]>([]);
-  const [images, setImages] = useState<String[]>([]);
-  const [selectedPart, setSelectedPart] = useState<Part>();
+  const [images, setImages] = useState<string[]>([]);
+  const [selectedPart, setSelectedPart] = useState<Part | undefined>(parts[0]);
 
   // const [parts, setParts] = useState<>([])
 
@@ -151,10 +153,13 @@ export function CoverPostPage() {
             image: song.image, // 파트의 이미지를 선택된 곡의 이미지로 업데이트
           }));
           setParts(updatedParts);
-
           // 파트 이미지들을 모아서 images 상태를 업데이트
           const partImages = updatedParts.map((part: Part) => part.image);
           setImages(partImages);
+
+          // 첫 번째 파트 선택
+          setSelectedPart(updatedParts[0]);
+          setCurrentIndex(0); // 인덱스도 업데이트
         } else {
           console.error(
             '파트 정보를 가져오는 중 오류 발생:',
@@ -168,23 +173,79 @@ export function CoverPostPage() {
       console.error('song 선택 오류');
     }
   };
-
   // 사진 클릭하면 userdata => partdata에 할당하기
   const handleUserClick = (user: Follow) => {
-    const { id, image, nickname } = user; // 클릭된 사용자의 데이터 추출
-    const updatedPart: Part = { id, image, name: nickname }; // 클릭된 사용자의 데이터를 파트 형식으로 변환
-    setParts([...parts, updatedPart]); // 파트 데이터에 클릭된 사용자의 데이터 추가
+    const { id, image, nickname } = user;
+
+    // 이미 사용자 정보가 있는 경우
+    if (selectedPart) {
+      const updatedParts = parts.map((part) =>
+        part.id === selectedPart.id
+          ? {
+              ...part,
+              userId: id,
+              userImage: image,
+              userName: nickname,
+            }
+          : part,
+      );
+
+      setParts(updatedParts);
+    }
   };
+  const handleUpload = async () => {
+    // userId가 0이 아니고 정의되어 있는 경우에만 userPk를 설정하여 userPartDtos 생성
+    const userPartDtos = parts
+      .filter((part) => part.userId !== 0 && part.userId !== undefined) // userId가 0이 아니고 정의되어 있는 경우만 필터링
+      .map((part) => ({
+        userPk: part.userId, // userId가 0이 아니고 정의되어 있는 경우에만 userPk 설정
+        partPk: part.id, // 파트의 ID
+      }));
 
-  // 등록 클릭하면 partdata 가지고 올리기
+    if (userPartDtos.length > 0) {
+      const requestBody = JSON.stringify({
+        songPk: selectedSong?.id || 0, // 선택한 곡의 ID, 선택된 곡이 없을 경우 0으로 설정
+        userPartDtos: userPartDtos, // 사용자와 파트의 ID를 담은 배열
+      });
 
+      try {
+        const response = await fetch(
+          'http://localhost:8081/api/covers/create',
+          {
+            method: 'POST',
+            body: requestBody,
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          console.error('Failed to upload cover');
+        } else {
+          console.log('Cover upload successful');
+        }
+      } catch (error) {
+        console.error('Failed to upload cover:', error);
+      }
+    } else {
+      console.error('선택된 파트 정보가 없습니다');
+    }
+  };
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // 이전, 다음 캐러셀을 클릭할 때 selectedPart를 업데이트합니다.
   const nextSlide = () => {
-    setCurrentIndex((currentIndex + 1) % images.length);
+    const newIndex = (currentIndex + 1) % parts.length;
+    setSelectedPart(parts[newIndex]); // 다음 슬라이드로 이동할 때 선택된 파트 업데이트
+    setCurrentIndex(newIndex);
   };
+
   const prevSlide = () => {
-    setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+    const newIndex = (currentIndex - 1 + parts.length) % parts.length;
+    setSelectedPart(parts[newIndex]); // 이전 슬라이드로 이동할 때 선택된 파트 업데이트
+    setCurrentIndex(newIndex);
   };
 
   return (
@@ -192,21 +253,29 @@ export function CoverPostPage() {
       <div className={css.mainContent}>
         {/* 파트 선택 왼쪽 */}
         <div className={css.partList}>
-          <ul>
+          <ul className={css.partUl}>
             {parts.map((part, index) => (
-              <li key={index}>
-                <img src={part.image} alt={part.name} />{' '}
-                {/* 파트 이미지 표시 */}
-                {part.name} {/* 파트 이름 표시 */}
-                {part.userImage && ( // 사용자 이미지가 존재하면 함께 표시
-                  <div className={css.profilePicContainer}>
+              <li key={index} className={css.partLi}>
+                <div className={css.partContainer}>
+                  <div>
                     <img
-                      src={part.userImage}
-                      alt={`${part.name}의 프로필 사진`}
-                      className={css.profilePic}
+                      src={part.image}
+                      alt={part.name}
+                      className={css.partImage}
                     />
+                    <p>{part.name}</p>
                   </div>
-                )}
+                  {part.userImage && (
+                    <div className={css.profileContainer}>
+                      <img
+                        src={part.userImage}
+                        alt={`${part.name}의 프로필 사진`}
+                        className={css.profilePic}
+                      />
+                      <p>{part.userName}</p>
+                    </div>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
@@ -280,7 +349,35 @@ export function CoverPostPage() {
           </div>
         </div>
         {/* 친구 고르기 오른쪽 */}
+        {/* 친구 고르기 오른쪽 */}
         <div className={css.followListContainer}>
+          {/* '나' 추가 */}
+          <div className={css.followItem}>
+            <div
+              className={css.profilePicContainer}
+              onClick={() =>
+                handleUserClick({
+                  id: store.userId,
+                  image: store.image,
+                  nickname: store.nickname, // '나'라는 닉네임 설정
+                  email: '', // 필요에 따라 초기값 설정
+                  followingCount: 0, // 필요에 따라 초기값 설정
+                  followerCount: 0, // 필요에 따라 초기값 설정
+                  username: '', // 필요에 따라 초기값 설정
+                  role: '', // 필요에 따라 초기값 설정
+                })
+              }
+            >
+              <img
+                src={store.image}
+                alt="내 프로필 사진"
+                className={css.profilePic}
+              />
+            </div>
+            <div className={css.friendName}>나</div>
+          </div>
+
+          {/* 나머지 Follow 리스트 */}
           {follows.map((follow, index) => (
             <div key={index} className={css.followItem}>
               <div
@@ -298,6 +395,9 @@ export function CoverPostPage() {
           ))}
         </div>
       </div>
+      <button onClick={handleUpload} className={css.uploadButton}>
+        업로드
+      </button>
     </div>
   );
 }
