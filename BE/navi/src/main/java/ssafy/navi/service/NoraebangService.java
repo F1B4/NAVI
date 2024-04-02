@@ -110,7 +110,9 @@ public class    NoraebangService {
 //            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 //            User user = userRepository.findByUsername(customOAuth2User.getUsername());
-            User user = userRepository.findById(8L).get();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+            User user = userRepository.findByUsername(customOAuth2User.getUsername());
             if (artistById.isPresent() && user!=null) {
                 Noraebang noraebang = Noraebang.builder()
                         .content(content)
@@ -168,9 +170,9 @@ public class    NoraebangService {
         Optional<Noraebang> noraebangOptional = noraebangRepository.findById(noraebangPk);
 
 //             현재 인가에서 유저 가져오기
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
 //            테스트용 유저
         User user = userRepository.findById(Long.valueOf(3)).get();

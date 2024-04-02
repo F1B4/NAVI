@@ -2,14 +2,19 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.LyricDto;
+import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.entity.user.User;
+import ssafy.navi.repository.UserRepository;
 import ssafy.navi.service.*;
 
 import java.io.IOException;
@@ -28,6 +33,7 @@ public class NoraebangController {
     public final S3Service s3Service;
     public final NotificationService notificationService;
     public final UserService userService;
+    private final UserRepository userRepository;
 
 
 
@@ -86,7 +92,10 @@ public class NoraebangController {
 
     @PostMapping("/complete")
     public void recordNoraebang() throws Exception {
-        notificationService.sendNotificationToUser(8L, "노래방 생성 완료");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+        notificationService.sendNotificationToUser(user.getId(), "노래방 생성 완료");
     }
 
     /*

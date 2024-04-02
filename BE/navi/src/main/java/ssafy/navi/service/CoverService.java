@@ -342,10 +342,10 @@ public class CoverService {
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
 
         // 현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        User user=userRepository.findById(Long.valueOf(1L)).orElseThrow(()->new RuntimeException("test"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//        User user=userRepository.findById(Long.valueOf(1L)).orElseThrow(()->new RuntimeException("test"));
         CoverReview coverReview=CoverReview.builder()
                 .content(content)
                 .cover(cover)
