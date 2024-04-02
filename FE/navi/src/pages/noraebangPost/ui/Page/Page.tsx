@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { baseApi } from '@/shared/api';
 import axios from 'axios';
 import css from './Page.module.css';
 import { baseApi } from '@/shared/api';
@@ -31,6 +33,7 @@ interface Lyric {
 }
 
 export function NoraebangPostPage() {
+  const navi = useNavigate();
   const [showTextBox, setShowTextBox] = useState<boolean>(false); // 텍스트 박스 보이기 여부를 나타내는 상태 추가
   const [isRecording, setIsRecording] = useState<boolean>(false); // isRecording 타입 지정
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -84,6 +87,7 @@ export function NoraebangPostPage() {
       }
 
       console.log('Audio uploaded successfully');
+      navi('/noraebang');
     } catch (error) {
       console.error('Error uploading audio:', error);
     }
