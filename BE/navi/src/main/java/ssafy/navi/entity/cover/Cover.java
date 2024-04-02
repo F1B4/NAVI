@@ -27,7 +27,7 @@ public class Cover extends BaseTimeEntity {
 
     // 썸네일 S3 URL
     @Column(name = "thumbnail")
-    private String thumbnail;
+    private String thumbnail = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnNxZnpvd3I4cWVqcW9mY2M5ODQ0cXdnM3Axdm5oend6cmQ3YnlsbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEjI6SIIHBdRxXI40/giphy.gif";
 
     // 조회수
     @Column(name = "hit")
