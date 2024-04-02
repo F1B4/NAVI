@@ -137,7 +137,6 @@ public class    NoraebangService {
                         .user(user)
                         .build();
                 voiceRepository.save(voice);
-                System.out.println("save.getId() =@@@@@@@@@@@@@@@@@@@@@@@@@ " + save.getId());
                 fastApiService.fetchDataFromFastAPI("/noraebangs/record",songbyId.get().getId(), fileName, save.getId());
             }
 

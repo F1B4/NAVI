@@ -121,7 +121,13 @@ public class CoverService {
      */
     @Transactional
     public Response<Long> createCover(CoverRegistDto coverRegistDto) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User userSocial = userRepository.findByUsername(customOAuth2User.getUsername());
 
+        if (userSocial.getNoraebangs().size() < 10) {
+            return Response.of("OK", "매칭 업데이트 완료", 3L);
+        }
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
         //전체 파트 수를 가져오기 위해서는 artist테이블까지 접근해야 하기 때문에 연관관계가 있는 song을 먼저 찾음
@@ -435,8 +441,23 @@ public class CoverService {
         }
     }
 
+    /*
+    학습 완료 알림
+     */
     public void completeTrain(Long userPk) throws Exception {
         userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
-        notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 생성이 가능합니다.");
+        notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 기능 이용이 가능합니다.");
+    }
+
+    /*
+    학습 데이터 없는 사용자가 커버 게시글 생성하려 할시
+     */
+
+    public void notTrain() throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        notificationService.sendNotificationToUser(user.getId(), "학습 데이터가 충분치 않습니다. 노래방 기능을 사용 해주세요!");
     }
 }
