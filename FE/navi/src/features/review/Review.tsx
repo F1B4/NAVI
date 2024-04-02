@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { baseApi } from '@/shared/api';
 import { z } from 'zod'; // zod에서 필요한 모듈 가져오기
 import { baseApi } from '@/shared/api';
 

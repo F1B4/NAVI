@@ -2,14 +2,19 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.LyricDto;
+import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.dto.song.SongDto;
+import ssafy.navi.entity.user.User;
+import ssafy.navi.repository.UserRepository;
 import ssafy.navi.service.*;
 
 import java.io.IOException;
@@ -30,7 +35,6 @@ public class NoraebangController {
     public final UserService userService;
 
 
-
     /*
     아티스트 정보 가져오기
     노래방 생성 화면으로 갔을 때 처음엔 아티스트 정보들을 보내줘야 아티스트를 선택할 수 있기 때문에 아티스트를 담아서 보냄
@@ -48,6 +52,7 @@ public class NoraebangController {
     public Response<List<SongDto>> InfoSongs(@PathVariable("artist_pk") Long artistPk) {
         return Response.of("OK", "아티스트의 모든 노래 가져오기", songService.getSongByArtist(artistPk));
     }
+
 
     @GetMapping("/{song_pk}/lyrics")
     public Response<List<LyricDto>> getLyrics(@PathVariable("song_pk") Long songPk) {
@@ -84,12 +89,9 @@ public class NoraebangController {
         return Response.of("Ok", "노래방 게시글 작성", null);
     }
 
-    @PostMapping("/complete")
-    public void recordNoraebang() throws Exception {
-        // 여기에서 request 객체를 사용하여 필요한 로직 처리
-        // 예: s3_path 값을 사용하는 로직
-        System.out.println("fastAPI가 보낸거 받았습니다~~~~~~~~~~ 이제 알림 보냄!!!");
-        notificationService.sendNotificationToUser(8L, "노래방 생성 완료");
+    @PostMapping("/complete/{noraebang_pk}")
+    public void recordNoraebang(@PathVariable("noraebang_pk") Long noraebangPk) throws Exception {
+        noraebangService.completeNoraebang(noraebangPk);
     }
 
     /*

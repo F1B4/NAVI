@@ -12,6 +12,7 @@ interface MySongProps {
 }
 
 export function MySongList(props: MySongProps) {
+  console.log(props);
   return (
     <div>
       {props.myNorae.length > 0 && (

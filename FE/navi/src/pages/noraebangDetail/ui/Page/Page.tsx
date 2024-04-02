@@ -30,7 +30,7 @@ export function NoraebangDetailPage() {
       }
     };
     AxiosNoraebang();
-  }, []);
+  }, [props]);
 
   if (load && noraebang) {
     return (

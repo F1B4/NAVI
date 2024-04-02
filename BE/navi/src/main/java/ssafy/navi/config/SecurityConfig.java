@@ -35,8 +35,6 @@ public class SecurityConfig {
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-//                .requestMatchers("/**")
-                // UserController
                 .requestMatchers("/users/following/{user_pk}")
                 .requestMatchers("/users/follower/{user_pk}")
                 .requestMatchers("/users/profile/{user_pk}/{login_user_pk}")
@@ -60,11 +58,12 @@ public class SecurityConfig {
                 .requestMatchers("/noraebangs/byView")
                 .requestMatchers("/noraebangs/byLike")
                 .requestMatchers("/noraebangs/detail/{noraebang_pk}/{user_pk}")
+                .requestMatchers("/noraebangs/complete/{noraebang_pk}")
                 // NotificationController
                 .requestMatchers("/sse/notification/subscribe/{userId}")
-                // aiController
-                .requestMatchers("/ai/cover/{cover_pk}")
-                .requestMatchers("/ai/train/{user_pk}")
+                // ai
+                .requestMatchers("ai/cover/{cover_pk}")
+                .requestMatchers("ai/train/{user_pk}")
                 ;
     }
     @Bean

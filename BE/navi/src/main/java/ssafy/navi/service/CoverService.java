@@ -1,6 +1,5 @@
 package ssafy.navi.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.cover.*;
-import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.PartDto;
-import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
@@ -20,6 +17,7 @@ import ssafy.navi.entity.cover.*;
 import ssafy.navi.entity.song.Artist;
 import ssafy.navi.entity.song.Part;
 import ssafy.navi.entity.song.Song;
+import ssafy.navi.entity.user.Role;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.repository.*;
 
@@ -120,6 +118,16 @@ public class CoverService {
      */
     @Transactional
     public Response<Long> createCover(CoverRegistDto coverRegistDto) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User userSocial = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        if (userSocial.getNoraebangs().size() < 10) {
+            return Response.of("OK", "커버 생성 불가능", 3L);
+        }
+        if (userSocial.getRole() == Role.ROLE_GUEST) {
+            return Response.of("OK", "훈련중, 커버 생성 불가능", 4L);
+        }
 
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
@@ -341,10 +349,10 @@ public class CoverService {
                 .orElseThrow(() -> new Exception("커버 게시글이 존재하지 않음"));
 
         // 현재 인가에서 유저 가져오기
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        User user=userRepository.findById(Long.valueOf(1L)).orElseThrow(()->new RuntimeException("test"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+//        User user=userRepository.findById(Long.valueOf(1L)).orElseThrow(()->new RuntimeException("test"));
         CoverReview coverReview=CoverReview.builder()
                 .content(content)
                 .cover(cover)
@@ -434,8 +442,14 @@ public class CoverService {
         }
     }
 
+    /*
+    학습 완료 알림
+     */
     public void completeTrain(Long userPk) throws Exception {
-        userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
-        notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 생성이 가능합니다.");
+        User user = userRepository.findById(userPk).orElseThrow(() -> new Exception("유저가 없습니다."));
+        user.updateRole(Role.ROLE_USER);
+        userRepository.save(user);
+
+        notificationService.sendNotificationToUser(userPk, "학습이 완료 되었습니다. 커버 기능 이용이 가능합니다.");
     }
 }

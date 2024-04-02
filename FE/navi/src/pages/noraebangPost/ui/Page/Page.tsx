@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { baseApi } from '@/shared/api';
 import axios from 'axios';
 import css from './Page.module.css';
+import { baseApi } from '@/shared/api';
 
 // Artist, Song, Lyric 인터페이스 수정
 interface Artist {

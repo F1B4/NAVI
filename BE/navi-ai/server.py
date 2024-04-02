@@ -17,6 +17,7 @@ async def train(pk : str = Form(...)):
 @app.post("/ai/cover")
 async def infer(pk : str = Form(...)):
     # pk: cover_pk
+    print(pk, "============================")
     infer_task.delay(pk)
 
 

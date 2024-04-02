@@ -116,6 +116,9 @@ public class User{
         followerCount = 0;
     }
 
+    public void updateRole(Role role) {
+        this.role = role;
+    }
     public void updateEmail(String email) {
         this.email = email;
     }

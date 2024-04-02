@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/shared/store';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { baseApi } from '@/shared/api';
-import axios from 'axios';
 import css from './Page.module.css';
 
 interface Artist {
@@ -209,14 +209,17 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(`${baseApi}/covers/create'`, {
-          method: 'POST',
-          body: requestBody,
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'http://localhost:8081/api/covers/create',
+          {
+            method: 'POST',
+            body: requestBody,
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
         console.log(requestBody);
 
         if (!response.ok) {

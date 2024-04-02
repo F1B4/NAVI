@@ -12,7 +12,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
 
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("http://localhost:5173","http://navi.iptime.org:8085","https://j10d107.p.ssafy.io")
+                .allowedOrigins("https://j10d107.p.ssafy.io", "http://navi.iptime.org:8085", "http://localhost:5173")
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
     }
 }

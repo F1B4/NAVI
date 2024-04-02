@@ -32,7 +32,7 @@ public class NoraebangReview extends BaseTimeEntity {
     private User user;
 
     // 댓글 단 게시글
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "noraebang_pk")
     private Noraebang noraebang;
 
