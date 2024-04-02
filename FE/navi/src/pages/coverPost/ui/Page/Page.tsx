@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/shared/store';
-import { baseApi } from '@/shared/api';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import css from './Page.module.css';
 
@@ -38,6 +38,7 @@ interface Follow {
 }
 
 export function CoverPostPage() {
+  const navi = useNavigate();
   const store = useUserStore();
   const [artists, setArtists] = useState<Artist[]>([]);
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
@@ -59,7 +60,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Artist[];
-        }>(`${baseApi}/covers/info`, {
+        }>('http://localhost:8081/api/covers/info', {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -80,7 +81,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Follow[];
-        }>(`${baseApi}/users/mutualfollow`, {
+        }>('http://localhost:8081/api/users/mutualfollow', {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -106,7 +107,7 @@ export function CoverPostPage() {
         resultCode: string;
         message: string;
         data: Song[];
-      }>(`${baseApi}/covers/${artistPk}/song`, {
+      }>(`http://localhost:8081/api/covers/${artistPk}/song`, {
         withCredentials: true,
       });
       if (response.data.resultCode === 'OK') {
@@ -142,9 +143,12 @@ export function CoverPostPage() {
     setSelectedSong(song);
     if (song) {
       try {
-        const response = await axios.get(`${baseApi}/covers/${songId}/select`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `http://localhost:8081/api/covers/${songId}/select`,
+          {
+            withCredentials: true,
+          },
+        );
         if (response.data.resultCode === 'OK') {
           const updatedParts = response.data.data.map((part: Part) => ({
             ...part,
@@ -207,20 +211,24 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(`${baseApi}/covers/create`, {
-          method: 'POST',
-          body: requestBody,
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'http://localhost:8081/api/covers/create',
+          {
+            method: 'POST',
+            body: requestBody,
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
         console.log(requestBody);
 
         if (!response.ok) {
           console.error('Failed to upload cover');
         } else {
           console.log('Cover upload successful');
+          navi('/cover');
         }
       } catch (error) {
         console.error('Failed to upload cover:', error);
@@ -278,6 +286,9 @@ export function CoverPostPage() {
         </div>
         {/* 가운데 카로셀 */}
         <div className={css.carouselContainer}>
+          <button onClick={handleUpload} className={css.uploadButton}>
+            업로드
+          </button>
           <div className={css.title}>커버 선택</div>
 
           <div className={css.coverSelectSection}>
@@ -391,9 +402,6 @@ export function CoverPostPage() {
           ))}
         </div>
       </div>
-      <button onClick={handleUpload} className={css.uploadButton}>
-        업로드
-      </button>
     </div>
   );
 }
