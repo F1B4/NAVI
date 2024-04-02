@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod'; // zod에서 필요한 모듈 가져오기
+import { baseApi } from '@/shared/api';
 
 type CommentFormData = {
   content: string;
@@ -19,16 +20,13 @@ const CommentForm: React.FC = () => {
 
       const cover_pk = 4;
       // 서버로 데이터를 보냅니다.
-      const response = await fetch(
-        `http://localhost:8081/api/covers/${cover_pk}/review`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: data.content,
+      const response = await fetch(`${baseApi}/covers/${cover_pk}/review`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: data.content,
+      });
 
       if (response.ok) {
         console.log('댓글이 성공적으로 작성되었습니다.');

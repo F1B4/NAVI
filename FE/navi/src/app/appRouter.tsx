@@ -2,14 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from './layout';
 
 import { CoverBoardPage } from '@/pages/coverBoard';
-import { CoverDetailPage } from '@/pages/coverDetail';
 import { CoverPostPage } from '@/pages/coverPost';
 import { HomePage } from '@/pages/home';
 import { ProfilePage } from '@/pages/profile';
 import { SearchResultsPage } from '@/pages/searchResults';
 import { SearchResultsDetailPage } from '@/pages/searchResultsDetail';
 import { NoraebangBoardPage } from '@/pages/noraebangBoard';
-import { NoraebangDetailPage } from '@/pages/noraebangDetail';
 import { NoraebangPostPage } from '@/pages/noraebangPost';
 
 export const appRouter = () =>
@@ -55,14 +53,6 @@ export const appRouter = () =>
       ),
     },
     {
-      path: '/noraebang/:noraebangPk',
-      element: (
-        <Layout>
-          <NoraebangDetailPage />
-        </Layout>
-      ),
-    },
-    {
       path: '/noraebang/post',
       element: (
         <Layout>
@@ -75,14 +65,6 @@ export const appRouter = () =>
       element: (
         <Layout>
           <CoverBoardPage />
-        </Layout>
-      ),
-    },
-    {
-      path: '/cover/:coverPk',
-      element: (
-        <Layout>
-          <CoverDetailPage />
         </Layout>
       ),
     },

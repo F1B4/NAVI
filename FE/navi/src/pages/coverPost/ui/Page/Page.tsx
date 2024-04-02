@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/shared/store';
+import { useNavigate } from 'react-router-dom';
+import { baseApi } from '@/shared/api';
 import axios from 'axios';
 import css from './Page.module.css';
 
@@ -37,6 +39,7 @@ interface Follow {
 }
 
 export function CoverPostPage() {
+  const navi = useNavigate();
   const store = useUserStore();
   const [artists, setArtists] = useState<Artist[]>([]);
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
@@ -58,7 +61,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Artist[];
-        }>('http://localhost:8081/api/covers/info', {
+        }>(`${baseApi}/covers/info`, {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -79,7 +82,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Follow[];
-        }>('http://localhost:8081/api/users/mutualfollow', {
+        }>(`${baseApi}/users/mutualfollow`, {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -105,7 +108,7 @@ export function CoverPostPage() {
         resultCode: string;
         message: string;
         data: Song[];
-      }>(`http://localhost:8081/api/covers/${artistPk}/song`, {
+      }>(`${baseApi}/covers/${artistPk}/song`, {
         withCredentials: true,
       });
       if (response.data.resultCode === 'OK') {
@@ -141,12 +144,9 @@ export function CoverPostPage() {
     setSelectedSong(song);
     if (song) {
       try {
-        const response = await axios.get(
-          `http://localhost:8081/api/covers/${songId}/select`,
-          {
-            withCredentials: true,
-          },
-        );
+        const response = await axios.get(`${baseApi}/covers/${songId}/select`, {
+          withCredentials: true,
+        });
         if (response.data.resultCode === 'OK') {
           const updatedParts = response.data.data.map((part: Part) => ({
             ...part,
@@ -209,29 +209,28 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(
-          'http://localhost:8081/api/covers/create',
-          {
-            method: 'POST',
-            body: requestBody,
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`${baseApi}/covers/create'`, {
+          method: 'POST',
+          body: requestBody,
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+        });
         console.log(requestBody);
 
         if (!response.ok) {
           console.error('Failed to upload cover');
         } else {
           console.log('Cover upload successful');
+          navi('/cover');
         }
       } catch (error) {
         console.error('Failed to upload cover:', error);
       }
     } else {
       console.error('선택된 파트 정보가 없습니다');
+      window.alert('가수 및 곡을 선택해주세요');
     }
   };
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -283,6 +282,9 @@ export function CoverPostPage() {
         </div>
         {/* 가운데 카로셀 */}
         <div className={css.carouselContainer}>
+          <button onClick={handleUpload} className={css.uploadButton}>
+            업로드
+          </button>
           <div className={css.title}>커버 선택</div>
 
           <div className={css.coverSelectSection}>
@@ -379,26 +381,28 @@ export function CoverPostPage() {
           </div>
 
           {/* 나머지 Follow 리스트 */}
-          {follows.map((follow, index) => (
-            <div key={index} className={css.followItem}>
-              <div
-                className={css.profilePicContainer}
-                onClick={() => handleUserClick(follow)}
-              >
-                <img
-                  src={follow.image}
-                  alt={`${follow.nickname}의 프로필 사진`}
-                  className={css.profilePic}
-                />
-              </div>
-              <div className={css.friendName}>{follow.nickname}</div>
-            </div>
-          ))}
+          {follows.map((follow, index) => {
+            // ROLE_GUEST가 아닌 경우에만 리스트에 추가
+            if (follow.role !== 'ROLE_GUEST') {
+              return (
+                <div key={index} className={css.followItem}>
+                  <div
+                    className={css.profilePicContainer}
+                    onClick={() => handleUserClick(follow)}
+                  >
+                    <img
+                      src={follow.image}
+                      alt={`${follow.nickname}의 프로필 사진`}
+                      className={css.profilePic}
+                    />
+                  </div>
+                  <div className={css.friendName}>{follow.nickname}</div>
+                </div>
+              );
+            }
+          })}
         </div>
       </div>
-      <button onClick={handleUpload} className={css.uploadButton}>
-        업로드
-      </button>
     </div>
   );
 }

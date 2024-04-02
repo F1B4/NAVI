@@ -1,22 +1,17 @@
 import { useUserStore } from '@/shared/store';
+import { baseApi } from '@/shared/api';
 import css from './Login.module.css';
 
 const onNaverLogin = () => {
-  window.location.href =
-    // 'https://j10d107.p.ssafy.io/api/oauth2/authorization/naver';
-    'http://localhost:8081/api/oauth2/authorization/naver';
+  window.location.href = `${baseApi}/oauth2/authorization/naver`;
 };
 
 const onGoogleLogin = () => {
-  window.location.href =
-    // 'https://j10d107.p.ssafy.io/api/oauth2/authorization/google';
-    'http://localhost:8081/api/oauth2/authorization/google';
+  window.location.href = `${baseApi}/oauth2/authorization/google`;
 };
 
 const onKakaoLogin = () => {
-  window.location.href =
-    // 'https://j10d107.p.ssafy.io/api/oauth2/authorization/kakao';
-    'http://localhost:8081/api/oauth2/authorization/kakao';
+  window.location.href = `${baseApi}/oauth2/authorization/kakao`;
 };
 
 export function Login() {

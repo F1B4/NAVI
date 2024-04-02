@@ -95,4 +95,5 @@ export function ProfilePage() {
       </div>
     );
   }
+  return null;
 }
