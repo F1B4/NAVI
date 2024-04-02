@@ -35,28 +35,6 @@ interface Follow {
   role: string;
 }
 
-const partList = ['파트1', '파트2', '파트3'];
-const followList = [
-  {
-    name: '철수',
-    img: 'https://pbs.twimg.com/profile_images/578040448108752896/oQK7a3gS_400x400.jpeg',
-  },
-  {
-    name: '유리',
-    img: 'https://mblogthumb-phinf.pstatic.net/MjAyMzAyMTNfMTQx/MDAxNjc2Mjg5NzI2NTQ5.venb_kM6AyNAbIwHJV_f4SYaaQNg3FnbEPGS2rVArxYg.wJvAVifKAxeiJ2JP-3aYXk1JSNH7AOVc45q6vPobvTcg.JPEG.jyw711/output_1463835467.jpg?type=w800',
-  },
-  {
-    name: '맹구',
-    img: 'https://media.bunjang.co.kr/product/254840755_1_1709027535_w360.jpg',
-  },
-];
-
-const images = [
-  'https://mblogthumb-phinf.pstatic.net/MjAxNzA4MDJfMjU3/MDAxNTAxNjY2MTc3NzIy.e0oxqWD-DcS5qA34E5-T0PQ5wsoCGI37fYXMt8HpfkMg.O6cic22hPdu169R5C3AnJtNNvSwnpTj3FRYBOs0n878g.JPEG.iamsunny95/696563CD-E693-48D3-B7C8-01ACA3368767-26640-000012C698E2FF12_file.jpg?type=w800',
-  'https://blog.kakaocdn.net/dn/2cxt0/btsbBO1CP26/isxzWiFSQmCprbdA8Qy3xK/img.jpg',
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsBiGQaTZcxBCFHuvadM9-J1a1jycHBLxfPV7if20ahf_ZgrajOTEt3sYMUe5y4bebb2Q&usqp=CAU',
-];
-
 export function CoverPostPage() {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
@@ -66,6 +44,8 @@ export function CoverPostPage() {
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined);
   const [parts, setParts] = useState<Part[]>([]);
   const [follows, setFollows] = useState<Follow[]>([]);
+  const [images, setImages] = useState<String[]>([]);
+  const [selectedPart, setSelectedPart] = useState<Part>();
 
   // const [parts, setParts] = useState<>([])
 
@@ -76,7 +56,9 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Artist[];
-        }>('http://localhost:8081/api/covers/info');
+        }>('http://localhost:8081/api/covers/info', {
+          withCredentials: true,
+        });
         if (response.data.resultCode === 'OK') {
           setArtists(response.data.data);
         } else {
@@ -95,7 +77,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Follow[];
-        }>('http://localhost:8081/api/users/Follow', {
+        }>('http://localhost:8081/api/users/mutualfollow', {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -121,7 +103,9 @@ export function CoverPostPage() {
         resultCode: string;
         message: string;
         data: Song[];
-      }>(`http://localhost:8081/api/covers/${artistPk}/song`);
+      }>(`http://localhost:8081/api/covers/${artistPk}/song`, {
+        withCredentials: true,
+      });
       if (response.data.resultCode === 'OK') {
         setSongs(response.data.data);
       } else {
@@ -156,19 +140,43 @@ export function CoverPostPage() {
     if (song) {
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/covers/select/${songId}`,
+          `http://localhost:8081/api/covers/${songId}/select`,
+          {
+            withCredentials: true,
+          },
         );
         if (response.data.resultCode === 'OK') {
-          // 여기서 파트랑 팔로우 목록 넣어줘야함
+          const updatedParts = response.data.data.map((part: Part) => ({
+            ...part,
+            image: song.image, // 파트의 이미지를 선택된 곡의 이미지로 업데이트
+          }));
+          setParts(updatedParts);
+
+          // 파트 이미지들을 모아서 images 상태를 업데이트
+          const partImages = updatedParts.map((part: Part) => part.image);
+          setImages(partImages);
         } else {
-          console.error('가사를 가져오는 중 오류 발생:', response.data.message);
+          console.error(
+            '파트 정보를 가져오는 중 오류 발생:',
+            response.data.message,
+          );
         }
       } catch (error) {
-        console.error('가사를 가져오는 중 오류 발생:', error);
+        console.error('파트 정보를 가져오는 중 오류 발생:', error);
       }
     } else {
+      console.error('song 선택 오류');
     }
   };
+
+  // 사진 클릭하면 userdata => partdata에 할당하기
+  const handleUserClick = (user: Follow) => {
+    const { id, image, nickname } = user; // 클릭된 사용자의 데이터 추출
+    const updatedPart: Part = { id, image, name: nickname }; // 클릭된 사용자의 데이터를 파트 형식으로 변환
+    setParts([...parts, updatedPart]); // 파트 데이터에 클릭된 사용자의 데이터 추가
+  };
+
+  // 등록 클릭하면 partdata 가지고 올리기
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -182,13 +190,28 @@ export function CoverPostPage() {
   return (
     <div className={css.root}>
       <div className={css.mainContent}>
+        {/* 파트 선택 왼쪽 */}
         <div className={css.partList}>
           <ul>
-            {partList.map((part, index) => (
-              <li key={index}>{part}</li>
+            {parts.map((part, index) => (
+              <li key={index}>
+                <img src={part.image} alt={part.name} />{' '}
+                {/* 파트 이미지 표시 */}
+                {part.name} {/* 파트 이름 표시 */}
+                {part.userImage && ( // 사용자 이미지가 존재하면 함께 표시
+                  <div className={css.profilePicContainer}>
+                    <img
+                      src={part.userImage}
+                      alt={`${part.name}의 프로필 사진`}
+                      className={css.profilePic}
+                    />
+                  </div>
+                )}
+              </li>
             ))}
           </ul>
         </div>
+        {/* 가운데 카로셀 */}
         <div className={css.carouselContainer}>
           <div className={css.title}>커버 선택</div>
 
@@ -256,10 +279,14 @@ export function CoverPostPage() {
             ))}
           </div>
         </div>
+        {/* 친구 고르기 오른쪽 */}
         <div className={css.followListContainer}>
           {follows.map((follow, index) => (
             <div key={index} className={css.followItem}>
-              <div className={css.profilePicContainer}>
+              <div
+                className={css.profilePicContainer}
+                onClick={() => handleUserClick(follow)}
+              >
                 <img
                   src={follow.image}
                   alt={`${follow.nickname}의 프로필 사진`}

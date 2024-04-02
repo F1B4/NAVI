@@ -75,6 +75,7 @@ export function NoraebangPostPage() {
         {
           method: 'POST',
           body: formData,
+          credentials: 'include',
         },
       );
 
@@ -140,7 +141,9 @@ export function NoraebangPostPage() {
           resultCode: string;
           message: string;
           data: Artist[];
-        }>('http://localhost:8081/api/noraebangs/info');
+        }>('http://localhost:8081/api/noraebangs/info', {
+          withCredentials: true,
+        });
         if (response.data.resultCode === 'OK') {
           setArtists(response.data.data);
         } else {
@@ -163,7 +166,9 @@ export function NoraebangPostPage() {
         resultCode: string;
         message: string;
         data: Song[];
-      }>(`http://localhost:8081/api/noraebangs/${artistPk}/songs`);
+      }>(`http://localhost:8081/api/noraebangs/${artistPk}/songs`, {
+        withCredentials: true,
+      });
       if (response.data.resultCode === 'OK') {
         setSongs(response.data.data);
       } else {
@@ -199,6 +204,9 @@ export function NoraebangPostPage() {
       try {
         const response = await axios.get(
           `http://localhost:8081/api/noraebangs/${songId}/lyrics`,
+          {
+            withCredentials: true,
+          },
         );
         if (response.data.resultCode === 'OK') {
           const lyricsData = response.data.data;
