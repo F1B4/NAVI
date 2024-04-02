@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { LayoutHeader } from '@/widgets/LayoutHeader';
 import { LayoutSidebar } from '@/widgets/LayoutSidebar';
 import { PlayBar } from '@/widgets/Playbar';
@@ -34,6 +35,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <PlayBarContainer />
     </div>
   );
+};
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Layout;

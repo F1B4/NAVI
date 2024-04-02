@@ -95,13 +95,10 @@ public class CoverController {
     public Response<?> createCover(@RequestBody CoverRegistDto coverRegistDto) throws Exception{
         Response<Long> result = coverService.createCover(coverRegistDto);
         if (result.getMessage().equals("1")) {
-            System.out.println("result.getData() @@@@@@@@@@@@@ " + result.getData());
             fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
         } else if (result.getMessage().equals("2")) {
             fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
         }
-
-
         return Response.of("OK","Make a Song 시작하기",null);
     }
 

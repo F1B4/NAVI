@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import css from './Page.module.css';
-import { FILE } from 'dns';
 
 // Artist, Song, Lyric 인터페이스 수정
 interface Artist {

@@ -220,6 +220,7 @@ export function CoverPostPage() {
             },
           },
         );
+        console.log(requestBody);
 
         if (!response.ok) {
           console.error('Failed to upload cover');
