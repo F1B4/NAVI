@@ -91,16 +91,23 @@ public class CoverController {
     /*
     매칭 요청하기
      */
-    @PostMapping("")
+    @PostMapping("/create")
     public Response<?> createCover(@RequestBody CoverRegistDto coverRegistDto) throws Exception{
         Response<Long> result = coverService.createCover(coverRegistDto);
         if (result.getMessage().equals("1")) {
-            System.out.println("result.getData() @@@@@@@@@@@@@ " + result.getData());
-            fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
-        } else if (result.getMessage() == "2") {
-            fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
-        }
 
+                System.out.println(result.getData() + "@@@11111111111111111111111111111111111");
+                fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
+
+        } else if (result.getMessage() == "2") {
+                System.out.println(result.getData() + "@@@11111111111111111111111111111111111");
+                fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
+
+        }
+        System.out.println(coverRegistDto.getSongPk());
+        for (UserPartDto userPartDto : coverRegistDto.getUserPartDtos()) {
+            System.out.println(userPartDto.getPartPk() +"@@@@@@@@@@@@@@" + userPartDto.getUserPk());
+        }
 
         return Response.of("OK","Make a Song 시작하기",null);
     }
