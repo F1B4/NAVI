@@ -24,10 +24,10 @@ export function Card(props: CardProps) {
   const handleClick = () => {
     store.goPlay({
       type: props.thumbnail ? 'cover' : 'noraebang',
-      url: props.video ? props.video : props.record!,
+      url: (props.video ?? props.record) || '',
       title: props.info.title,
       coverImage: props.thumbnail ? props.thumbnail : props.info.image,
-      artist: props.thumbnail ? props.user : props.user!,
+      artist: props.user,
     });
   };
 
