@@ -2,21 +2,14 @@ import type { Response } from './types';
 import { baseApi } from '@/shared/api';
 import axios, { AxiosResponse } from 'axios';
 
-interface DetailProps {
-  detailPk: number;
-  userId: number;
-}
-
-export const profileApi = async (
-  props: DetailProps,
-): Promise<Response | null> => {
+export const FollowingApi = async (props: number): Promise<Response | null> => {
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/profile/${props.detailPk}/${props.userId}`,
+      `${baseApi}/users/following/${props}`,
     );
     return response.data;
   } catch (error) {
-    console.error('Error get profile', error);
+    console.error('Error get following', error);
     return null;
   }
 };

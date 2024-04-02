@@ -1,8 +1,8 @@
 import { baseApi } from '@/shared/api';
-import type { userState } from '@/shared/store';
+import type { UserState } from '@/shared/store';
 import axios from 'axios';
 
-export const logOut = async (store: userState) => {
+export const logOut = async (store: UserState) => {
   try {
     const response = await axios.get(`${baseApi}/users/logout`, {
       withCredentials: true,

@@ -1,0 +1,51 @@
+.root {
+  width: 100vh;
+  max-height: 340px;
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  overflow-y: auto;
+}
+
+.root::-webkit-scrollbar {
+  height: 20px;
+  background-color: transparent;
+}
+
+.root:hover::-webkit-scrollbar-thumb {
+  background-color: var(--main_line);
+}
+
+.ing,
+.er {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.content {
+  text-align: center;
+}
+
+.user {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.user img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}

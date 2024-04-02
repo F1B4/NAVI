@@ -1,0 +1,77 @@
+@import url('@/shared/colors');
+
+.container {
+  maring: 20px;
+  padding: 10px;
+  height: 200px;
+  width: calc(100vw - 420px);
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  overflow-x: auto;
+  background: #333333;
+}
+
+.container::-webkit-scrollbar {
+  height: 20px;
+  background-color: transparent;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--main_line);
+}
+
+.container :last-child {
+  margin-right: 0;
+}
+
+.coverCard,
+.noraebangCard {
+  margin-right: 40px;
+  height: 160px;
+}
+
+.noraebangImg img {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.coverImg img {
+  width: 160px;
+  height: 100px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.noraebangDesc {
+  width: 100px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.coverDesc {
+  width: 160px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.coverDesc :hover,
+.noraebangDesc :hover {
+  text-decoration: underline;
+}

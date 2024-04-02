@@ -23,9 +23,10 @@ export function NoraebangList() {
 
   return (
     <div className={css.container}>
-      {Array.isArray(noraebangs) &&
+      {Array.isArray(noraebangs) ? (
         noraebangs.map((noraebang, index) => (
           <Card
+            record={noraebang.record}
             id={noraebang.id}
             key={index}
             classCard={css.card}
@@ -35,7 +36,12 @@ export function NoraebangList() {
             type="noraebang"
             info={noraebang.songDto}
           />
-        ))}
+        ))
+      ) : (
+        <div className={css.center}>
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      )}
     </div>
   );
 }
