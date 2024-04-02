@@ -19,16 +19,13 @@ const CommentForm: React.FC = () => {
 
       const cover_pk = 4;
       // 서버로 데이터를 보냅니다.
-      const response = await fetch(
-        `http://localhost:8081/api/covers/${cover_pk}/review`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: data.content,
+      const response = await fetch(`${baseApi}/covers/${cover_pk}/review`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: data.content,
+      });
 
       if (response.ok) {
         console.log('댓글이 성공적으로 작성되었습니다.');

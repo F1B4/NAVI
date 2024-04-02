@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import css from './Page.module.css';
+import { baseApi } from '@/shared/api';
 
 // Artist, Song, Lyric 인터페이스 수정
 interface Artist {
@@ -71,14 +72,11 @@ export function NoraebangPostPage() {
       formData.append('file', file);
       formData.append('song_pk', String(songPk));
       formData.append('content', String(content));
-      const response = await fetch(
-        'http://localhost:8081/api/noraebangs/create',
-        {
-          method: 'POST',
-          body: formData,
-          credentials: 'include',
-        },
-      );
+      const response = await fetch(`${baseApi}/noraebangs/create`, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
 
       if (!response.ok) {
         console.log(response);
@@ -142,7 +140,7 @@ export function NoraebangPostPage() {
           resultCode: string;
           message: string;
           data: Artist[];
-        }>('http://localhost:8081/api/noraebangs/info', {
+        }>(`${baseApi}/noraebangs/info`, {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -167,7 +165,7 @@ export function NoraebangPostPage() {
         resultCode: string;
         message: string;
         data: Song[];
-      }>(`http://localhost:8081/api/noraebangs/${artistPk}/songs`, {
+      }>(`${baseApi}/noraebangs/${artistPk}/songs`, {
         withCredentials: true,
       });
       if (response.data.resultCode === 'OK') {
@@ -204,7 +202,7 @@ export function NoraebangPostPage() {
     if (song) {
       try {
         const response = await axios.get(
-          `http://localhost:8081/api/noraebangs/${songId}/lyrics`,
+          `${baseApi}/noraebangs/${songId}/lyrics`,
           {
             withCredentials: true,
           },

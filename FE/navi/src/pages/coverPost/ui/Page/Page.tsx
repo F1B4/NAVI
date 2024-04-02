@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/shared/store';
+import { baseApi } from '@/shared/api';
 import axios from 'axios';
 import css from './Page.module.css';
 
@@ -58,7 +59,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Artist[];
-        }>('http://localhost:8081/api/covers/info', {
+        }>(`${baseApi}/covers/info`, {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -79,7 +80,7 @@ export function CoverPostPage() {
           resultCode: string;
           message: string;
           data: Follow[];
-        }>('http://localhost:8081/api/users/mutualfollow', {
+        }>(`${baseApi}/users/mutualfollow`, {
           withCredentials: true,
         });
         if (response.data.resultCode === 'OK') {
@@ -105,7 +106,7 @@ export function CoverPostPage() {
         resultCode: string;
         message: string;
         data: Song[];
-      }>(`http://localhost:8081/api/covers/${artistPk}/song`, {
+      }>(`${baseApi}/covers/${artistPk}/song`, {
         withCredentials: true,
       });
       if (response.data.resultCode === 'OK') {
@@ -141,12 +142,9 @@ export function CoverPostPage() {
     setSelectedSong(song);
     if (song) {
       try {
-        const response = await axios.get(
-          `http://localhost:8081/api/covers/${songId}/select`,
-          {
-            withCredentials: true,
-          },
-        );
+        const response = await axios.get(`${baseApi}/covers/${songId}/select`, {
+          withCredentials: true,
+        });
         if (response.data.resultCode === 'OK') {
           const updatedParts = response.data.data.map((part: Part) => ({
             ...part,
@@ -209,17 +207,14 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(
-          'http://localhost:8081/api/covers/create',
-          {
-            method: 'POST',
-            body: requestBody,
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`${baseApi}/covers/create`, {
+          method: 'POST',
+          body: requestBody,
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+        });
         console.log(requestBody);
 
         if (!response.ok) {
