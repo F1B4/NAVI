@@ -65,9 +65,6 @@ public class SecurityConfig {
                 // aiController
                 .requestMatchers("/ai/cover/{cover_pk}")
                 .requestMatchers("/ai/train/{user_pk}")
-                // alarmController
-                .requestMatchers("/alarms")
-                .requestMatchers("/alarms/{alarm_pk}")
                 ;
     }
     @Bean
