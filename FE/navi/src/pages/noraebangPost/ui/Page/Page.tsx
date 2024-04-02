@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import css from './Page.module.css';
+import { FILE } from 'dns';
 
 // Artist, Song, Lyric 인터페이스 수정
 interface Artist {
@@ -242,12 +244,17 @@ export function NoraebangPostPage() {
           style={{
             margin: '0 auto',
             marginBottom: '20px',
+            paddingLeft: '10px',
             width: '100%',
             display: 'flex',
           }}
         >
           <select
-            style={{ margin: '0 0px', width: '90%' }}
+            className={css.dropdown}
+            style={{
+              margin: '0 0px',
+              width: '90%',
+            }}
             onChange={handleArtistChange}
             value={selectedArtist}
           >
@@ -262,6 +269,7 @@ export function NoraebangPostPage() {
           </select>
 
           <select
+            className={css.dropdown}
             style={{ margin: '0 10px', width: '90%' }}
             onChange={handleSongChange}
             value={selectedSong ? selectedSong.id.toString() : ''}
@@ -284,6 +292,12 @@ export function NoraebangPostPage() {
             width: '610px',
             height: '280px',
             overflow: 'auto',
+            /* 크롬 브라우저에서 스크롤바를 숨김 */
+            WebkitOverflowScrolling:
+              'touch' /* 터치 디바이스에서 스크롤 속도 조정 */,
+            scrollbarWidth:
+              'none' /* 모질라 기반 브라우저에서 스크롤바를 숨김 */,
+            msOverflowStyle: 'none' /* IE에서 스크롤바를 숨김 */,
           }}
         >
           <div
@@ -307,13 +321,16 @@ export function NoraebangPostPage() {
               color: 'white',
               position: 'relative',
               textAlign: 'center',
-              fontWeight: 'bold',
             }}
           >
             {lyrics &&
               lyrics.split('\n').map((line, index) => (
                 <div
-                  style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+                  style={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: '3400',
+                    position: 'relative',
+                  }}
                   key={index}
                 >
                   {line}
@@ -333,33 +350,85 @@ export function NoraebangPostPage() {
         />
         {/* 녹음이 중지된 후에 오디오를 재생할 수 있는 요소 추가 */}
         {audioUrl && (
-          <div>
-            <audio ref={audioElementRef} controls>
+          <div
+            style={{
+              marginTop: '20px',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <audio style={{ width: '90%' }} ref={audioElementRef} controls>
               <source src={audioUrl} type="audio/wav" />
               Your browser does not support the audio element.
             </audio>
           </div>
         )}
         <div>
-          <button onClick={isRecording ? stopRecording : startRecording}>
-            {isRecording ? 'Stop Recording' : 'Start Recording'}
-          </button>
+          {/*  */}
+          {/*  */}
 
-          <div style={{ textAlign: 'right' }}>
+          <button
+            onClick={isRecording ? stopRecording : startRecording}
+            style={{
+              marginTop: '20px',
+              backgroundImage: `url('https://navi.s3.ap-northeast-2.amazonaws.com/recordButton.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundColor: 'white',
+              borderRadius: '50%',
+              width: '45px', // 이미지 크기에 맞게 조절하세요
+              height: '45px', // 이미지 크기에 맞게 조절하세요
+            }}
+          >
+            {isRecording}
+          </button>
+          {/* {showTextBox && <h2>게시하기</h2>} */}
+
+          <div style={{ textAlign: 'right', position: 'relative' }}>
             {/* 텍스트 박스 */}
             {showTextBox && (
               <textarea
-                style={{ width: '95%' }}
+                style={{
+                  width: '95%',
+                  margin: '20px',
+                  padding: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #ccc',
+                  resize: 'none',
+                  fontFamily: 'Arial, sans-serif',
+                  fontSize: '14px',
+                  lineHeight: '1.5',
+                  backgroundColor: 'lightgray',
+                  color: 'black', // 검은색 텍스트
+                }}
                 placeholder="텍스트를 입력하세요"
                 value={content || ''}
                 onChange={(e) => setContent(e.target.value)}
               />
             )}
+
+            {!showTextBox && (
+              <h2
+                style={{
+                  color: 'white',
+                  marginRight: '10px',
+                  fontSize: '13px',
+                }}
+              >
+                게시유무
+              </h2>
+            )}
+
             {/* 체크박스 */}
             <input
               type="checkbox"
               checked={showTextBox}
               onChange={() => setShowTextBox(!showTextBox)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                transform: 'translateY(-50%)',
+              }}
             />
           </div>
         </div>
