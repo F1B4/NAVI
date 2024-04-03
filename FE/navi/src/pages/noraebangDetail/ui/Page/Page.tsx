@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { noraebangDetailApi } from '@/entities/noraebangDetail';
 import type { Noraebang } from '@/entities/noraebangDetail';
-import { NoraebangDetail } from '../NoraebangDetail/NoraebangDetail';
 import { Info } from '../Info/Info';
 import { Reviews } from '@/widgets/Reviews';
 import { useUserStore } from '@/shared/store';
 import css from './Page.module.css';
 
-export function NoraebangDetailPage() {
+export function NoraebangDetailPage(pk: number) {
   const store = useUserStore();
-  const { noraebangPk } = useParams();
-  const props = Number(noraebangPk);
+  const props = Number(pk);
   const [noraebang, setNoraebang] = useState<Noraebang>();
   const [load, setLoad] = useState<boolean>(false);
   useEffect(() => {
@@ -30,21 +27,18 @@ export function NoraebangDetailPage() {
       }
     };
     AxiosNoraebang();
-  }, [props]);
+  }, []);
 
   if (load && noraebang) {
     return (
       <div className={css.root}>
-        <div className={css.left}>
-          <NoraebangDetail image={noraebang.songDto.image} />
-        </div>
         <div className={css.right}>
           <Info
             title={noraebang.songDto.title}
             user={noraebang.userDto.nickname}
             content={noraebang.content}
           />
-          <Reviews type="noraebangs" data={noraebang.noraebangReviewDtos} />
+          <Reviews type="noraebang" data={noraebang.noraebangReviewDtos} />
         </div>
       </div>
     );
