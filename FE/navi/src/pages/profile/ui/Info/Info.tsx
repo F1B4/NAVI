@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { UserImage } from '@/shared/ui';
 import { Btn } from '@/shared/ui';
 import css from './Info.module.css';
@@ -16,6 +16,8 @@ interface InfoProps {
 }
 
 export function Info(props: InfoProps) {
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editingName, setEditingName] = useState(props.name);
   const store = useUserStore();
   const navi = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +54,33 @@ export function Info(props: InfoProps) {
       console.error(error);
     }
   };
+
+  const startEditingName = () => {
+    setIsEditingName(true);
+  };
+
+  const stopEditingName = async () => {
+    try {
+      const response = await fetch(`${baseApi}/users/nickname`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: editingName,
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('이름 변경 API 호출에 실패했습니다.');
+      }
+
+      setIsEditingName(false);
+      await store.getData();
+      navi(0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className={css.root}>
       <div className={css.imageContainer}>
@@ -71,13 +100,30 @@ export function Info(props: InfoProps) {
       </div>
       <div className={css.container}>
         <div className={css.nameContainer}>
-          <div className={css.name}>{props.name}</div>
-          <div className={css.modify}>
-            <img
-              className={css.nameModifyIcon}
-              src="/images/profile_img_modify.png"
-            />
-          </div>
+          {isEditingName ? (
+            <>
+              <input
+                className={css.editingNameInput}
+                type="text"
+                value={editingName}
+                onChange={(e) => setEditingName(e.target.value)}
+              />
+              <img
+                className={css.nameModifyIcon}
+                src="/images/profile_img_modify.png"
+                onClick={stopEditingName}
+              />
+            </>
+          ) : (
+            <>
+              <div className={css.name}>{props.name}</div>
+              <img
+                className={css.nameModifyIcon}
+                src="/images/profile_img_modify.png"
+                onClick={startEditingName}
+              />
+            </>
+          )}
         </div>
         <div className={css.countContainer}>
           <div className={css.count}>
