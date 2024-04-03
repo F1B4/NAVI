@@ -33,6 +33,7 @@ export function SearchResultsPage() {
       setUserResults(response.data.data.user);
       setLoad(true);
       console.log(coverResults);
+      console.log(userResults);
       console.log(response.data.data.cover);
       console.log(response);
     } catch (error) {
