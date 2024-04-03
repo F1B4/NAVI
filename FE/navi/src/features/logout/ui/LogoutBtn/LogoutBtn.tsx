@@ -1,4 +1,3 @@
-import { Btn } from '@/shared/ui';
 import { logOut } from '../../model/logout';
 import { useUserStore } from '@/shared/store';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +14,12 @@ export function LogOutBtn() {
 
   if (store.isLogin) {
     return (
-      <Btn className={css.btn} content="로그아웃" onClick={handleLogOut}></Btn>
+      <img
+        className={css.btn}
+        src="/images/logout.png" // 이미지 경로 설정
+        alt="로그아웃"
+        onClick={handleLogOut}
+      />
     );
   }
   return null;

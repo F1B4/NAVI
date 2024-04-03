@@ -25,6 +25,7 @@ export function HotNoraebangList() {
       {Array.isArray(noraebangs) &&
         noraebangs.map((noraebang, index) => (
           <Card
+            record={noraebang.record}
             id={noraebang.id}
             key={index}
             classCard={css.card}

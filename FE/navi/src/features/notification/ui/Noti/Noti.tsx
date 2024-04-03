@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useUserStore } from '@/shared/store';
+import { useEffect } from 'react';
+import { useUserStore, useNotiStore } from '@/shared/store';
 import { baseApi } from '@/shared/api';
 
 const SSEComponent = () => {
-  const [notification, setNotification] = useState('');
+  const noti = useNotiStore();
   const store = useUserStore();
 
   useEffect(() => {
@@ -15,9 +15,10 @@ const SSEComponent = () => {
       console.log('Connection opened');
     });
 
+    // 알람이 왔음
     eventSource.addEventListener('notification', function (event) {
       console.log('Notification received:', event.data);
-      setNotification(event.data); // 이벤트 데이터를 상태에 업데이트
+      noti.getAlarms();
     });
 
     eventSource.addEventListener('error', function () {
@@ -29,11 +30,5 @@ const SSEComponent = () => {
       eventSource.close(); // 컴포넌트가 언마운트되면 SSE 연결 종료
     };
   }, [store]);
-
-  return (
-    <div>
-      <p>Notifications: {notification}</p>
-    </div>
-  );
 };
 export default SSEComponent;

@@ -58,7 +58,7 @@ public class    NoraebangService {
     모든 노래방 게시글 가져오기
      */
     public List<NoraebangAllDto> getNoraebang() {
-        List<Noraebang> noraebangs = noraebangRepository.findAll();
+        List<Noraebang> noraebangs = noraebangRepository.findAllByOrderByCreatedAtDesc();
 
         return noraebangs.stream()
                 .filter(noraebang -> !"hyunsuyeonisnewjeansuyeonandmagmagirlsohotgirlyeolbatnaesysflamedonesntgooutyouaregod".equals(noraebang.getContent())) // "not"일 때는 필터링

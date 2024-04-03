@@ -105,7 +105,7 @@ public class MainService {
 
         searchAll.put("cover",coverDtosTitle);
         searchAll.put("coverArtist",coverDtosArtist);
-        searchAll.put("noradebang",noraebangDtosTitle);
+        searchAll.put("noraebang",noraebangDtosTitle);
         searchAll.put("noraebangArtist",noraeBangDtosArtist);
         searchAll.put("user",userDtos);
         return searchAll;
