@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUserStore } from '@/shared/store';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { baseApi } from '@/shared/api';
 import css from './Page.module.css';
 
@@ -222,7 +222,6 @@ export function CoverPostPage() {
         );
         console.log(requestBody);
         console.log(response);
-
         if (!response.ok) {
           console.error('Failed to upload cover');
         } else {
@@ -234,6 +233,7 @@ export function CoverPostPage() {
       }
     } else {
       console.error('선택된 파트 정보가 없습니다');
+      window.alert('가수 및 곡을 선택해주세요');
     }
   };
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -384,21 +384,26 @@ export function CoverPostPage() {
           </div>
 
           {/* 나머지 Follow 리스트 */}
-          {follows.map((follow, index) => (
-            <div key={index} className={css.followItem}>
-              <div
-                className={css.profilePicContainer}
-                onClick={() => handleUserClick(follow)}
-              >
-                <img
-                  src={follow.image}
-                  alt={`${follow.nickname}의 프로필 사진`}
-                  className={css.profilePic}
-                />
-              </div>
-              <div className={css.friendName}>{follow.nickname}</div>
-            </div>
-          ))}
+          {follows.map((follow, index) => {
+            // ROLE_GUEST가 아닌 경우에만 리스트에 추가
+            if (follow.role !== 'ROLE_GUEST') {
+              return (
+                <div key={index} className={css.followItem}>
+                  <div
+                    className={css.profilePicContainer}
+                    onClick={() => handleUserClick(follow)}
+                  >
+                    <img
+                      src={follow.image}
+                      alt={`${follow.nickname}의 프로필 사진`}
+                      className={css.profilePic}
+                    />
+                  </div>
+                  <div className={css.friendName}>{follow.nickname}</div>
+                </div>
+              );
+            }
+          })}
         </div>
       </div>
     </div>

@@ -106,7 +106,8 @@ public class CoverController {
         } else if (result.getMessage().equals("2")) {
             fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
         }
-//        else if (result.getMessage().equals("3")) {
+//        
+//        } else if (result.getMessage().equals("3")) {
 //            return Response.of("FAIL","학습 데이터가 없어 커버 생성 불가",null);
 //        } else if (result.getMessage().equals("4")) {
 //            return Response.of("FAIL","훈련중, 커버 생성 불가",null);

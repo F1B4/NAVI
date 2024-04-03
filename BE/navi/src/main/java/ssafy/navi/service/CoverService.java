@@ -121,7 +121,6 @@ public class CoverService {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 //        User userSocial = userRepository.findByUsername(customOAuth2User.getUsername());
-//
 //        if (userSocial.getNoraebangs().size() < 10) {
 //            return Response.of("OK", "커버 생성 불가능", 3L);
 //        }

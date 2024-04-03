@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import { CoverDetailPage } from '@/pages/coverDetail';
+import { NoraebangDetailPage } from '@/pages/noraebangDetail';
 import css from './playbar.module.css';
 
 interface PlaybarProps {
@@ -80,24 +82,37 @@ const Playbar: React.FC<PlaybarProps> = ({
             zIndex: 100,
           }}
         >
-          <div
-            onClick={togglePlay}
-            style={{
-              width: '100%',
-            }}
-          >
+          {type === 'cover' ? (
+            <div
+              onClick={togglePlay}
+              style={{
+                width: '100%',
+              }}
+            >
+              <ReactPlayer
+                ref={playerRef} // 리액트 플레이어 참조값
+                url={url} // 비디오 주소
+                playing={playing} // 재생하고있는지 아닌지 (지금은 검사용으로 false했는데 디테일 들어가면 true로 바꿔줘야함)
+                onProgress={onProgress} // 재생바 컨트롤
+                onDuration={onDuration} // 비디오의 총 길이를 얻기 위한 이벤트 핸들러
+                volume={muted ? 0 : volume} // 볼륨 조절, 음소거 상태에 따라 볼륨 조절
+                muted={muted} // 음소거 상태 전달
+                width="100%" // 비디오의 너비
+                height="100%" // 비디오의 높이
+              />
+            </div>
+          ) : (
             <ReactPlayer
-              ref={playerRef} // 리액트 플레이어 참조값
-              url={url} // 비디오 주소
-              playing={playing} // 재생하고있는지 아닌지 (지금은 검사용으로 false했는데 디테일 들어가면 true로 바꿔줘야함)
-              onProgress={onProgress} // 재생바 컨트롤
-              onDuration={onDuration} // 비디오의 총 길이를 얻기 위한 이벤트 핸들러
-              volume={muted ? 0 : volume} // 볼륨 조절, 음소거 상태에 따라 볼륨 조절
-              muted={muted} // 음소거 상태 전달
-              width="100%" // 비디오의 너비
-              height="100%" // 비디오의 높이
+              url={url}
+              playing={playing}
+              onProgress={onProgress}
+              onDuration={onDuration}
+              volume={muted ? 0 : volume}
+              muted={muted}
+              width="100%"
+              height="100%"
             />
-          </div>
+          )}
           {/* 우측 */}
           {/* 여기 들어와야함 */}
           <div
@@ -110,8 +125,7 @@ const Playbar: React.FC<PlaybarProps> = ({
               height: '600px',
             }}
           >
-            <h2>커버정보입니다우</h2>
-            <p>이노래는익바오와황금윤기나는종이의우리의꿈AI커버입니다우</p>
+            {type === 'cover' ? <CoverDetailPage /> : <NoraebangDetailPage />}
           </div>
         </div>
         {/* 하단하단하단 */}

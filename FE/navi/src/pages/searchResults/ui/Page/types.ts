@@ -5,6 +5,8 @@ interface User {
   image: string;
   followingCount: number;
   followerCount: number;
+  username: string;
+  role: string;
 }
 
 interface Part {
@@ -17,7 +19,7 @@ interface SongInfo {
   songPk: number;
   title: string;
   image: string;
-  users: string;
+  mr: string;
 }
 
 interface CoverUser {
@@ -29,19 +31,36 @@ interface CoverUser {
 interface CoverItem {
   id: number;
   title: string;
-  video: string;
+  video?: string;
   thumbnail: string;
-  hit: number;
-  likeCount: number;
+  hit?: number;
+  likeCount?: number;
   songDto: SongInfo;
-  createdAt: string;
+  createdAt?: string;
   coverReviewDots?: [];
   coverUserDtos: CoverUser;
-  likeExsits: boolean;
+  likeExsits?: boolean;
 }
 
 interface CoverList {
   data: CoverItem[];
+}
+
+interface NoraebangItem {
+  id: number;
+  content?: string;
+  record?: string;
+  hit?: number;
+  likeCount?: number;
+  songDto: SongInfo;
+  userDto: User;
+  createdAt: Date;
+  roraebnagLikeDtos?: null;
+  noraebangReviewDtos?: null;
+}
+
+interface NoraebangList {
+  data: NoraebangItem[];
 }
 
 interface Response {
@@ -50,4 +69,4 @@ interface Response {
   data: any;
 }
 
-export type { Response, CoverList, CoverUser };
+export type { Response, NoraebangList, NoraebangItem, CoverList, CoverUser };
