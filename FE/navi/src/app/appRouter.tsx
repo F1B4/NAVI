@@ -71,7 +71,7 @@ export const appRouter = () =>
       ),
     },
     {
-      path: '/search/detail/:keyword',
+      path: '/search/:type/:keyword',
       element: (
         <Layout>
           <SearchResultsDetailPage />

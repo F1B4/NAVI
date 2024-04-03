@@ -38,202 +38,230 @@ export function SearchResultsPage() {
       setNoraebangUserResults(response.data.data.noraebangArtist);
       setUserResults(response.data.data.user);
       setLoad(true);
-      console.log(userResults);
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
+  };
+
+  const handleLoadMore = (keyword: string, type: string) => {
+    // URL 생성
+    let url = '';
+    switch (type) {
+      case 'cover-title':
+        url = `/search/cover-title/${keyword}`;
+        break;
+      case 'cover-artist':
+        url = `/search/cover-artist/${keyword}`;
+        break;
+      case 'noraebang-title':
+        url = `/search/noraebang-title/${keyword}`;
+        break;
+      case 'noraebang-artist':
+        url = `/search/noraebang-artist/${keyword}`;
+        break;
+      case 'user':
+        url = `/search/user/${keyword}`;
+        break;
+      default:
+        throw new Error('Invalid search type');
+    }
+    // 페이지 이동
+    window.location.href = url;
   };
 
   useEffect(() => {
     getSearchResults();
   }, [keyword]);
 
-  return (
-    <div className={css.root}>
-      <div>'{keyword}' 검색 결과</div>
-      {/* 로딩 중인지 확인하여 로딩 중일 경우 로딩 표시 */}
-      {!load ? (
-        <div className={css.center}>
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      ) : (
-        <div>
-          <div className={css.subtitle}>AI 커버 제목</div>
+  if (load) {
+    return (
+      <div className={css.root}>
+        <div className={css.title}>&apos;{keyword}&apos; 검색 결과</div>
+        {!coverResults &&
+        !coverUserResults &&
+        !noraebangResults &&
+        !noraebangUserResults &&
+        userResults.length === 0 ? (
+          <div>검색 결과가 없습니다.</div>
+        ) : (
           <div>
-            {Array.isArray(coverResults) && coverResults.length === 0 ? (
-              <div className={css.center}>검색 결과가 없습니다</div>
-            ) : (
+            {Array.isArray(coverResults) && coverResults.length !== 0 && (
               <div className={css.container}>
-                {Array.isArray(coverResults) ? (
-                  coverResults.map((cover, index) => {
-                    const coverUserNicknames = cover.coverUserDtos
-                      ? Array.from(
-                          new Set(
-                            cover.coverUserDtos.map(
-                              (coverUserDto: CoverUser) =>
-                                coverUserDto.userDto.nickname,
-                            ),
+                <div className={css.subtitle}>AI 커버 제목</div>
+                {coverResults.map((cover, index) => {
+                  const coverUserNicknames = cover.coverUserDtos
+                    ? Array.from(
+                        new Set(
+                          cover.coverUserDtos.map(
+                            (coverUserDto: CoverUser) =>
+                              coverUserDto.userDto.nickname,
                           ),
-                        ).join(', ')
-                      : '';
+                        ),
+                      ).join(', ')
+                    : '';
 
-                    return (
-                      <Card
-                        video={cover.video}
-                        id={cover.id}
-                        key={index}
-                        classCard={css.card}
-                        classImg={css.coverImg}
-                        classDesc={css.coverDesc}
-                        thumbnail={cover.thumbnail}
-                        user={coverUserNicknames}
-                        type="cover"
-                        info={cover.songDto}
-                      />
-                    );
-                  })
-                ) : (
-                  <div className={css.center}>
-                    <span className="loading loading-spinner loading-lg"></span>
-                  </div>
+                  return (
+                    <Card
+                      video={cover.video}
+                      id={cover.id}
+                      key={index}
+                      classCard={css.card}
+                      classImg={css.coverImg}
+                      classDesc={css.coverDesc}
+                      thumbnail={cover.thumbnail}
+                      user={coverUserNicknames}
+                      type="cover"
+                      info={cover.songDto}
+                    />
+                  );
+                })}
+                {keyword && (
+                  <button
+                    onClick={() => handleLoadMore(keyword, 'cover-title')}
+                    className={css.btn}
+                  >
+                    더보기
+                  </button>
                 )}
               </div>
             )}
-          </div>
 
-          <div className={css.subtitle}>AI 커버 가수</div>
-          <div>
-            {Array.isArray(coverUserResults) &&
-            coverUserResults.length === 0 ? (
-              <div className={css.center}>검색 결과가 없습니다</div>
-            ) : (
-              <div className={css.container}>
-                {Array.isArray(coverUserResults) ? (
-                  coverUserResults.map((cover, index) => {
-                    const coverUserNicknames = cover.coverUserDtos
-                      ? Array.from(
-                          new Set(
-                            cover.coverUserDtos.map(
-                              (coverUserDto: CoverUser) =>
-                                coverUserDto.userDto.nickname,
+            <div>
+              {Array.isArray(coverUserResults) &&
+                coverUserResults.length > 0 && (
+                  <div className={css.container}>
+                    <div className={css.subtitle}>AI 커버 가수</div>
+                    {coverUserResults.map((cover, index) => {
+                      const coverUserNicknames = cover.coverUserDtos
+                        ? Array.from(
+                            new Set(
+                              cover.coverUserDtos.map(
+                                (coverUserDto: CoverUser) =>
+                                  coverUserDto.userDto.nickname,
+                              ),
                             ),
-                          ),
-                        ).join(', ')
-                      : '';
+                          ).join(', ')
+                        : '';
 
-                    return (
-                      <Card
-                        video={cover.video}
-                        id={cover.id}
-                        key={index}
-                        classCard={css.card}
-                        classImg={css.coverImg}
-                        classDesc={css.coverDesc}
-                        thumbnail={cover.thumbnail}
-                        user={coverUserNicknames}
-                        type="cover"
-                        info={cover.songDto}
-                      />
-                    );
-                  })
-                ) : (
-                  <div className={css.center}>
-                    <span className="loading loading-spinner loading-lg"></span>
+                      return (
+                        <Card
+                          video={cover.video}
+                          id={cover.id}
+                          key={index}
+                          classCard={css.card}
+                          classImg={css.coverImg}
+                          classDesc={css.coverDesc}
+                          thumbnail={cover.thumbnail}
+                          user={coverUserNicknames}
+                          type="cover"
+                          info={cover.songDto}
+                        />
+                      );
+                    })}
+                    {keyword && (
+                      <button
+                        onClick={() => handleLoadMore(keyword, 'cover-artist')}
+                        className={css.btn}
+                      >
+                        더보기
+                      </button>
+                    )}
                   </div>
                 )}
-              </div>
-            )}
-          </div>
-          <div>
-            <div className={css.subtitle}>노래방 제목</div>
+            </div>
+
             <div>
               {Array.isArray(noraebangResults) &&
-              noraebangResults.length === 0 ? (
-                <div className={css.center}>검색 결과가 없습니다</div>
-              ) : (
-                <div>
-                  {Array.isArray(noraebangResults) ? (
-                    noraebangResults.map((noraebang, index) => (
-                      <Card
-                        record={noraebang.record}
-                        id={noraebang.id}
-                        key={index}
-                        classCard={css.card}
-                        classImg={css.noraebangImg}
-                        classDesc={css.noraebangDesc}
-                        user={noraebang.userDto.nickname}
-                        type="noraebang"
-                        info={noraebang.songDto}
-                      />
-                    ))
-                  ) : (
-                    <div className={css.center}>
-                      <span className="loading loading-spinner loading-lg"></span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            <div className={css.subtitle}>노래방 가수</div>
-            <div className={css.container}>
-              {Array.isArray(noraebangUserResults) &&
-              noraebangUserResults.length === 0 ? (
-                <div className={css.center}>검색 결과가 없습니다</div>
-              ) : (
-                <div>
-                  {Array.isArray(noraebangUserResults) ? (
-                    noraebangUserResults.map((noraebang, index) => (
-                      <Card
-                        record={noraebang.record}
-                        id={noraebang.id}
-                        key={index}
-                        classCard={css.card}
-                        classImg={css.noraebangImg}
-                        classDesc={css.noraebangDesc}
-                        user={noraebang.userDto.nickname}
-                        type="noraebang"
-                        info={noraebang.songDto}
-                      />
-                    ))
-                  ) : (
-                    <div className={css.center}>
-                      <span className="loading loading-spinner loading-lg"></span>
-                    </div>
-                  )}
-                </div>
-              )}
+                noraebangResults.length > 0 && (
+                  <div className={css.container}>
+                    <div className={css.subtitle}>노래방 제목</div>
+                    {noraebangResults.map((noraebang, index) => {
+                      return (
+                        <Card
+                          record={noraebang.record}
+                          id={noraebang.id}
+                          key={index}
+                          classCard={css.card}
+                          classImg={css.noraebangImg}
+                          classDesc={css.noraebangDesc}
+                          user={noraebang.userDto.nickname}
+                          type="noraebang"
+                          info={noraebang.songDto}
+                        />
+                      );
+                    })}
+                    {keyword && (
+                      <button
+                        onClick={() =>
+                          handleLoadMore(keyword, 'noraebang-title')
+                        }
+                        className={css.btn}
+                      >
+                        더보기
+                      </button>
+                    )}
+                  </div>
+                )}
             </div>
 
-            <div className={css.subtitle}>유저 이름</div>
-            <div className={css.container}>
-              {Array.isArray(userResults) && userResults.length === 0 ? (
-                <div className={css.center}>검색 결과가 없습니다</div>
-              ) : (
-                <div>
-                  {Array.isArray(userResults) ? (
-                    userResults.map((user, index) => (
-                      <div key={index} className={css.userCard}>
-                        <Link to={`/profile/${user.id}`}>
-                          <div className={css.userImg}>
-                            <img src={user.image} alt="" />
-                          </div>
-                        </Link>
-                        <Link to={`/profile/${user.id}`}>
-                          <span className={css.userDesc}>{user.nickname}</span>
-                        </Link>
-                      </div>
-                    ))
-                  ) : (
-                    <div className={css.center}>
-                      <span className="loading loading-spinner loading-lg"></span>
+            <div>
+              {Array.isArray(noraebangUserResults) &&
+                noraebangUserResults.length > 0 && (
+                  <div className={css.container}>
+                    <div className={css.subtitle}>노래방 가수</div>
+                    {noraebangUserResults.map((noraebang, index) => {
+                      return (
+                        <Card
+                          record={noraebang.record}
+                          id={noraebang.id}
+                          key={index}
+                          classCard={css.card}
+                          classImg={css.noraebangImg}
+                          classDesc={css.noraebangDesc}
+                          user={noraebang.userDto.nickname}
+                          type="noraebang"
+                          info={noraebang.songDto}
+                        />
+                      );
+                    })}
+                    {keyword && (
+                      <button
+                        onClick={() =>
+                          handleLoadMore(keyword, 'noraebang-artist')
+                        }
+                        className={css.btn}
+                      >
+                        더보기
+                      </button>
+                    )}
+                  </div>
+                )}
+            </div>
+
+            <div>
+              {Array.isArray(userResults) && userResults.length > 0 && (
+                <div className={css.container}>
+                  <div className={css.subtitle}>유저 이름</div>
+
+                  {userResults.map((user, index) => (
+                    <div key={index} className={css.userCard}>
+                      <Link to={`/profile/${user.id}`}>
+                        <div className={css.userImg}>
+                          <img src={user.image} alt="" />
+                        </div>
+                      </Link>
+                      <Link to={`/profile/${user.id}`}>
+                        <span className={css.userDesc}>{user.nickname}</span>
+                      </Link>
                     </div>
-                  )}
+                  ))}
                 </div>
               )}
             </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
+  return null;
 }

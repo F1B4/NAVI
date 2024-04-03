@@ -33,4 +33,4 @@ interface Response {
   data: NoraebangList;
 }
 
-export type { Response, NoraebangList };
+export type { Response, NoraebangList, SongInfo };
