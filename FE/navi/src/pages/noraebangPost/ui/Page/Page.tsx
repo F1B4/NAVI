@@ -104,6 +104,7 @@ export function NoraebangPostPage() {
     const file = e.target.files?.[0];
     if (file) {
       setRecordedChunks([file]);
+      console.log(recordedChunks);
     }
   };
 
@@ -134,7 +135,7 @@ export function NoraebangPostPage() {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
 
-      let chunks: Blob[] = [];
+      const chunks: Blob[] = [];
       mediaRecorder.ondataavailable = (e) => {
         chunks.push(e.data);
       };
