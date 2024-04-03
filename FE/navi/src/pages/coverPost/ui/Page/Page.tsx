@@ -450,7 +450,7 @@ export function CoverPostPage() {
           <button
             onClick={handleUpload}
             className={css.uploadButton}
-            style={{ textAlign: 'center', marginTop: '8%'}}
+            style={{ textAlign: 'center', marginTop: '8%' }}
           >
             <img
               src="https://navi.s3.ap-northeast-2.amazonaws.com/%EB%A7%8C%EB%93%A4%EA%B8%B0-%EB%A7%A4%EC%B9%AD+%EB%B2%84%ED%8A%BC.png"
