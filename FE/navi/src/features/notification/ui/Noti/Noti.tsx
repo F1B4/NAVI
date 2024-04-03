@@ -29,7 +29,9 @@ const SSEComponent = () => {
       console.log('Cleaning up...');
       eventSource.close(); // 컴포넌트가 언마운트되면 SSE 연결 종료
     };
-  }, [store]);
-  return null;
+  }, []);
+
+  return <></>;
 };
+
 export default SSEComponent;

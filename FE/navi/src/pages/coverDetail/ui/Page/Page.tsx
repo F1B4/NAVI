@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { coverDetailApi } from '@/entities/coverDetail';
 import type { Cover } from '@/entities/coverDetail';
-import { CoverDetail } from '../CoverDetail/CoverDetail';
-// import { Info } from '../Info/Info';
-// import { Reviews } from '@/widgets/Reviews';
+import { Info } from '../Info/Info';
+import { Reviews } from '@/widgets/Reviews';
 import { useUserStore } from '@/shared/store';
 import css from './Page.module.css';
 
-export function CoverDetailPage() {
+export function CoverDetailPage(pk: number) {
   const store = useUserStore();
-  const { coverPk } = useParams();
-  const props = Number(coverPk);
+  const props = Number(pk);
   const [cover, setCover] = useState<Cover>();
   const [load, setLoad] = useState<boolean>(false);
   useEffect(() => {
@@ -35,13 +32,10 @@ export function CoverDetailPage() {
   if (load && cover) {
     return (
       <div className={css.root}>
-        <div className={css.left}>
-          <CoverDetail video={cover.video} />
-          바보
-        </div>
         <div className={css.right}>
-          {/* <Info /> */}
-          {/* <Reviews type="covers" data={cover.coverReviewDtos} /> */}
+          {/* 가수 정보 안들어옴 */}
+          <Info title={cover.title} />
+          <Reviews type="cover" data={cover.coverReviewDtos} />
         </div>
       </div>
     );
