@@ -27,14 +27,26 @@ interface Part {
   userName?: string;
 }
 
+const defaultFollow: Follow = {
+  id: 0, // 이 값은 실제 상황에 맞게 조정되어야 합니다.
+  nickname: 'Default Name', // 기본 닉네임, 실제 값으로 변경해야 합니다.
+  email: 'default@example.com', // 기본 이메일, 실제 값으로 변경해야 합니다.
+  image:
+    'https://navi.s3.ap-northeast-2.amazonaws.com/free-icon-plus-8162972.png', // 주어진 이미지 URL
+  followingCount: 0, // 기본 팔로잉 카운트, 실제 값으로 변경해야 합니다.
+  followerCount: 0, // 기본 팔로워 카운트, 실제 값으로 변경해야 합니다.
+  username: 'defaultuser', // 기본 유저네임, 실제 값으로 변경해야 합니다.
+  role: 'Default Role', // 기본 역할, 실제 값으로 변경해야 합니다.
+};
+
 interface Follow {
   id: number;
   nickname: string;
-  email: string;
+  email?: string;
   image: string;
   followingCount: number;
   followerCount: number;
-  username: string;
+  username?: string;
   role: string;
 }
 
@@ -45,6 +57,7 @@ export function CoverPostPage() {
   const [selectedArtist, setSelectedArtist] = useState<string | undefined>(
     undefined,
   );
+  const [selectedFriend, setSelectedFriend] = useState<Follow | null>(null);
   const [songs, setSongs] = useState<Song[]>([]);
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined);
   const [parts, setParts] = useState<Part[]>([]);
@@ -142,6 +155,18 @@ export function CoverPostPage() {
     }
   };
 
+  const selectMyself = () => {
+    const myself: Follow = {
+      id: store.userId,
+      nickname: store.nickname,
+      image: store.image,
+      followingCount: store.followingCount, // 또는 적절한 기본값
+      followerCount: store.followerCount, // 또는 적절한 기본값
+      role: store.role, // 또는 'ROLE_USER' 등 적절한 기본값
+    };
+    setSelectedFriend(myself);
+  };
+
   const handleSongChange = async (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
@@ -156,7 +181,7 @@ export function CoverPostPage() {
         if (response.data.resultCode === 'OK') {
           const updatedParts = response.data.data.map((part: Part) => ({
             ...part,
-            image: song.image, // 파트의 이미지를 선택된 곡의 이미지로 업데이트
+            image: part.image, // 파트의 이미지를 선택된 곡의 이미지로 업데이트
             userId: 0, // 각 파트의 userId 초기화
             userImage: undefined, // 각 파트의 userImage 초기화
             userName: undefined, // 각 파트의 userName 초기화
@@ -252,53 +277,81 @@ export function CoverPostPage() {
     const newIndex = (currentIndex + 1) % parts.length;
     setSelectedPart(parts[newIndex]); // 다음 슬라이드로 이동할 때 선택된 파트 업데이트
     setCurrentIndex(newIndex);
+    setSelectedFriend(defaultFollow);
   };
 
   const prevSlide = () => {
     const newIndex = (currentIndex - 1 + parts.length) % parts.length;
     setSelectedPart(parts[newIndex]); // 이전 슬라이드로 이동할 때 선택된 파트 업데이트
     setCurrentIndex(newIndex);
+    setSelectedFriend(defaultFollow);
   };
-
+  console.log(parts);
   return (
-    <div className={css.root}>
+    <div
+      className={css.root}
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        height: '100%',
+        marginTop: '8vh',
+      }}
+    >
       <div className={css.mainContent}>
         {/* 파트 선택 왼쪽 */}
-        <div className={css.partList}>
-          <ul className={css.partUl}>
+        <div className={css.partList} style={{ margin: 'auto 0' }}>
+          <ul
+            className={css.partUl}
+            style={{ width: '130%', marginLeft: '-20%' }}
+          >
             {parts.map((part, index) => (
-              <li key={index} className={css.partLi}>
+              <li style={{ margin: '10%' }} key={index} className={css.partLi}>
                 <div className={css.partContainer}>
-                  <div className={css.partDiv}>
+                  {/* Image and Name container */}
+                  <div
+                    className={css.partDiv}
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <img
                       src={part.image}
                       alt={part.name}
                       className={css.partImage}
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        borderRadius: '50%',
+                      }} // Adjust width, height, and borderRadius as needed
                     />
-                    <p>{part.name}</p>
                   </div>
-                  {part.userImage && (
-                    <div className={css.profileContainer}>
-                      <img
-                        src={part.userImage}
-                        alt={`${part.name}의 프로필 사진`}
-                        className={css.profilePic}
-                      />
-                      <p>{part.userName}</p>
-                    </div>
-                  )}
+                  {/* User Image and Name */}
+                  <div style={{ marginLeft: '10%' }}>
+                    <div>{part.name}</div>
+                    {part.userImage && (
+                      <div
+                        className={css.profileContainer}
+                        // style={{ display: 'none' }}
+                      >
+                        {' '}
+                        {/* Hide user profile container */}
+                        <div style={{ marginTop: '3%' }}>
+                          <p>{part.userName}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </li>
             ))}
           </ul>
         </div>
         {/* 가운데 카로셀 */}
-        <div className={css.carouselContainer}>
-          <button onClick={handleUpload} className={css.uploadButton}>
-            업로드
-          </button>
-          <div className={css.title}>커버 선택</div>
-
+        <div className={css.carouselContainer} style={{ flexGrow: 2 }}>
           <div className={css.coverSelectSection}>
             <div className={css.dropdownContainer}>
               <select
@@ -336,36 +389,81 @@ export function CoverPostPage() {
               )}
             </div>
           </div>
-          <div className={css.carouselControls}>
+
+          {/* 배경 및 이미지 컨테이너 */}
+          <div
+            className={css.carouselControls}
+            style={{
+              position: 'relative', // 부모 컨테이너에 대해 절대 위치 설정을 위함
+              width: '100%',
+              height: '300px',
+              background: 'blur',
+            }}
+          >
             <button onClick={prevSlide} className={css.controlButton}>
               ◀
             </button>
-            <img
-              src={images[currentIndex]}
-              alt="slide"
-              className={css.imageSlide}
-            />
+            {/* 전 */}
+
+            <div
+              style={{
+                backgroundImage: `url(${
+                  selectedSong?.image || '../../../../../public/images/Logo.png'
+                })`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                width: '100%',
+                height: '300px', // 조정 가능
+                display: 'flex',
+                alignItems: 'center',
+                padding: '10%',
+                // filter: 'blur(5px)', // 블러 효과
+                // zIndex: -1, // 다른 컨텐츠 아래에 배치
+                justifyContent: 'space-around', // 이 부분은 이미지들 사이의 간격을 조절합니다.
+              }}
+            >
+              {/* 왼쪽 이미지 */}
+              <img
+                style={{ borderRadius: '50%', width: '100px', height: '100px' }}
+                src={images[currentIndex]}
+              />
+              {/* 오른쪽 이미지 */}
+              {selectedFriend && ( // selectedFriend가 있을 때만 이미지를 렌더링
+                <img
+                  style={{
+                    borderRadius: '50%',
+                    width: '100px',
+                    height: '100px',
+                  }}
+                  src={selectedFriend.image} // 선택된 친구의 이미지 경로를 사용
+                  alt="User Image"
+                />
+              )}
+            </div>
+            {/* 전 */}
+
             <button onClick={nextSlide} className={css.controlButton}>
               ▶
             </button>
           </div>
-          <div className={css.btn}>
-            {images.map((_, index) => (
-              <span
-                key={index}
-                className={`${css.indicator} ${
-                  index === currentIndex ? css.indicatorActive : ''
-                }`}
-                onClick={() => setCurrentIndex(index)}
-              >
-                ●
-              </span>
-            ))}
-          </div>
+          <button
+            onClick={handleUpload}
+            className={css.uploadButton}
+            style={{ textAlign: 'center', marginTop: '8%' }}
+          >
+            <img
+              src="https://navi.s3.ap-northeast-2.amazonaws.com/%EB%A7%8C%EB%93%A4%EA%B8%B0-%EB%A7%A4%EC%B9%AD+%EB%B2%84%ED%8A%BC.png"
+              alt=""
+            />
+          </button>
         </div>
         {/* 친구 고르기 오른쪽 */}
         {/* 친구 고르기 오른쪽 */}
-        <div className={css.followListContainer}>
+        <div
+          className={css.followListContainer}
+          style={{ margin: 'auto 0', marginRight: '6%' }}
+        >
           {/* '나' 추가 */}
           <div className={css.followItem}>
             <div
@@ -383,11 +481,17 @@ export function CoverPostPage() {
                 })
               }
             >
-              <img
-                src={store.image}
-                alt="내 프로필 사진"
-                className={css.profilePic}
-              />
+              <div
+                className={css.profilePicContainer}
+                onClick={selectMyself} // "나"를 선택하는 경우
+              >
+                <img
+                  src={store.image}
+                  alt="내 프로필 사진"
+                  className={css.profilePic}
+                />
+                {/* ... */}
+              </div>
             </div>
             <div className={css.friendName}>나</div>
           </div>
@@ -400,7 +504,10 @@ export function CoverPostPage() {
                 <div key={index} className={css.followItem}>
                   <div
                     className={css.profilePicContainer}
-                    onClick={() => handleUserClick(follow)}
+                    onClick={() => {
+                      handleUserClick(follow);
+                      setSelectedFriend(follow);
+                    }}
                   >
                     <img
                       src={follow.image}
@@ -415,6 +522,16 @@ export function CoverPostPage() {
           })}
         </div>
       </div>
+      <button
+        onClick={handleUpload}
+        className={css.uploadButton}
+        style={{ textAlign: 'center' }}
+      >
+        <img
+          src="https://navi.s3.ap-northeast-2.amazonaws.com/%EB%A7%8C%EB%93%A4%EA%B8%B0-%EB%A7%A4%EC%B9%AD+%EB%B2%84%ED%8A%BC.png"
+          alt=""
+        />
+      </button>
     </div>
   );
 }
