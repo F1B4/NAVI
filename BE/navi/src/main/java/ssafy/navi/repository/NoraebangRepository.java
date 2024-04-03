@@ -17,6 +17,8 @@ public interface NoraebangRepository extends JpaRepository<Noraebang, Long> {
     List<Noraebang> findTop10ByCreatedAtAfterOrderByHitDesc(LocalDateTime startDate);
     List<Noraebang> findTop6ByCreatedAtAfterOrderByWeeklyHitDesc(LocalDateTime startDate);
 
+    List<Noraebang> findAllByOrderByCreatedAtDesc();
+
     @Query(value = "SELECT COUNT(*) FROM noraebang WHERE user_pk = :userId", nativeQuery = true)
     Integer countByUserId(@Param("userId") Long userId);
 
