@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserProfileDto {
 
+    private Long userPk;
     private String nickname;
     private String image;
     private Integer followingCount;
@@ -30,6 +31,7 @@ public class UserProfileDto {
         UserProfileDto userInfoDto = new UserProfileDto();
 
         // set
+        userInfoDto.setUserPk(user.getId());
         userInfoDto.setNickname(user.getNickname());
         userInfoDto.setImage(user.getImage());
         userInfoDto.setFollowingCount(user.getFollowingCount());
