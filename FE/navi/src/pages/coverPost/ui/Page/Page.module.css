@@ -125,3 +125,12 @@
 .dropdown option {
   background-color: #292929; /* 드롭다운 옵션의 배경색 설정 */
 }
+
+.partContainer {
+  display: flex;
+}
+
+.partDiv {
+  height: 60px;
+  width: 60px;
+}
