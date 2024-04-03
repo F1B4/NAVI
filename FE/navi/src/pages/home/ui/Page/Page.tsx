@@ -25,11 +25,21 @@ export function HomePage() {
 
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
+        console.log('check');
         store.getData();
         await noti();
       }
     };
+
+    const fetchRecordData = async () => {
+      if (store.isLogin && store.role === 'ROLE_GUEST') {
+        console.log('check');
+        store.getRec();
+      }
+    };
+
     fetchData();
+    fetchRecordData();
   }, []);
 
   return (

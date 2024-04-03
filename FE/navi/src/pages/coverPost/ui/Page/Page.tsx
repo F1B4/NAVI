@@ -129,6 +129,12 @@ export function CoverPostPage() {
   ) => {
     const artistId = parseInt(event.target.value);
     setSelectedArtist(event.target.value);
+    // 가수 변경 시 파트 정보 초기화
+    setParts([]);
+    setSongs([]);
+    setImages([]);
+    setSelectedPart(parts[0]);
+    setSelectedSong(undefined);
     if (artistId) {
       await fetchSongsByArtist(artistId);
     } else {
@@ -151,6 +157,9 @@ export function CoverPostPage() {
           const updatedParts = response.data.data.map((part: Part) => ({
             ...part,
             image: song.image, // 파트의 이미지를 선택된 곡의 이미지로 업데이트
+            userId: 0, // 각 파트의 userId 초기화
+            userImage: undefined, // 각 파트의 userImage 초기화
+            userName: undefined, // 각 파트의 userName 초기화
           }));
           setParts(updatedParts);
           // 파트 이미지들을 모아서 images 상태를 업데이트
@@ -209,19 +218,16 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(
-          'http://localhost:8081/api/covers/create',
-          {
-            method: 'POST',
-            body: requestBody,
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`${baseApi}/api/covers/create`, {
+          method: 'POST',
+          body: requestBody,
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
-        console.log(requestBody);
-
+        });
+        // console.log(requestBody);
+        console.log(response);
         if (!response.ok) {
           console.error('Failed to upload cover');
         } else {
@@ -260,7 +266,7 @@ export function CoverPostPage() {
             {parts.map((part, index) => (
               <li key={index} className={css.partLi}>
                 <div className={css.partContainer}>
-                  <div>
+                  <div className={css.partDiv}>
                     <img
                       src={part.image}
                       alt={part.name}

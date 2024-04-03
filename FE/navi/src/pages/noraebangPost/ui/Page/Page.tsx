@@ -36,7 +36,7 @@ export function NoraebangPostPage() {
   const [showTextBox, setShowTextBox] = useState<boolean>(false); // 텍스트 박스 보이기 여부를 나타내는 상태 추가
   const [isRecording, setIsRecording] = useState<boolean>(false); // isRecording 타입 지정
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
-  const [songPk] = useState<number | null>(5);
+  const [songPk] = useState<number | null>(0);
   const [content, setContent] = useState<string | null>('');
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -191,6 +191,8 @@ export function NoraebangPostPage() {
     setSelectedArtist(event.target.value);
     if (artistId) {
       await fetchSongsByArtist(artistId);
+      setLyrics('');
+      setSelectedSong(undefined);
     } else {
       setSongs([]);
     }
@@ -251,12 +253,8 @@ export function NoraebangPostPage() {
         >
           <select
             className={css.dropdown}
-            style={{
-              margin: '0 0px',
-              width: '90%',
-            }}
             onChange={handleArtistChange}
-            value={selectedArtist}
+            value={selectedArtist || ''}
           >
             <option value="" disabled hidden>
               가수 선택
@@ -268,21 +266,24 @@ export function NoraebangPostPage() {
             ))}
           </select>
 
-          <select
-            className={css.dropdown}
-            style={{ margin: '0 10px', width: '90%' }}
-            onChange={handleSongChange}
-            value={selectedSong ? selectedSong.id.toString() : ''}
-          >
-            <option value="" disabled hidden>
-              노래 선택
-            </option>
-            {songs.map((song) => (
-              <option key={song.id} value={song.id.toString()}>
-                {song.title}
+          {selectedArtist ? (
+            <select
+              className={css.dropdown}
+              onChange={handleSongChange}
+              value={selectedSong ? selectedSong.id.toString() : ''}
+            >
+              <option value="" disabled hidden>
+                노래 선택
               </option>
-            ))}
-          </select>
+              {songs.map((song) => (
+                <option key={song.id} value={song.id.toString()}>
+                  {song.title}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className={css.dropdown}>가수를 선택해주세요</div>
+          )}
         </div>
 
         {/* 가사랑 사진 */}
