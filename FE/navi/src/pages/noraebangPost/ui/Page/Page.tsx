@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import css from './Page.module.css';
 import { baseApi } from '@/shared/api';
@@ -31,6 +32,7 @@ interface Lyric {
 }
 
 export function NoraebangPostPage() {
+  const navi = useNavigate();
   const [showTextBox, setShowTextBox] = useState<boolean>(false); // 텍스트 박스 보이기 여부를 나타내는 상태 추가
   const [isRecording, setIsRecording] = useState<boolean>(false); // isRecording 타입 지정
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -48,17 +50,25 @@ export function NoraebangPostPage() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [selectedSong, setSelectedSong] = useState<Song | undefined>(undefined);
   const [lyrics, setLyrics] = useState<string>('');
+  const audioContextRef = useRef<AudioContext | null>(null); // AudioContext 인스턴스 참조
+  const [audioBufferSourceNode, setAudioBufferSourceNode] =
+    useState<AudioBufferSourceNode | null>(null);
 
-  const stopRecording = () => {
+  // 녹음 및 MR 재생 중지 함수
+  const stopRecordingAndMR = () => {
     if (
       mediaRecorderRef.current &&
       mediaRecorderRef.current.state === 'recording'
     ) {
-      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stop(); // 녹음 중지
       setIsRecording(false);
     }
-  };
 
+    if (audioBufferSourceNode) {
+      audioBufferSourceNode.stop(); // MR 재생 중지
+      setAudioBufferSourceNode(null);
+    }
+  };
   const handleUpload = async () => {
     if (!finalBlob) {
       console.error('No audio to upload');
@@ -84,6 +94,7 @@ export function NoraebangPostPage() {
       }
 
       console.log('Audio uploaded successfully');
+      navi('/noraebang');
     } catch (error) {
       console.error('Error uploading audio:', error);
     }
@@ -93,47 +104,59 @@ export function NoraebangPostPage() {
     const file = e.target.files?.[0];
     if (file) {
       setRecordedChunks([file]);
+      console.log(recordedChunks);
     }
   };
 
-  const startRecording = async () => {
-    try {
-      setRecordedChunks([]);
-      setAudioUrl(null);
+  // 녹음 시작 및 MR 재생 함수
+  const startRecordingAndPlayMR = async () => {
+    if (!selectedSong) {
+      console.error('No selected song for MR playback.');
+      return;
+    }
+    setIsRecording(true); // 녹음 상태 활성화
 
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm',
+    try {
+      // MR 파일 재생 로직
+      const audioContext = audioContextRef.current || new AudioContext();
+      audioContextRef.current = audioContext; // AudioContext 초기화 및 저장
+      const response = await fetch(selectedSong.mr);
+      const audioData = await response.arrayBuffer();
+      audioContext.decodeAudioData(audioData, (buffer) => {
+        const source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        source.start(0);
+        setAudioBufferSourceNode(source); // 재생 중인 소스 노드 저장
       });
+
+      // 사용자의 오디오 입력을 받아 녹음 시작
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
 
+      const chunks: Blob[] = [];
       mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          setRecordedChunks((prevChunks) => [...prevChunks, e.data]);
-          console.log(recordedChunks);
-        }
+        chunks.push(e.data);
       };
+
       mediaRecorder.onstop = () => {
-        setRecordedChunks((prevChunks) => {
-          const blob = new Blob(prevChunks, { type: 'audio/webm' });
-          setFinalBlob(blob);
-          const url = URL.createObjectURL(blob);
-          setAudioUrl(url);
-          return [];
-        });
+        // 녹음이 중지되면 최종 Blob 데이터를 설정
+        const finalAudioBlob = new Blob(chunks, { type: 'audio/webm' });
+        setFinalBlob(finalAudioBlob);
+        const audioURL = URL.createObjectURL(finalAudioBlob);
+        setAudioUrl(audioURL); // 재생을 위한 URL 설정
       };
 
       mediaRecorder.start();
-      setIsRecording(true);
-      setTimeout(() => {
-        stopRecording();
-      }, 300000);
     } catch (error) {
-      console.error('Error accessing microphone:', error);
+      console.error('Error starting recording or playing MR:', error);
+      setIsRecording(false);
     }
   };
 
   useEffect(() => {
+    audioContextRef.current = new AudioContext();
     const fetchArtists = async () => {
       try {
         const response = await axios.get<{
@@ -365,7 +388,7 @@ export function NoraebangPostPage() {
           {/*  */}
 
           <button
-            onClick={isRecording ? stopRecording : startRecording}
+            onClick={isRecording ? stopRecordingAndMR : startRecordingAndPlayMR}
             style={{
               marginTop: '20px',
               backgroundImage: `url('https://navi.s3.ap-northeast-2.amazonaws.com/recordButton.png')`,
