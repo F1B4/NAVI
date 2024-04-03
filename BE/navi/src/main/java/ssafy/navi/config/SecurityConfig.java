@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .requestMatchers("/main/user")
                 // CoverController
                 .requestMatchers("/covers")
+                .requestMatchers("/covers/create")
                 .requestMatchers("/covers/byView")
                 .requestMatchers("/covers/byLike")
                 .requestMatchers("/covers/detail/{cover_pk}/{user_pk}")
