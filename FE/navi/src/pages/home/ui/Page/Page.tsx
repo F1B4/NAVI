@@ -25,7 +25,6 @@ export function HomePage() {
 
     const fetchData = async () => {
       if (loginSuccess && store.userId === 0) {
-        console.log('check');
         store.getData();
         await noti();
       }

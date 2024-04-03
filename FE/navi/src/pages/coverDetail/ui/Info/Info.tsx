@@ -1,24 +1,37 @@
+import type { CoverInfo } from '@/entities/coverDetail/api/types';
 import css from './Info.module.css';
 
 interface InfoProps {
   title: string;
-  // singer: string;
+  image: string;
+  singers: CoverInfo[];
 }
 
 export function Info(props: InfoProps) {
+  console.log(props);
   return (
     <div className={css.root}>
       <h1>커버 정보</h1>
       <div className={css.songInfo}>
+        <div className={css.img}>
+          <img src={props.image} alt="" />
+        </div>
         <div className={css.title}>{props.title}</div>
-        {/* <div className={css.singer}>{props.singer}</div> */}
       </div>
       <div className={css.userInfo}>
-        <div>
-          v-for 가수들
-          <div>가수</div>
-          <div>유저</div>
-        </div>
+        {Array.isArray(props.singers) &&
+          props.singers.map((singer, index) => (
+            <div key={index}>
+              <p>{singer.partDto.name}</p>
+              <div className={css.img}>
+                <img src={singer.partDto.image} alt="" />
+              </div>
+              <p>{singer.userDto.nickname}</p>
+              <div className={css.img}>
+                <img src={singer.userDto.image} alt="" />
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -68,11 +68,11 @@ interface CardProps {
 }
 
 export function Card(props: CardProps) {
-  const store = usePlayStore();
+  const play = usePlayStore();
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = () => {
-    store.goPlay({
+    play.goPlay({
       pk: props.id,
       type: props.thumbnail ? 'cover' : 'noraebang',
       url: (props.video ?? props.record) || '',

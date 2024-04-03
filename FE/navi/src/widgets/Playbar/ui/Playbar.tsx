@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import css from './playbar.module.css';
-// import { CoverDetailPage } from '@/pages/coverDetail';
-// import { NoraebangDetailPage } from '@/pages/noraebangDetail';
+import { CoverDetailPage } from '@/pages/coverDetail';
+import { NoraebangDetailPage } from '@/pages/noraebangDetail';
 import { usePlayStore } from '@/shared/store';
 
 interface PlaybarProps {
@@ -133,6 +133,8 @@ const Playbar: React.FC<PlaybarProps> = ({
             }}
           >
             {type}
+
+            <CoverDetailPage />
             {/* {type === 'cover' ? (
               <CoverDetailPage pk={play.pk} />
             ) : (

@@ -18,7 +18,6 @@ interface PlayProps {
   url: string;
   title: string;
   coverImage: string;
-  expanded: boolean;
   artist?: string;
 }
 
@@ -30,7 +29,6 @@ const usePlayStore = create(
       url: '',
       title: '',
       coverImage: '',
-      expanded: false,
       artist: '',
       goPlay: (props: PlayProps) => {
         set((state) => {

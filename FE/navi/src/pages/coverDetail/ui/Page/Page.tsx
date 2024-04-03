@@ -4,23 +4,26 @@ import type { Cover } from '@/entities/coverDetail';
 import { Info } from '../Info/Info';
 import { Reviews } from '@/widgets/Reviews';
 import { useUserStore } from '@/shared/store';
+import { usePlayStore } from '@/shared/store';
 import css from './Page.module.css';
 
-export function CoverDetailPage(pk: number) {
+export function CoverDetailPage() {
   const store = useUserStore();
-  const props = Number(pk);
+  const play = usePlayStore();
   const [cover, setCover] = useState<Cover>();
   const [load, setLoad] = useState<boolean>(false);
+  const [select, setSelect] = useState<boolean>(true);
   useEffect(() => {
     const AxiosCover = async () => {
       try {
         const response = await coverDetailApi({
-          detailPk: props,
           userId: store.userId,
+          coverPk: play.pk,
         });
         if (response?.resultCode === 'OK') {
           setCover(response.data);
           setLoad(true);
+          console.log(response.data);
         }
       } catch (error) {
         console.error('Error get cover detail');
@@ -29,13 +32,32 @@ export function CoverDetailPage(pk: number) {
     AxiosCover();
   }, []);
 
+  const getReview = () => {
+    setSelect(false);
+  };
+
+  const getInfo = () => {
+    setSelect(true);
+  };
+
   if (load && cover) {
+    console.log(cover);
     return (
       <div className={css.root}>
+        <div className={css.choice}>
+          <div onClick={getInfo}>커버 정보</div>
+          <div onClick={getReview}>리뷰 정보</div>
+        </div>
         <div className={css.right}>
-          {/* 가수 정보 안들어옴 */}
-          <Info title={cover.title} />
-          <Reviews type="cover" data={cover.coverReviewDtos} />
+          {select ? (
+            <Info
+              title={cover.title}
+              image={cover.songDto.image}
+              singers={cover.coverUserDtos}
+            />
+          ) : (
+            <Reviews type="cover" data={cover.coverReviewDtos} />
+          )}
         </div>
       </div>
     );

@@ -1,19 +1,18 @@
 import type { Response } from './types';
 import { baseApi } from '@/shared/api';
 import axios, { AxiosResponse } from 'axios';
-import { usePlayStore } from '@/shared/store';
 
 interface DetailProps {
+  coverPk: number;
   userId: number;
 }
 
 export const coverDetailApi = async (
   props: DetailProps,
 ): Promise<Response | null> => {
-  const play = usePlayStore();
   try {
     const response: AxiosResponse<Response> = await axios.get(
-      `${baseApi}/covers/detail/${play.pk}/${props.userId}`,
+      `${baseApi}/covers/detail/${props.coverPk}/${props.userId}`,
     );
     return response.data;
   } catch (error) {
