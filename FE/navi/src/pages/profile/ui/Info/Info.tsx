@@ -85,18 +85,20 @@ export function Info(props: InfoProps) {
     <div className={css.root}>
       <div className={css.imageContainer}>
         <UserImage className={css.img} image={props.image} />
-        <div onClick={handleIconClick} className={css.btn1}>
-          <img
-            className={css.modifyIcon}
-            src="/images/profile_img_modify.png"
-          />
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-        </div>
+        {props.isMe && (
+          <div onClick={handleIconClick} className={css.btn1}>
+            <img
+              className={css.modifyIcon}
+              src="/images/profile_img_modify.png"
+            />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+          </div>
+        )}
       </div>
       <div className={css.container}>
         <div className={css.nameContainer}>
@@ -117,11 +119,13 @@ export function Info(props: InfoProps) {
           ) : (
             <>
               <div className={css.name}>{props.name}</div>
-              <img
-                className={css.nameModifyIcon}
-                src="/images/profile_img_modify.png"
-                onClick={startEditingName}
-              />
+              {props.isMe && (
+                <img
+                  className={css.nameModifyIcon}
+                  src="/images/profile_img_modify.png"
+                  onClick={startEditingName}
+                />
+              )}
             </>
           )}
         </div>
