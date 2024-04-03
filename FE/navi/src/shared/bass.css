@@ -1,7 +1,7 @@
 @import url('./colors.css');
 @font-face {
   font-family: 'base_font';
-  src: url('../../public/fonts/PretendardVariable.woff2') format('woff2');
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }

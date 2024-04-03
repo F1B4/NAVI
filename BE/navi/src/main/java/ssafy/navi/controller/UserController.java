@@ -67,7 +67,7 @@ public class UserController {
     UserDto
      */
     @PostMapping("/image")
-    public Response<UserDto> updateUserImage(@RequestBody MultipartFile file) throws Exception{
+    public Response<UserDto> updateUserImage(@RequestParam MultipartFile file) throws Exception{
         return Response.of("OK", "유저 프로필 사진 수정 성공", userService.updateUserImage(file));
     }
 
