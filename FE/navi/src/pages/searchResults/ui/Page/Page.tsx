@@ -53,7 +53,7 @@ export function SearchResultsPage() {
 
   return (
     <div className={css.root}>
-      <div>'{keyword}' 검색 결과</div>
+      <div>&apos{keyword}&apos 검색 결과</div>
       {/* 로딩 중인지 확인하여 로딩 중일 경우 로딩 표시 */}
       {!load ? (
         <div className={css.center}>
