@@ -350,7 +350,6 @@ export function CoverPostPage() {
             ))}
           </ul>
         </div>
-
         {/* 가운데 카로셀 */}
         <div className={css.carouselContainer} style={{ flexGrow: 2 }}>
           <div className={css.coverSelectSection}>
@@ -448,6 +447,16 @@ export function CoverPostPage() {
               ▶
             </button>
           </div>
+          <button
+            onClick={handleUpload}
+            className={css.uploadButton}
+            style={{ textAlign: 'center', marginTop: '8%'}}
+          >
+            <img
+              src="https://navi.s3.ap-northeast-2.amazonaws.com/%EB%A7%8C%EB%93%A4%EA%B8%B0-%EB%A7%A4%EC%B9%AD+%EB%B2%84%ED%8A%BC.png"
+              alt=""
+            />
+          </button>
         </div>
         {/* 친구 고르기 오른쪽 */}
         {/* 친구 고르기 오른쪽 */}
@@ -513,8 +522,15 @@ export function CoverPostPage() {
           })}
         </div>
       </div>
-      <button onClick={handleUpload} className={css.uploadButton}>
-        업로드
+      <button
+        onClick={handleUpload}
+        className={css.uploadButton}
+        style={{ textAlign: 'center' }}
+      >
+        <img
+          src="https://navi.s3.ap-northeast-2.amazonaws.com/%EB%A7%8C%EB%93%A4%EA%B8%B0-%EB%A7%A4%EC%B9%AD+%EB%B2%84%ED%8A%BC.png"
+          alt=""
+        />
       </button>
     </div>
   );
