@@ -2,10 +2,7 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssafy.navi.dto.cover.CoverDto;
 import ssafy.navi.dto.noraebang.NoraebangAllDto;
 import ssafy.navi.dto.noraebang.NoraebangDto;
@@ -72,8 +69,8 @@ public class MainController {
     쿼리스트링 형태로 keyword를 같이 넘겨주고
     keyword값을 이용하여 조회후 값을 가져오게 됨
      */
-    @GetMapping("/noraebang/title")
-    public Response<List<NoraebangDto>> searchMoreNoraebangTitle(@RequestParam("keyword") String keyword) throws Exception{
+    @GetMapping("/noraebang/title/{keyword}")
+    public Response<List<NoraebangDto>> searchMoreNoraebangTitle(@PathVariable("keyword") String keyword) throws Exception{
         return Response.of("OK","노래방 제목 더보기",mainService.getSearchMoreNoraebangTitle(keyword));
     }
 
@@ -81,8 +78,8 @@ public class MainController {
     노래방 더보기 원곡자
     쿼리스트링 형태로 keyword 값으로 조회함
      */
-    @GetMapping("/noraebang/artist")
-    public Response<List<NoraebangDto>> searchMoreNoraebangArtist(@RequestParam("keyword") String keyword) throws Exception{
+    @GetMapping("/noraebang/artist/{keyword}")
+    public Response<List<NoraebangDto>> searchMoreNoraebangArtist(@PathVariable("keyword") String keyword) throws Exception{
         return Response.of("OK","노래방 원곡자 더보기",mainService.getSearchMoreNoraebangArtist(keyword));
     }
 
@@ -92,8 +89,8 @@ public class MainController {
     쿼리스트링 형태로 keyword를 같이 넘겨주고
     keyword값을 이용하여 조회후 값을 가져오게 됨
      */
-    @GetMapping("/cover/title")
-    public Response<List<CoverDto>> searchMoreCoverTitle(@RequestParam("keyword") String keyword) throws Exception{
+    @GetMapping("/cover/title/{keyword}")
+    public Response<List<CoverDto>> searchMoreCoverTitle(@PathVariable("keyword") String keyword) throws Exception{
         return Response.of("OK","커버 제목 더보기",mainService.getSearchMoreCoverTitle(keyword));
     }
 
@@ -101,8 +98,8 @@ public class MainController {
     커버 더보기 원곡자
     쿼리스트링 keyword
      */
-    @GetMapping("/cover/artist")
-    public Response<List<CoverDto>> searchMoreCoverArtist(@RequestParam("keyword") String keyword) throws Exception{
+    @GetMapping("/cover/artist/{keyword}")
+    public Response<List<CoverDto>> searchMoreCoverArtist(@PathVariable("keyword") String keyword) throws Exception{
         return Response.of("OK","커버 원곡자 더보기",mainService.getSearchMoreCoverArtist(keyword));
     }
 
@@ -110,8 +107,8 @@ public class MainController {
     사용자 더보기
     쿼리스트링 keyword
      */
-    @GetMapping("/user")
-    public Response<List<UserDto>> searchMoreUser(@RequestParam("keyword") String keyword) throws Exception{
+    @GetMapping("/user/{keyword}")
+    public Response<List<UserDto>> searchMoreUser(@PathVariable("keyword") String keyword) throws Exception{
         return Response.of("OK","유저 닉네임 더보기",mainService.getSearchMoreUser(keyword));
     }
 }
