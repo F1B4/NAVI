@@ -14,7 +14,7 @@ interface SongInfo {
   image: string;
 }
 
-interface ReviewInfo {
+interface ReviewInfo2 {
   id: number;
   content: string;
   userId: number;
@@ -47,7 +47,7 @@ interface Noraebang {
   userDto: User;
   createdAt: Date;
   likeExsits: boolean;
-  noraebangReviewDtos: ReviewInfo[];
+  noraebangReviewDtos: ReviewInfo2[];
   lyricDtos: LyricInfo[];
 }
 
@@ -57,4 +57,4 @@ interface Response {
   data: Noraebang;
 }
 
-export type { Response, Noraebang };
+export type { Response, Noraebang, ReviewInfo2 };

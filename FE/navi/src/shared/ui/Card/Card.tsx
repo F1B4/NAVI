@@ -73,6 +73,7 @@ export function Card(props: CardProps) {
 
   const handleClick = () => {
     store.goPlay({
+      pk: props.id,
       type: props.thumbnail ? 'cover' : 'noraebang',
       url: (props.video ?? props.record) || '',
       title: props.info.title,
