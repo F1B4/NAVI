@@ -33,7 +33,6 @@ export function HomePage() {
 
     const fetchRecordData = async () => {
       if (store.isLogin && store.role === 'ROLE_GUEST') {
-        console.log('check');
         store.getRec();
       }
     };
