@@ -24,13 +24,13 @@ public class AlarmController {
     }
 
 
-    @DeleteMapping("/{alarm_pk}")
+    @DeleteMapping("/delete/{alarm_pk}")
     public Response<?> deleteAlarm(@PathVariable("alarm_pk") Long alarmPk) {
         alarmService.deleteAlarm(alarmPk);
         return Response.of("OK", "알람을 삭제 했습니다.", null);
     }
 
-    @GetMapping("/{alarm_pk}")
+    @GetMapping("/detail/{alarm_pk}")
     public Response<AlarmDto> getAlarmDetail(@PathVariable("alarm_pk") Long alarmPk) throws Exception {
         return Response.of("OK", "알람 디테일을 조회 했습니다.", alarmService.getAlarmDetail(alarmPk));
     }
