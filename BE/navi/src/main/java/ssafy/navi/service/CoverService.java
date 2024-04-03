@@ -128,7 +128,6 @@ public class CoverService {
 //        if (userSocial.getRole() == Role.ROLE_GUEST) {
 //            return Response.of("OK", "훈련중, 커버 생성 불가능", 4L);
 //        }
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();

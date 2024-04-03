@@ -100,13 +100,13 @@ public class CoverController {
     @PostMapping("/create")
     public Response<?> createCover(@RequestBody CoverRegistDto coverRegistDto) throws Exception{
         Response<Long> result = coverService.createCover(coverRegistDto);
-        System.out.println("controller@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         if (result.getMessage().equals("1")) {
             System.out.println("result.getData() @@@@@@@@@@@@@ " + result.getData());
             fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
         } else if (result.getMessage().equals("2")) {
             fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
         }
+//        
 //        } else if (result.getMessage().equals("3")) {
 //            return Response.of("FAIL","학습 데이터가 없어 커버 생성 불가",null);
 //        } else if (result.getMessage().equals("4")) {
