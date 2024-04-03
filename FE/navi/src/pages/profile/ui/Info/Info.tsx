@@ -5,7 +5,6 @@ import css from './Info.module.css';
 import { baseApi } from '@/shared/api';
 import { useUserStore } from '@/shared/store';
 import { useNavigate } from 'react-router-dom';
-import { error } from 'console';
 
 interface InfoProps {
   userPk: number;
