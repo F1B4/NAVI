@@ -1,16 +1,35 @@
 import { useEffect, useState } from 'react';
-import { coverListApi } from '@/entities/coverList';
+import {
+  coverListApi,
+  coverListByLikeApi,
+  coverListByViewApi,
+} from '@/entities/coverList';
 import type { CoverList, CoverUser } from '@/entities/coverList';
 import { Card } from '@/shared/ui';
 import css from './CoverList.module.css';
 
 export function CoverList() {
   const [covers, setCovers] = useState<CoverList>();
+  const [selectedOption, setSelectedOption] = useState('list');
 
   useEffect(() => {
     const AxiosCovers = async () => {
+      let response;
       try {
-        const response = await coverListApi();
+        switch (selectedOption) {
+          case 'list':
+            response = await coverListApi();
+            break;
+          case 'listByLike':
+            response = await coverListByLikeApi();
+            break;
+          case 'listByView':
+            response = await coverListByViewApi();
+            break;
+          default:
+            response = await coverListApi();
+        }
+
         if (response?.resultCode === 'OK') {
           setCovers(response.data);
         }
@@ -19,10 +38,20 @@ export function CoverList() {
       }
     };
     AxiosCovers();
-  }, []);
+  }, [selectedOption]);
 
   return (
     <div className={css.container}>
+      <div className={css.dropdown}>
+        <select
+          value={selectedOption}
+          onChange={(e) => setSelectedOption(e.target.value)}
+        >
+          <option value="list">최신순</option>
+          <option value="listByLike">좋아요순</option>
+          <option value="listByView">조회순</option>
+        </select>
+      </div>
       {Array.isArray(covers) ? (
         covers.map((cover, index) => {
           const coverUserNicknames = cover.coverUserDtos
