@@ -27,7 +27,7 @@ export function NoraebangList() {
             response = await noraebangListByViewApi();
             break;
           default:
-            response = await noraebangListApi(); // 기본값
+            response = await noraebangListApi();
         }
 
         if (response?.resultCode === 'OK') {
@@ -38,7 +38,7 @@ export function NoraebangList() {
       }
     };
     AxiosNoraebangs();
-  }, [selectedOption]); // selectedOption 상태가 변경될 때마다 useEffect 훅 재실행
+  }, [selectedOption]);
 
   return (
     <div className={css.container}>

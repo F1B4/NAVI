@@ -1,5 +1,5 @@
 .container {
-  position: relative; /* 컨테이너에 대해 상대 위치 설정 */
+  position: relative;
   margin-top: 20px;
   height: auto;
   width: calc(100vw - 420px);
@@ -11,10 +11,10 @@
 }
 
 .dropdown {
-  position: absolute; /* 드롭다운을 절대 위치로 설정 */
-  top: 0; /* 컨테이너의 상단에서 시작 */
-  right: 0; /* 컨테이너의 오른쪽에서 시작 */
-  padding: 8px; /* 드롭다운 주변의 여백 */
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px;
 }
 
 .dropdown select {
