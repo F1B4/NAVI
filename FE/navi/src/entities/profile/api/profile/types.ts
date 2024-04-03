@@ -66,6 +66,7 @@ interface NoraebangLikeDto {
 }
 
 interface Profile {
+  userPk: number;
   nickname: string;
   image: string;
   followingCount: number;

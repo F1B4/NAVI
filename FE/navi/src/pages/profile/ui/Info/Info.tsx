@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { UserImage } from '@/shared/ui';
 import { Btn } from '@/shared/ui';
 import css from './Info.module.css';
@@ -7,6 +7,7 @@ import { useUserStore } from '@/shared/store';
 import { useNavigate } from 'react-router-dom';
 
 interface InfoProps {
+  userPk: number;
   isMe: boolean;
   image: string;
   name: string;
@@ -81,6 +82,37 @@ export function Info(props: InfoProps) {
     }
   };
 
+  useEffect(() => {
+    if (props.isMe) {
+      setEditingName(props.name);
+    }
+  }, [props.isMe, props.name]);
+
+  const handleFollowToggle = async () => {
+    console.log(props.userPk);
+    const url = `${baseApi}/users/follow/${props.userPk}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.log('error');
+        throw new Error('팔로우/언팔로우 처리 실패');
+      }
+
+      await store.getData();
+      navi(0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className={css.root}>
       <div className={css.imageContainer}>
@@ -143,6 +175,7 @@ export function Info(props: InfoProps) {
           <Btn
             className={css.btn}
             content={props.isFollow ? '언팔로우' : '팔로우'}
+            onClick={handleFollowToggle}
           />
         )}
       </div>

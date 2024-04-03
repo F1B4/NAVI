@@ -65,6 +65,7 @@ export function ProfilePage() {
       <div className={css.root}>
         <div className={css.info}>
           <Info
+            userPk={profile.userPk}
             isMe={isMe}
             name={profile.nickname}
             image={profile.image}
