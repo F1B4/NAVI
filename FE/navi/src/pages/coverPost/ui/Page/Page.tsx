@@ -209,15 +209,19 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(`${baseApi}/covers/create`, {
-          method: 'POST',
-          body: requestBody,
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'https://j10d107.p.ssafy.io/api/covers/create',
+          {
+            method: 'POST',
+            body: requestBody,
+            // credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
         console.log(requestBody);
+        console.log(response);
 
         if (!response.ok) {
           console.error('Failed to upload cover');
