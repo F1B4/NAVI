@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import css from './Page.module.css';
 import { baseApi } from '@/shared/api';
-import { number } from 'zod';
 
 // Artist, Song, Lyric 인터페이스 수정
 interface Artist {
@@ -211,6 +210,8 @@ export function NoraebangPostPage() {
     setSelectedArtist(event.target.value);
     if (artistId) {
       await fetchSongsByArtist(artistId);
+      setLyrics('');
+      setSelectedSong(undefined);
     } else {
       setSongs([]);
     }
@@ -271,12 +272,8 @@ export function NoraebangPostPage() {
         >
           <select
             className={css.dropdown}
-            style={{
-              margin: '0 0px',
-              width: '90%',
-            }}
             onChange={handleArtistChange}
-            value={selectedArtist}
+            value={selectedArtist || ''}
           >
             <option value="" disabled hidden>
               가수 선택
@@ -288,21 +285,24 @@ export function NoraebangPostPage() {
             ))}
           </select>
 
-          <select
-            className={css.dropdown}
-            style={{ margin: '0 10px', width: '90%' }}
-            onChange={handleSongChange}
-            value={selectedSong ? selectedSong.id.toString() : ''}
-          >
-            <option value="" disabled hidden>
-              노래 선택
-            </option>
-            {songs.map((song) => (
-              <option key={song.id} value={song.id.toString()}>
-                {song.title}
+          {selectedArtist ? (
+            <select
+              className={css.dropdown}
+              onChange={handleSongChange}
+              value={selectedSong ? selectedSong.id.toString() : ''}
+            >
+              <option value="" disabled hidden>
+                노래 선택
               </option>
-            ))}
-          </select>
+              {songs.map((song) => (
+                <option key={song.id} value={song.id.toString()}>
+                  {song.title}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className={css.dropdown}>가수를 선택해주세요</div>
+          )}
         </div>
 
         {/* 가사랑 사진 */}

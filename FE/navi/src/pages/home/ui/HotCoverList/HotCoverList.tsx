@@ -37,6 +37,7 @@ export function HotCoverList() {
 
           return (
             <Card
+              video={cover.video}
               id={cover.id}
               key={index}
               classCard={css.card}

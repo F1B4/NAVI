@@ -54,7 +54,7 @@ interface NoraebangItem {
   likeCount?: number;
   songDto: SongInfo;
   userDto: User;
-  createdAt: Date;
+  createdAt?: Date;
   roraebnagLikeDtos?: null;
   noraebangReviewDtos?: null;
 }
@@ -69,4 +69,4 @@ interface Response {
   data: any;
 }
 
-export type { Response, NoraebangList, NoraebangItem, CoverList, CoverUser };
+export type { Response, NoraebangList, CoverList, CoverUser, User };

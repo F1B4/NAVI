@@ -11,7 +11,9 @@ interface UserState {
   followerCount: number;
   role: string;
   isLogin: boolean;
+  recordCount: number;
   getData: () => void;
+  getRec: () => void;
   resetData: () => void;
 }
 
@@ -25,6 +27,7 @@ const useUserStore = create(
       followerCount: 0,
       role: '',
       isLogin: false,
+      recordCount: 0,
       getData: async () => {
         try {
           const response = await axios.get(`${baseApi}/users/info`, {
@@ -42,6 +45,17 @@ const useUserStore = create(
           });
         } catch (error) {
           console.error('Error get user info');
+        }
+      },
+      getRec: async () => {
+        try {
+          const response = await axios.get(`${baseApi}/users/voice/count`, {
+            withCredentials: true,
+          });
+          const Data = response.data.data;
+          set({ recordCount: Data });
+        } catch (error) {
+          console.error('Error get user recordCount');
         }
       },
       resetData: () => {
