@@ -218,15 +218,18 @@ export function CoverPostPage() {
       });
 
       try {
-        const response = await fetch(`${baseApi}/api/covers/create`, {
-          method: 'POST',
-          body: requestBody,
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'http://localhost:8081/api/covers/create',
+          {
+            method: 'POST',
+            body: requestBody,
+            // credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        });
-        // console.log(requestBody);
+        );
+        console.log(requestBody);
         console.log(response);
         if (!response.ok) {
           console.error('Failed to upload cover');

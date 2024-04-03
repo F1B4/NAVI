@@ -118,16 +118,16 @@ public class CoverService {
      */
     @Transactional
     public Response<Long> createCover(CoverRegistDto coverRegistDto) throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-        User userSocial = userRepository.findByUsername(customOAuth2User.getUsername());
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
+//        User userSocial = userRepository.findByUsername(customOAuth2User.getUsername());
 
-        if (userSocial.getNoraebangs().size() < 10) {
-            return Response.of("OK", "커버 생성 불가능", 3L);
-        }
-        if (userSocial.getRole() == Role.ROLE_GUEST) {
-            return Response.of("OK", "훈련중, 커버 생성 불가능", 4L);
-        }
+//        if (userSocial.getNoraebangs().size() < 10) {
+//            return Response.of("OK", "커버 생성 불가능", 3L);
+//        }
+//        if (userSocial.getRole() == Role.ROLE_GUEST) {
+//            return Response.of("OK", "훈련중, 커버 생성 불가능", 4L);
+//        }
 
         //현재 사용자가 요청한 파트 수
         int matchingCount= coverRegistDto.getUserPartDtos().size();
