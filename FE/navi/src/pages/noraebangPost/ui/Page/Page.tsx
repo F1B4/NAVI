@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import css from './Page.module.css';
 import { baseApi } from '@/shared/api';
+import { number } from 'zod';
 
 // Artist, Song, Lyric 인터페이스 수정
 interface Artist {
@@ -36,7 +37,6 @@ export function NoraebangPostPage() {
   const [showTextBox, setShowTextBox] = useState<boolean>(false); // 텍스트 박스 보이기 여부를 나타내는 상태 추가
   const [isRecording, setIsRecording] = useState<boolean>(false); // isRecording 타입 지정
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
-  const [songPk] = useState<number | null>(5);
   const [content, setContent] = useState<string | null>('');
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -80,7 +80,7 @@ export function NoraebangPostPage() {
         type: 'audio/webm',
       });
       formData.append('file', file);
-      formData.append('song_pk', String(songPk));
+      formData.append('song_pk', String(selectedSong?.id));
       formData.append('content', String(content));
       const response = await fetch(`${baseApi}/noraebangs/create`, {
         method: 'POST',
@@ -453,6 +453,7 @@ export function NoraebangPostPage() {
           </div>
         </div>
         <button onClick={handleUpload}>Upload Audio</button>
+        <p>{selectedSong?.id}</p>
       </div>
     </div>
   );

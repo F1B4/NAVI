@@ -14,8 +14,12 @@ export const noraebangDetailApi = async (
     const response: AxiosResponse<Response> = await axios.get(
       `${baseApi}/noraebangs/detail/${props.detailPk}/${props.userId}`,
     );
+    console.log(props.detailPk, props.userId);
+    console.log(baseApi);
     return response.data;
   } catch (error) {
+    console.log(props.detailPk, props.userId);
+    console.log(baseApi);
     console.error('Error get noraebang detail', error);
     return null;
   }
