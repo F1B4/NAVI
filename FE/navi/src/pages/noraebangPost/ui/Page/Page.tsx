@@ -452,7 +452,6 @@ export function NoraebangPostPage() {
           </div>
         </div>
         <button onClick={handleUpload}>Upload Audio</button>
-        <p>{selectedSong?.id}</p>
       </div>
     </div>
   );
