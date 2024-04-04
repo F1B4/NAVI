@@ -11,8 +11,9 @@ const SSEComponent = () => {
       `${baseApi}/sse/notification/subscribe/${store.userId}`,
     );
 
-    eventSource.addEventListener('open', function () {});
-    console.log('Connection opened');
+    eventSource.addEventListener('open', function () {
+      console.log('Connection opened');
+    });
 
     // 알람이 왔음
     eventSource.addEventListener('notification', function (event) {
