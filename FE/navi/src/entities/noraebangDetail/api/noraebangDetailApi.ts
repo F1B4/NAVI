@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { Response } from './types';
 import { baseApi } from '@/shared/api';
 import axios, { AxiosResponse } from 'axios';
 import { usePlayStore } from '@/shared/store';
 
 interface DetailProps {
+  detailPk: number;
   userId: number;
 }
 

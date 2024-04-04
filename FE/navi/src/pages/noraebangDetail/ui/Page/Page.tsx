@@ -38,7 +38,11 @@ export function NoraebangDetailPage(pk: number) {
             user={noraebang.userDto.nickname}
             content={noraebang.content}
           />
-          <Reviews type="noraebang" data={noraebang.noraebangReviewDtos} />
+          <Reviews
+            type="noraebang"
+            data={noraebang.noraebangReviewDtos}
+            pk={props}
+          />
         </div>
       </div>
     );
