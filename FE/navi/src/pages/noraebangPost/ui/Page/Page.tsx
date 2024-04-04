@@ -69,6 +69,7 @@ export function NoraebangPostPage() {
     }
   };
   const handleUpload = async () => {
+    navi('/noraebang'); // 업로드 후 뒤로가기
     if (!finalBlob) {
       console.error('No audio to upload');
       return;

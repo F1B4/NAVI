@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { baseApi } from '@/shared/api';
 import { z } from 'zod'; // zod에서 필요한 모듈 가져오기
-
+import css from './Review.module.css';
 type CommentFormData = {
   content: string;
   pk: number;
@@ -52,10 +52,41 @@ const CommentForm: React.FC<CommentFormProps> = ({ pk }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <textarea {...register('content')} placeholder="댓글 내용을 입력하세요" />
-      <button type="submit">댓글 작성</button>
-    </form>
+    <div className={css.root}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <input
+          type="text"
+          {...register('content')}
+          placeholder="댓글 내용을 입력하세요"
+          style={{
+            flex: '1',
+            padding: '10px',
+            marginRight: '10px',
+            border: '1px solid #ccc',
+            borderRadius: '10px',
+            fontSize: '16px',
+            color: 'black',
+            backgroundColor: '#f2f2f2',
+          }}
+          className={css.input} // 새로운 클래스 추가
+        />
+        <button
+          type="submit"
+          className={css.btn}
+          style={{ padding: '10px 20px' }}
+        >
+          댓글 작성
+        </button>
+      </form>
+    </div>
   );
 };
 
