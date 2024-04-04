@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-contents: start;
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+}
+

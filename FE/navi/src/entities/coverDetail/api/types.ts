@@ -51,4 +51,4 @@ interface Response {
   data: Cover;
 }
 
-export type { Response, Cover, ReviewInfo, User };
+export type { Response, Cover, ReviewInfo, User, CoverInfo };

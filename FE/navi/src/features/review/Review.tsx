@@ -1,9 +1,11 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import PropTypes from 'prop-types';
 import { baseApi } from '@/shared/api';
 import { z } from 'zod'; // zod에서 필요한 모듈 가져오기
 
 type CommentFormData = {
   content: string;
+  pk: number;
 };
 
 // zod 스키마 생성
@@ -11,17 +13,24 @@ const commentSchema = z.object({
   content: z.string().min(5), // 댓글 내용은 최소 5글자 이상이어야 함
 });
 
-const CommentForm: React.FC = () => {
+interface CommentFormProps {
+  pk: number;
+}
+
+const CommentForm: React.FC<CommentFormProps> = ({ pk }) => {
   const { register, handleSubmit } = useForm<CommentFormData>();
   const onSubmit: SubmitHandler<CommentFormData> = async (data) => {
     try {
       // 데이터 유효성 검사
       commentSchema.parse(data);
-
-      const cover_pk = 4;
+      CommentForm.propTypes = {
+        pk: PropTypes.number.isRequired,
+      };
+      const cover_pk = pk;
       // 서버로 데이터를 보냅니다.
       const response = await fetch(`${baseApi}/covers/${cover_pk}/review`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

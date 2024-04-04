@@ -25,6 +25,7 @@ interface Review {
 }
 
 interface ReviewsProps {
+  pk: number;
   type: string; // 타입을 여기서 고정
   data?: Review[]; // Review 타입을 사용합니다.
 }
@@ -74,16 +75,13 @@ export function Reviews(props: ReviewsProps) {
       });
     };
   };
-
+  console.log(Reviews);
   return (
     <div>
       {store.isLogin ? (
         <div className={css.root}>
-          {props.type === 'covers' && (
-            <UserImage image={store.image} className={css.user}></UserImage>
-          )}
-          댓글 입력창,
-          <CommentForm />
+          <UserImage image={store.image} className={css.img}></UserImage>
+          <CommentForm pk={props.pk} />
         </div>
       ) : (
         <div>댓글을 작성하려면 로그인해주세요</div>
