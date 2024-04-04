@@ -244,7 +244,7 @@ export function CoverPostPage() {
 
       try {
         const response = await fetch(
-          'http://localhost:8081/api/covers/create',
+          'https://j10d107.p.ssafy.io/api/covers/create',
           {
             method: 'POST',
             body: requestBody,
