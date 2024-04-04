@@ -88,11 +88,12 @@ export function NoraebangPostPage() {
       });
 
       if (!response.ok) {
+        console.log(response);
         throw new Error('Failed to upload audio');
       }
 
       console.log('Audio uploaded successfully');
-      navi('/noraebang');
+      navi(-1);
     } catch (error) {
       console.error('Error uploading audio:', error);
     }
@@ -451,7 +452,16 @@ export function NoraebangPostPage() {
             />
           </div>
         </div>
-        <button onClick={handleUpload}>Upload Audio</button>
+        <button
+          onClick={handleUpload}
+          className={css.uploadButton}
+          style={{ textAlign: 'center' }}
+        >
+          <img
+            src="https://navi.s3.ap-northeast-2.amazonaws.com/%EB%A7%8C%EB%93%A4%EA%B8%B0-%EB%A7%A4%EC%B9%AD+%EB%B2%84%ED%8A%BC.png"
+            alt=""
+          />
+        </button>
       </div>
     </div>
   );
