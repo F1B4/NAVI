@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { coverDetailApi } from '@/entities/coverDetail';
 import type { Cover } from '@/entities/coverDetail';
 import { Info } from '../Info/Info';
-import { Reviews } from '@/widgets/Reviews';
+// import { Reviews } from '@/widgets/Reviews';
 import { useUserStore } from '@/shared/store';
 import { usePlayStore } from '@/shared/store';
 import css from './Page.module.css';
@@ -30,11 +30,11 @@ export function CoverDetailPage() {
       }
     };
     AxiosCover();
-  }, []);
+  }, [play]);
 
-  const getReview = () => {
-    setSelect('review'); // 'review' 선택
-  };
+  // const getReview = () => {
+  //   setSelect('review'); // 'review' 선택
+  // };
 
   const getInfo = () => {
     setSelect('info'); // 'info' 선택
@@ -50,23 +50,23 @@ export function CoverDetailPage() {
           >
             커버 정보
           </div>
-          <div
+          {/* <div
             className={select === 'review' ? css.selected : ''}
             onClick={getReview}
           >
             리뷰 정보
-          </div>
+          </div> */}
         </div>
         <div className={css.right}>
-          {select === 'info' ? (
-            <Info
-              title={cover.title}
-              image={cover.songDto.image}
-              singers={cover.coverUserDtos}
-            />
-          ) : (
+          {/* {select === 'info' ? ( */}
+          <Info
+            title={cover.title}
+            image={cover.songDto.image}
+            singers={cover.coverUserDtos}
+          />
+          {/* ) : (
             <Reviews type="cover" data={cover.coverReviewDtos} pk={cover.id} />
-          )}
+          )} */}
         </div>
       </div>
     );

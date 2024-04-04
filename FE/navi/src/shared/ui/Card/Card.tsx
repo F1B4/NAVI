@@ -75,12 +75,14 @@ export function Card(props: CardProps) {
     play.goPlay({
       play: true,
       pk: props.id,
+      expanded: false,
       type: props.thumbnail ? 'cover' : 'noraebang',
       url: (props.video ?? props.record) || '',
       title: props.info.title,
       coverImage: props.thumbnail ? props.thumbnail : props.info.image,
       artist: props.user,
     });
+    play.expand();
   };
 
   const imageSrc = props.thumbnail ? props.thumbnail : props.info.image;
