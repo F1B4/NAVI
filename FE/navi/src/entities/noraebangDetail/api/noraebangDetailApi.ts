@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import { usePlayStore } from '@/shared/store';
 
 interface DetailProps {
+  detailPk: number;
   userId: number;
 }
 
@@ -15,7 +16,6 @@ export const noraebangDetailApi = async (
     const response: AxiosResponse<Response> = await axios.get(
       `${baseApi}/noraebangs/detail/${play.pk}/${props.userId}`,
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error('Error get noraebang detail', error);

@@ -89,7 +89,6 @@ export function Info(props: InfoProps) {
   }, [props.isMe, props.name]);
 
   const handleFollowToggle = async () => {
-    console.log(props.userPk);
     const url = `${baseApi}/users/follow/${props.userPk}`;
 
     try {

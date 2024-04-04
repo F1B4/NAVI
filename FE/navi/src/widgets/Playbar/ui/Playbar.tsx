@@ -25,7 +25,7 @@ const Playbar: React.FC<PlaybarProps> = ({
   const [played, setPlayed] = useState<number>(0); // 현재 진행 상태
   const [volume, setVolume] = useState<number>(0.5); // 볼륨 상태
   const [muted, setMuted] = useState<boolean>(false); // 음소거 상태
-  const [expanded, setExpanded] = useState<boolean>(true); // 디테일 펼치는지 아닌지
+  const [expanded, setExpanded] = useState<boolean>(false); // 디테일 펼치는지 아닌지
   const [duration, setDuration] = useState<number>(0); // 비디오의 총 길이를 저장하는 상태
   const playerRef = useRef<ReactPlayer>(null); // 리액트플레이어
 

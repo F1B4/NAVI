@@ -10,9 +10,6 @@ interface InfoProps {
 export function Info(props: InfoProps) {
   return (
     <div className={css.root}>
-      <div style={{ margin: '10%', marginLeft: '0%' }}>
-        <h1>커버 정보</h1>
-      </div>
       <div
         className={css.songInfo}
         style={{
