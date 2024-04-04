@@ -41,7 +41,6 @@ export function CoverDetailPage() {
   };
 
   if (load && cover) {
-    console.log(cover);
     return (
       <div className={css.root}>
         <div className={css.choice}>
@@ -56,7 +55,7 @@ export function CoverDetailPage() {
               singers={cover.coverUserDtos}
             />
           ) : (
-            <Reviews type="cover" data={cover.coverReviewDtos} />
+            <Reviews type="cover" data={cover.coverReviewDtos} pk={cover.id} />
           )}
         </div>
       </div>

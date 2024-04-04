@@ -2,11 +2,10 @@ import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import css from './playbar.module.css';
 import { CoverDetailPage } from '@/pages/coverDetail';
-import { NoraebangDetailPage } from '@/pages/noraebangDetail';
-import { usePlayStore } from '@/shared/store';
+// import { NoraebangDetailPage } from '@/pages/noraebangDetail';
+// import { usePlayStore } from '@/shared/store';
 
 interface PlaybarProps {
-  pk: number;
   type: string;
   url: string;
   title: string; // 곡 제목
@@ -15,14 +14,13 @@ interface PlaybarProps {
 }
 
 const Playbar: React.FC<PlaybarProps> = ({
-  pk,
   type,
   url,
   title,
   coverImage,
   artist,
 }) => {
-  const play = usePlayStore();
+  // const play = usePlayStore();
   const [playing, setPlaying] = useState<boolean>(true); // 재생 중 여부
   const [played, setPlayed] = useState<number>(0); // 현재 진행 상태
   const [volume, setVolume] = useState<number>(0.5); // 볼륨 상태

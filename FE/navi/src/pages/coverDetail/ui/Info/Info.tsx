@@ -8,7 +8,6 @@ interface InfoProps {
 }
 
 export function Info(props: InfoProps) {
-  console.log(props);
   return (
     <div className={css.root}>
       <h1>커버 정보</h1>
