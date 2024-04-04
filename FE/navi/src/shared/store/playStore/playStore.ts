@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface PlayState {
+  play: boolean;
   pk: number;
   type: string;
   url: string;
@@ -10,9 +11,11 @@ interface PlayState {
   artist: string;
   goPlay: (props: PlayProps) => void;
   expand: () => void;
+  playToggle: () => void;
 }
 
 interface PlayProps {
+  play: boolean;
   pk: number;
   type: string;
   url: string;
@@ -24,6 +27,7 @@ interface PlayProps {
 const usePlayStore = create(
   persist<PlayState>(
     (set) => ({
+      play: true,
       pk: 0,
       type: '',
       url: '',
@@ -34,6 +38,7 @@ const usePlayStore = create(
         set((state) => {
           const newState = {
             ...state,
+            play: true,
             pk: props.pk,
             type: props.type,
             url: props.url,
@@ -50,6 +55,15 @@ const usePlayStore = create(
           const newState = {
             ...state,
             expanded: false,
+          };
+          return newState;
+        });
+      },
+      playToggle: () => {
+        set((state) => {
+          const newState = {
+            ...state,
+            play: !state.play,
           };
           return newState;
         });

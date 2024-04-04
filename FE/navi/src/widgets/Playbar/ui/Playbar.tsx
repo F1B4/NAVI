@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import css from './playbar.module.css';
 import { CoverDetailPage } from '@/pages/coverDetail';
 // import { NoraebangDetailPage } from '@/pages/noraebangDetail';
-// import { usePlayStore } from '@/shared/store';
+import { usePlayStore } from '@/shared/store';
 
 interface PlaybarProps {
   type: string;
@@ -20,8 +20,8 @@ const Playbar: React.FC<PlaybarProps> = ({
   coverImage,
   artist,
 }) => {
-  // const play = usePlayStore();
-  const [playing, setPlaying] = useState<boolean>(true); // 재생 중 여부
+  const play = usePlayStore();
+  const [playing, setPlaying] = useState<boolean>(play.play); // 재생 중 여부
   const [played, setPlayed] = useState<number>(0); // 현재 진행 상태
   const [volume, setVolume] = useState<number>(0.5); // 볼륨 상태
   const [muted, setMuted] = useState<boolean>(false); // 음소거 상태
@@ -30,7 +30,8 @@ const Playbar: React.FC<PlaybarProps> = ({
   const playerRef = useRef<ReactPlayer>(null); // 리액트플레이어
 
   const togglePlay = (): void => {
-    setPlaying(!playing);
+    play.playToggle();
+    setPlaying(play.play);
   };
 
   const toggleExpand = (): void => {

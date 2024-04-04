@@ -78,14 +78,14 @@ export function ProfilePage() {
           <FollowList ing={following} er={follower} />
         </div>
         <div className={css.listContainer}>
-          좋아요 목록
+          <div className={css.subtitle}>좋아요 목록</div>
           <div className={css.likeList}>
             <LikeList
               likeNorae={profile.noraebangLikeDtos}
               likeCover={profile.coverLikeDtos}
             />
           </div>
-          내가 부른 노래 목록
+          <div className={css.subtitle}>내가 부른 노래 목록</div>
           <div className={css.mySongList}>
             <MySongList
               myNorae={profile.noraebangDtos}
