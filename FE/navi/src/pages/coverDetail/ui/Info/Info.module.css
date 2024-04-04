@@ -5,7 +5,15 @@
 }
 
 .img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
 }
 
+.img img {
+  border-radius: 10px;
+}
+
+.set {
+  display: flex;
+  height: 100px;
+}

@@ -5,20 +5,47 @@
   align-items: center;
 }
 
-.left,
 .right {
   flex: 1;
-  padding: 50px;
+  padding-top: 50px;
 }
 
 .right {
   display: flex;
   flex-direction: column;
-  width: 70vh;
-  margin-left: 50px;
+  width: 40vw;
+  margin-left: 100px;
 }
 
 .choice {
   display: flex;
-  justify-contents: space-between;
+  width: 50%;
+  justify-content: space-between; /* 좌우로 요소를 분산 배치합니다. */
+  align-items: center; /* 세로 중앙 정렬을 위해 필요합니다. */
+  position: relative; /* 자식 요소에 절대 위치를 사용하기 위해 상대 위치 설정 */
+}
+
+.choice div {
+  font-size: 36px; /* 원하는 크기로 글자 크기를 조정합니다. */
+  font-weight: bold;
+  padding: 10px; /* 좌우 여백을 조정합니다. */
+  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능함을 나타냅니다. */
+}
+
+.choice div:not(:last-child)::after {
+  content: ''; /* 가상 요소 생성 */
+  position: absolute; /* 상대 위치를 기준으로 절대 위치 설정 */
+  top: 0; /* 부모 요소의 상단에 정렬합니다. */
+  bottom: 0; /* 부모 요소의 하단에 정렬합니다. */
+  left: calc(50% - 0.5px); /* 부모 요소의 중앙에 정렬합니다. */
+  width: 3px; /* 세로 선의 너비 */
+  background-color: #ccc; /* 선의 색상 */
+}
+
+.choice div:not(.selected) {
+  color: #888; /* 회색으로 설정 */
+}
+
+.choice div:hover {
+  color: white;
 }

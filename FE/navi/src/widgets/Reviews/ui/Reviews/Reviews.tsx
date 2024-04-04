@@ -75,12 +75,13 @@ export function Reviews(props: ReviewsProps) {
       });
     };
   };
-  console.log(Reviews);
   return (
     <div>
       {store.isLogin ? (
         <div className={css.root}>
-          <UserImage image={store.image} className={css.img}></UserImage>
+          <div className={css.user}>
+            <UserImage image={store.image}></UserImage>
+          </div>
           <CommentForm pk={props.pk} />
         </div>
       ) : (
@@ -90,7 +91,7 @@ export function Reviews(props: ReviewsProps) {
         {props.data && props.data.length > 0 ? (
           props.data.map((review, index) => (
             <div key={index} className={css.root}>
-              <div>
+              <div className={css.user}>
                 <UserImage
                   to={
                     currentType === 'covers'

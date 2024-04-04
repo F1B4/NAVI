@@ -18,9 +18,11 @@ export function Info(props: InfoProps) {
           justifyContent: 'start',
         }}
       >
+        {/* 곡 커버 사진 */}
         <div className={css.img}>
           <img src={props.image} alt="" />
         </div>
+        {/* 곡 제목 */}
         <div
           className={css.title}
           style={{
@@ -29,15 +31,22 @@ export function Info(props: InfoProps) {
             alignItems: 'center',
           }}
         >
-          <h2 style={{ marginLeft: '30px' }}>{props.title}</h2>
+          <h1 style={{ marginLeft: '30px' }}>{props.title}</h1>
         </div>
       </div>
       <div className={css.userInfo}>
         {Array.isArray(props.singers) &&
           props.singers.map((singer, index) => (
             <div key={index}>
-              <div style={{ display: 'flex' }}>
-                <div style={{ display: 'flex' }}>
+              <div className={css.set}>
+                {/* 가수 정보 */}
+                <div
+                  style={{
+                    display: 'flex',
+                    marginRight: '100px',
+                  }}
+                >
+                  {/* 가수이미지 */}
                   <div
                     className={css.img}
                     style={{
@@ -57,6 +66,7 @@ export function Info(props: InfoProps) {
                       alt=""
                     />
                   </div>
+                  {/* 가수 이름 */}
                   <div
                     style={{
                       marginLeft: '-8%',
@@ -68,37 +78,43 @@ export function Info(props: InfoProps) {
                     <p>{singer.partDto.name}</p>
                   </div>
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
+
+                {/* 유저 정보 */}
+                <div>
                   <div
-                    className={css.img}
                     style={{
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
                   >
-                    <img
+                    <div
+                      className={css.img}
                       style={{
-                        width: '60%',
-                        height: '60%',
-                        borderRadius: '50%',
-                        objectFit: 'cover',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
-                      src={singer.userDto.image}
-                      alt=""
-                    />
-                  </div>
-                  <div style={{ marginLeft: '-8%' }}>
-                    <p>{singer.userDto.nickname}</p>
+                    >
+                      <img
+                        style={{
+                          width: '60%',
+                          height: '60%',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                        }}
+                        src={singer.userDto.image}
+                        alt=""
+                      />
+                    </div>
+                    <div style={{ marginLeft: '-8%' }}>
+                      <p>{singer.userDto.nickname}</p>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* 끝 */}
             </div>
           ))}
       </div>
