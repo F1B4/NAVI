@@ -127,19 +127,15 @@ const Playbar: React.FC<PlaybarProps> = ({
               zIndex: 200,
               width: '100%',
               height: '600px',
-              border: 'solid white',
+              padding: '0%',
             }}
           >
-            {type}
-
             <CoverDetailPage />
             {/* {type === 'cover' ? (
               <CoverDetailPage pk={play.pk} />
             ) : (
               <NoraebangDetailPage pk={play.pk} />
             )} */}
-
-            {type === 'cover' ? '지랄하고' : '자빠졌네'}
           </div>
         </div>
         {/* 하단하단하단 */}
