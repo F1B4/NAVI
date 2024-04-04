@@ -78,6 +78,7 @@ export function NoraebangPostPage() {
       const file = new File([finalBlob], 'recorded_audio.webm', {
         type: 'audio/webm',
       });
+      navi('/noraebang');
       formData.append('file', file);
       formData.append('song_pk', String(selectedSong?.id));
       formData.append('content', String(content));
@@ -93,7 +94,6 @@ export function NoraebangPostPage() {
       }
 
       console.log('Audio uploaded successfully');
-      navi(-1);
     } catch (error) {
       console.error('Error uploading audio:', error);
     }
