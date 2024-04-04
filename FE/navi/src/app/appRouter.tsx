@@ -90,11 +90,9 @@ export const appRouter = () =>
       path: '/noraebang/post',
       element: (
         <LoginGuard>
-          <ModelGuard>
-            <Layout>
-              <NoraebangPostPage />
-            </Layout>
-          </ModelGuard>
+          <Layout>
+            <NoraebangPostPage />
+          </Layout>
         </LoginGuard>
       ),
     },
