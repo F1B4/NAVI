@@ -254,8 +254,7 @@ export function CoverPostPage() {
             },
           },
         );
-        console.log(requestBody);
-        console.log(response);
+
         if (!response.ok) {
           console.error('Failed to upload cover');
         } else {
@@ -286,7 +285,6 @@ export function CoverPostPage() {
     setCurrentIndex(newIndex);
     setSelectedFriend(defaultFollow);
   };
-  console.log(parts);
   return (
     <div
       className={css.root}
@@ -447,6 +445,7 @@ export function CoverPostPage() {
               ▶
             </button>
           </div>
+
           <button
             onClick={handleUpload}
             className={css.uploadButton}

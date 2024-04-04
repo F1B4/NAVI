@@ -24,7 +24,6 @@ interface FollowProps {
 }
 
 export function FollowList(props: FollowProps) {
-  console.log(props);
   return (
     <div className={css.root}>
       <div className={css.ing}>

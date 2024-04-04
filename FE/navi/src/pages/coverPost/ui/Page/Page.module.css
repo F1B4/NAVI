@@ -134,3 +134,12 @@
   height: 60px;
   width: 60px;
 }
+
+.uploadButton {
+  position: fixed;
+  bottom: 35%; /* 하단 여백 조절 */
+  left: 50%; /* 가운데 정렬을 위해 왼쪽 여백을 50%로 지정 */
+  transform: translateX(
+    -50%
+  ); /* 가운데 정렬을 위해 왼쪽 여백의 반을 이동시킴 */
+}
