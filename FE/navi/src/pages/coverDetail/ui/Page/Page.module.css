@@ -20,7 +20,7 @@
 .choice {
   display: flex;
   width: 50%;
-  justify-content: space-between; /* 좌우로 요소를 분산 배치합니다. */
+  justify-content: center; /* 좌우로 요소를 분산 배치합니다. */
   align-items: center; /* 세로 중앙 정렬을 위해 필요합니다. */
   position: relative; /* 자식 요소에 절대 위치를 사용하기 위해 상대 위치 설정 */
 }

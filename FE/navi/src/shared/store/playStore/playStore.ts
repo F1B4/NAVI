@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 
 interface PlayState {
   play: boolean;
+  expanded: boolean;
   pk: number;
   type: string;
   url: string;
@@ -17,6 +18,7 @@ interface PlayState {
 interface PlayProps {
   play: boolean;
   pk: number;
+  expanded: boolean;
   type: string;
   url: string;
   title: string;
@@ -30,6 +32,7 @@ const usePlayStore = create(
       play: true,
       pk: 0,
       type: '',
+      expanded: false,
       url: '',
       title: '',
       coverImage: '',
@@ -39,6 +42,8 @@ const usePlayStore = create(
           const newState = {
             ...state,
             play: true,
+            expanded: false,
+
             pk: props.pk,
             type: props.type,
             url: props.url,

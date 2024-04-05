@@ -65,7 +65,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ pk }) => {
         <input
           type="text"
           {...register('content')}
-          placeholder="댓글 내용을 입력하세요"
+          placeholder="비밀 암호를 입력하세요"
           style={{
             flex: '1',
             padding: '10px',
