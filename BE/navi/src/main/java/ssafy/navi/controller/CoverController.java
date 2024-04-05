@@ -2,23 +2,16 @@ package ssafy.navi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ssafy.navi.dto.cover.*;
 import ssafy.navi.dto.song.ArtistDto;
 import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.song.SongDto;
-import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.dto.user.UserDto;
 import ssafy.navi.dto.util.Response;
-import ssafy.navi.entity.cover.Cover;
-import ssafy.navi.entity.user.User;
-import ssafy.navi.repository.UserRepository;
 import ssafy.navi.service.*;
 
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -106,12 +99,6 @@ public class CoverController {
         } else if (result.getMessage().equals("2")) {
             fastApiService.fetchDataFromFastAPI("/ai/cover", result.getData());
         }
-//        
-//        } else if (result.getMessage().equals("3")) {
-//            return Response.of("FAIL","학습 데이터가 없어 커버 생성 불가",null);
-//        } else if (result.getMessage().equals("4")) {
-//            return Response.of("FAIL","훈련중, 커버 생성 불가",null);
-//        }
         return Response.of("OK","Make a Song 시작하기",null);
     }
 

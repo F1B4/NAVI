@@ -2,10 +2,6 @@ package ssafy.navi.entity.noraebang;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.util.BaseTimeEntity;
 

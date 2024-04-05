@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ssafy.navi.dto.song.PartDto;
 import ssafy.navi.dto.user.FollowerDto;
 import ssafy.navi.dto.user.FollowingDto;
 import ssafy.navi.dto.user.UserDto;

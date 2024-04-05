@@ -3,8 +3,8 @@ package ssafy.navi.entity.cover;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
-import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.song.Part;
+import ssafy.navi.entity.user.User;
 
 @Entity
 @Getter @Setter

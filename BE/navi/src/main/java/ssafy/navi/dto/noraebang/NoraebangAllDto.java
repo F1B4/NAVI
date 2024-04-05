@@ -3,11 +3,7 @@ package ssafy.navi.dto.noraebang;
 import lombok.*;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.dto.user.UserDto;
-import ssafy.navi.dto.util.TimeDto;
 import ssafy.navi.entity.noraebang.Noraebang;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter

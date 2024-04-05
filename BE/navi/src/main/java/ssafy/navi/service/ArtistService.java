@@ -1,12 +1,9 @@
 package ssafy.navi.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ssafy.navi.dto.song.ArtistDto;
-import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.entity.song.Artist;
 import ssafy.navi.repository.ArtistRepository;
 

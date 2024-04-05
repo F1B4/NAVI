@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ssafy.navi.entity.song.Lyric;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor

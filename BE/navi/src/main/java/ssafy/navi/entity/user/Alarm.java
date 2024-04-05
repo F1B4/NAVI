@@ -1,10 +1,8 @@
 package ssafy.navi.entity.user;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.*;
 import ssafy.navi.entity.util.BaseTimeEntity;
-import ssafy.navi.service.AlarmService;
 
 @Entity
 @Getter

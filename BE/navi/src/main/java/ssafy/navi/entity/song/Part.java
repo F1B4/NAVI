@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ssafy.navi.entity.cover.CoverUser;
 import ssafy.navi.entity.cover.MatchingUser;
 

@@ -9,14 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ssafy.navi.dto.noraebang.*;
+import ssafy.navi.dto.noraebang.NoraebangAllDto;
+import ssafy.navi.dto.noraebang.NoraebangDetailDto;
 import ssafy.navi.dto.song.LyricDto;
 import ssafy.navi.dto.user.CustomOAuth2User;
 import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
 import ssafy.navi.entity.noraebang.NoraebangReview;
 import ssafy.navi.entity.song.Artist;
-import ssafy.navi.entity.song.Lyric;
 import ssafy.navi.entity.song.Song;
 import ssafy.navi.entity.user.User;
 import ssafy.navi.entity.user.Voice;
@@ -117,9 +117,6 @@ public class    NoraebangService {
             Long artistId = songbyId.get().getArtist().getId();
             Optional<Artist> artistById = artistRepository.findById(artistId);
             // 현재 인가에서 유저 가져오기
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-//            User user = userRepository.findByUsername(customOAuth2User.getUsername());
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             CustomOAuth2User customOAuth2User = (CustomOAuth2User)authentication.getPrincipal();
             User user = userRepository.findByUsername(customOAuth2User.getUsername());
@@ -218,11 +215,6 @@ public class    NoraebangService {
         noraebangReviewRepository.deleteById(reviewPk);
 
         return "댓글 삭제 완료";
-    }
-
-    @Transactional
-    public void createRecord(String filePath) {
-
     }
 
     /*

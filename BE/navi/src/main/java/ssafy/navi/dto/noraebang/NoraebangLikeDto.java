@@ -1,10 +1,7 @@
 package ssafy.navi.dto.noraebang;
 
 import lombok.*;
-import ssafy.navi.entity.noraebang.Noraebang;
 import ssafy.navi.entity.noraebang.NoraebangLike;
-
-import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

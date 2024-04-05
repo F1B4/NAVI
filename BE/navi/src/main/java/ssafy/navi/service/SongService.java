@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ssafy.navi.dto.song.SongDto;
 import ssafy.navi.entity.song.Artist;
 import ssafy.navi.repository.ArtistRepository;
-import ssafy.navi.repository.SongRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

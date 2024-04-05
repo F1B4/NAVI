@@ -4,8 +4,6 @@ package ssafy.navi.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import ssafy.navi.dto.util.Response;
 import ssafy.navi.service.CoverService;
 

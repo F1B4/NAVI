@@ -1,6 +1,5 @@
 package ssafy.navi.oauth2;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +38,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.addCookie(createCookie("Authorization", token));
         response.sendRedirect("https://j10d107.p.ssafy.io/?loginSuccess=true");
-//        response.sendRedirect("http://localhost:5173/?loginSuccess=true");
 
     }
 

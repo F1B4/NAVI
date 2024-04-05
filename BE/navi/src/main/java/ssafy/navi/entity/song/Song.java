@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ssafy.navi.entity.cover.Cover;
 import ssafy.navi.entity.cover.Matching;
 import ssafy.navi.entity.noraebang.Noraebang;

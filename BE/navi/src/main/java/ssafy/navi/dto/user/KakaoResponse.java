@@ -1,7 +1,5 @@
 package ssafy.navi.dto.user;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Map;
 
 public class KakaoResponse implements OAuth2Response{

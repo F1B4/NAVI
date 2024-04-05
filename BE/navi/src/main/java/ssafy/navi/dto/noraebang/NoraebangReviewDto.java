@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ssafy.navi.dto.cover.CoverReviewDto;
 import ssafy.navi.dto.user.UserDto;
-import ssafy.navi.entity.cover.CoverReview;
 import ssafy.navi.entity.noraebang.NoraebangReview;
 
 @Getter @Setter

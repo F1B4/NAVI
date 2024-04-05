@@ -15,7 +15,6 @@ import ssafy.navi.repository.AlarmRespository;
 import ssafy.navi.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
