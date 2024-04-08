@@ -1,6 +1,7 @@
 from celery import Celery
 from kombu import Queue
 
+
 # Celery 애플리케이션 인스턴스 생성 및 구성
 celery_app = Celery(
     'tasks',

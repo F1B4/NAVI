@@ -5,25 +5,26 @@ import server_package.combine as combine
 
 app = FastAPI()
 
-# AI 모델 학습 요청 엔드포인트
+"""
+AI 모델 학습 요청 엔드포인트
+"""
 @app.post("/ai/train")
 async def train(pk : str = Form(...)):
     # pk: user_pk
-    print("연결 완료")
     train_model_task.delay(pk)
 
-
-# 커버곡 생성(추론 요청) 엔드포인트
+"""
+커버곡 생성(추론 요청) 엔드포인트
+"""
 @app.post("/ai/cover")
 async def infer(pk : str = Form(...)):
     # pk: cover_pk
-    print(pk, "============================")
     infer_task.delay(pk)
 
-
-# 노래방 video 생성 엔드포인트
+"""
+노래방 video 생성 엔드포인트
+"""
 @app.post("/noraebangs/record")
 async def record(pk : str = Form(...), path: str = Form(...), noraebangPk : str = Form(...)):
     # pk: noraebang_pk
-    print(pk,path,noraebangPk)
     combine.audioCombine(pk, path, noraebangPk)

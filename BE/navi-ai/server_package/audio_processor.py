@@ -1,3 +1,6 @@
+"""
+학습데이터 전처리 모듈
+"""
 import os
 import subprocess
 from glob import glob
@@ -20,8 +23,8 @@ class AudioProcessor:
             assert os.path.isdir(self.src_dir), "지정한 로컬 폴더가 없습니다."
             assert len(os.listdir(self.src_dir)) >= 1, "지정한 로컬 폴더에 파일이 없습니다."
 
-            # 지원하는 파일 포맷 : m4a, mp3
-            src_files = [os.path.join(self.src_dir, i) for i in os.listdir(self.src_dir) if i.endswith(('.mp3','.m4a'))]
+            # 지원하는 파일 포맷 : m4a, mp3, webm
+            src_files = [os.path.join(self.src_dir, i) for i in os.listdir(self.src_dir) if i.endswith(('.mp3','.m4a','.webm'))]
             assert len(src_files) != 0, '경로를 잘못 지정한 것 같습니다.'
         except Exception as e:
             raise Exception(f"Audio processing failed: {str(e)}")
@@ -106,7 +109,9 @@ class AudioProcessor:
 
         shutil.rmtree(dataset_split_dir)
 
-
+"""
+배경음 제거, 목소리 분리
+"""
 class demucs():
   def __init__(self):
     self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
