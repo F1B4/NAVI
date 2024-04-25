@@ -13,12 +13,12 @@ def read_root():
 
 
 # MySQL 데이터베이스 연결
-connection = pymysql.connect(host='j10d107.p.ssafy.io',
-                             port=3305,
-                             user='navi',
-                             password='navid107',
-                             database='navi',
-                             charset='utf8mb4',
+connection = pymysql.connect(host=,
+                             port=,
+                             user=,
+                             password=,
+                             database=,
+                             charset=,
                              cursorclass=pymysql.cursors.DictCursor)
 
 
@@ -43,23 +43,7 @@ with connection.cursor() as cursor:
     cursor.execute(sql_cover_user,(cover_pk, ))
     cover_users = cursor.fetchall()
     print(cover_users)
-    
-    # cover_pk = 3
-    # sql_cover = "SELECT * FROM cover WHERE cover_pk = 4"
-    # cursor.execute(sql_cover)
-    
-    # # 결과 가져오기
-    # cover = cursor.fetchall()
-    
-    # song_pk = cover[0]['song_pk']
-    # sql_lyric = "SELECT * FROM lyric WHERE song_pk = 3"
-    # cursor.execute(sql_lyric)
-    # lyrics = cursor.fetchall()
-    
 
-    # sql_cover_user = "SELECT * FROM cover_user WHERE cover_pk = 4"
-    # cursor.execute(sql_cover_user)
-    # cover_users = cursor.fetchall()
 
     allPart = []
     for r in cover_users:
@@ -68,8 +52,6 @@ with connection.cursor() as cursor:
         allPart[len(allPart)-1].append([])
         allPart[len(allPart)-1].append([])
     print(cover_users)
-    #임시로 allPart에 14~20까지 넣고 함
-    # allPart = [[14,[],[]],[15,[],[]],[16,[],[]],[17,[],[]],[18,[],[]],[19,[],[]],[20,[],[]]]
     
     for part in allPart:
         for lyric in lyrics:
