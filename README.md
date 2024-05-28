@@ -1,19 +1,9 @@
 <div align="center">
   <br />
-  <img src="https://github.com/F1B4/NAVI/assets/79037963/e6bb89dd-eb24-429d-bb90-9da855f5d35d" alt="navi LOGO" width="165px" height="80px" />
+  <img src="https://github.com/F1B4/NAVI/assets/79037963/e5eae4fb-827c-4c23-9899-f3f19dc281c3" alt="navi LOGO" width="165px" height="80px" />
   <br />
   <h2>🎵NAVI : 친구들과 함께 AI 커버곡을 만들어보아요🎤</h2>
 <h3>삼성 청년 소프트웨어 아카데미 특화 프로젝트 우수상 수상🥉</h3>
-  <a href="https://j10d107.p.ssafy.io/">
-   <img src="https://img.shields.io/badge/-NAVI-important?style=flat&logo=githubsponsors&logoColor=white&labelColor=6B54C4&color=white"/>
-  </a>
-  <a href="https://talented-gondola-4cb.notion.site/PJT-F1B4-2a46555b84834514a625bfcea29903f7">
-   <img src="https://img.shields.io/badge/-Team%20Notion-important?style=flat&logo=notion&logoColor=balck&labelColor=black&color=white"/>
-  </a>
-  <a href="https://www.figma.com/proto/yiJ03EON7wfJWOV7QjYdNe/NAVI?node-id=185-1390&starting-point-node-id=185%3A1390">
-   <img src="https://img.shields.io/badge/-Figma-important?style=flat&logo=figma&logoColor=white&labelColor=pink&color=white"/>
-  </a>
-  
 
 <b>[ SSAFY 10기 특화 PJT ] TEAM F1B4</b>
 
@@ -45,7 +35,7 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
 ### [NAVI 바로 가기](https://j10d107.p.ssafy.io/) (서비스 종료)
 ### [AI 커버곡 결과 미리보기](https://drive.google.com/file/d/1_hhPnYIfVT5lF-aHPZhZHSoCSAxbjOTm/view?usp=sharing)
 
-<br/>
+<br />
 
 <div id="2"></div>
 
@@ -53,196 +43,128 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
 
 ### Frontend
 
-<table>
-  <tr align='center'>
-    <td width="80px" height="60px">
-      <a href="https://www.tcpschool.com/html/html5_intro_intro" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/html5-original-wordmark.svg" alt="React"  /></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.w3schools.com/css/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/css3-original-wordmark.svg" alt="CSS3"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://reactjs.org/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/react-original-wordmark.svg" alt="HTML5"  /></a>  
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.typescriptlang.org/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/typescript-original.svg" alt="TypeScript" /></a>  
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>HTML5</td>
-    <td>CSS3</td>
-    <td>React</td>
-    <td>Typescript</td>
-  </tr>
-</table>
+<a href="https://www.w3.org/">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+</a>
+<a href="https://www.w3schools.com/css/">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+</a>
+<a href="https://reactjs.org/">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"/>
+</a>
+<a href="https://www.typescriptlang.org/">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+</a>
+<a href="https://www.tailwindcss.com/">
+  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=React&logoColor=white"/>
+</a>
+<a href="https://daisyui.com/">
+  <img  src="https://img.shields.io/badge/daisyui-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white"/>
+</a>
+<a href="https://vitejs.dev/">
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white"/>
+</a>
+<a href="https://axios-http.com/kr/docs/intro">
+  <img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"/>
+</a>
+<a href="https://zustand-demo.pmnd.rs/">
+  <img src="https://img.shields.io/badge/Zustand-706156?style=for-the-badge"/>
+</a>
 
-<table>
-  <tr align='center'>
-    <td width="80px" height="60px">
-      <a href="https://www.tailwindcss.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/tailwindcss.svg" alt="Tailwind CSS"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://zustand-demo.pmnd.rs/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/7dfde7eb-d7bc-4ce1-8e55-a49169117911" alt="zustand"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://vitejs.dev/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/084ea1a3-88f1-460e-9309-ce27f032f71e" alt="vite"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://axios-http.com/kr/docs/intro" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/5295b67d-b800-49ff-8aad-46d3abc69c5b" alt="axios"/></a>
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>Tailwind<br/> CSS</td>
-    <td>Zustand</td>
-    <td>Vite</td>
-    <td>Axios</td>
-  </tr>
-</table>
-
-<br/>
+<br />
 
 ### Backend
 
-<table>
-  <tr align='center'>
-    <td width="80px" height="60px">
-      <a href="https://www.java.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/java-original-wordmark.svg" alt="Java"/></a> 
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://spring.io/projects/spring-boot" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/a20e8a51-6c05-4d9b-9c29-4477c27b71bf" alt="Spring"/></a>   
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://hibernate.org/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/f93f735d-c205-4467-87f8-7655cf6ef057" alt="hibernate"/></a>  
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://spring.io/projects/spring-security" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/2ba63882-6148-4a8a-8cd5-3cd340417378" alt="security"/></a>
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>Java</td>
-    <td>Spring Boot</td>
-    <td>Hibernate</td>
-    <td>Spring<br/>Security</td>
-  </tr>
-</table>
+<a href="https://www.java.com/">
+  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white">
+</a>
+<a href="https://spring.io/projects/spring-boot">
+  <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+</a>
+<a href="https://hibernate.org/">
+  <img src="https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white">
+</a>
+<a href="https://spring.io/projects/spring-security">
+  <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
+</a>
+<a href="https://jwt.io/">
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
+</a>
+<a href="https://oauth.net/2/">
+  <img src="https://img.shields.io/badge/OAuth2-3423A6?style=for-the-badge&logo=webauthn&logoColor=white">
+</a>
+<a href="https://www.mysql.com/">
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+</a>
 
-<table>
-  <tr>
-    <td width="80px" height="60px">
-      <a href="https://jwt.io/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/dcf8ebcb-c7d5-4717-a006-58f846ddcba7" alt="jwt"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://oauth.net/2/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/f87e4df1-f8be-419c-ad46-d70a790b2724" alt="oauth2"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.mysql.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/768313b8-9152-4e53-ae85-35f912656344" alt="mysql"/></a>
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>JWT</td>
-    <td>OAuth2</td>
-    <td>MySQL</td>
-  </tr>
-</table>
-
-<br/>
+<br />
 
 ### AI & Video
 
-<table>
-  <tr align='center'>
-    <td width="80px" height="60px">
-      <a href="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/tree/main" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/227e4017-f697-4409-aad8-d54b3bc8885e" alt="RVC"/></a> 
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://fastapi.tiangolo.com/ko/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/0b495edb-44b0-40ef-ba84-68d35ba96931" alt="FastAPI"/></a>   
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://docs.celeryq.dev/en/stable/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/1690cbae-7d70-4340-bb58-d57abb51c390" alt="celery"/></a>  
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://pytorch.org/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/84e0d6e2-7e44-43ff-aa9f-8a13e6af27d9" alt="pytorch"/></a>
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>RVC</td>
-    <td>FastAPI</td>
-    <td>Celery</td>
-    <td>Pytorch</td>
-  </tr>
-</table>
+<a href="https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/tree/main">
+  <img src="https://img.shields.io/badge/RVC-A4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white">
+</a>
+<a href="https://www.python.org/">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+</a>
+<a href="https://fastapi.tiangolo.com/ko/">
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=celery&logoColor=white">
+</a>
+<a href="https://docs.celeryq.dev/en/stable/">
+  <img src="https://img.shields.io/badge/Celery-37814A?style=for-the-badge&logo=Celery&logoColor=white">
+</a>
+<a href="https://pytorch.org/">
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white">
+</a>
+<a href="https://pillow.readthedocs.io/en/stable/">
+  <img src="https://img.shields.io/badge/Pillow-3776AB?style=for-the-badge&logo=python&logoColor=white">
+</a>
+<a href="https://opencv.org/">
+  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white">
+</a>
 
-<table>
-  <tr>
-    <td width="80px" height="60px">
-      <a href="https://pillow.readthedocs.io/en/stable/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/59b423ce-90fd-4a53-aa6f-d49d904084fd" alt="pillow"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://opencv.org/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/a01e8b9f-ccb8-4f14-ae7c-fa105015e586" alt="OpenCV"/></a>
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>Pillow</td>
-    <td>OpenCV</td>
-  </tr>
-</table>
-
-<br/>
+<br />
 
 ### DevOps
 
-<table>
-  <tr align='center'>
-    <td width="80px" height="60px">
-      <a href="https://aws.amazon.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/amazonwebservices-original-wordmark.svg" alt="AWS"/></a> 
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.docker.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/docker-original-wordmark.svg" alt="Docker"/></a> 
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.nginx.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/nginx-original.svg" alt="Nginx"/></a>  
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.jenkins.io/" target="_blank"><img style="margin: 10px" width="60px" src="https://profilinator.rishav.dev/skills-assets/jenkins-icon.svg" alt="Jenkins"/></a>  
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>AWS</td>
-    <td>Docker</td>
-    <td>Nginx</td>
-    <td>Jenkins</td>
-  </tr>
-</table>
+<a href="https://aws.amazon.com/">
+  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
+</a>
+<a href="https://www.docker.com/">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+</a>
+<a href="https://www.nginx.com/">
+  <img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white">
+</a>
+<a href="https://www.jenkins.io/">
+  <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
+</a>
 
-<br/>
-
+<br />
 
 ### Tools
 
-<table>
-  <tr>
-    <td width="80px" height="60px">
-      <a href="https://www.notion.so/" target="_blank"><img style="margin: 10px" width="60px" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="notion"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://about.gitlab.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/040afb05-42a4-4d0f-8dc3-df2d0eb8eb24" alt="gitlab"/></a>
-    </td>
-    <td width="80px" height="60px">
-      <a href="https://www.atlassian.com/ko/software/jira" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/ed6dcf3a-1117-4852-b760-450922e33318" alt="jira"/></a>  
-    </td>
-    <td width="80px" height="60px" align='center'>
-      <a href="https://mattermost.com/" target="_blank"><img style="margin: 10px" width="60px" src="https://github.com/F1B4/NAVI/assets/79037963/dae057fc-8497-4ef6-a9ce-ec7b7816df89" alt="Mattermost"/></a>
-    </td>
-  </tr>
-  <tr align='center'>
-    <td>Notion</td>
-    <td>Gitlab</td>
-    <td>Jira</td>
-    <td>Mattermost</td>
-  </tr>
-</table>
+<a href="https://about.gitlab.com/">
+  <img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
+</a>
+<a href="https://www.atlassian.com/software/jira">
+  <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
+</a>
+<a href="https://www.notion.so/">
+  <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+</a>
+<a href="https://mattermost.com/">
+  <img src="https://img.shields.io/badge/Mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
+</a>
+<a href="https://www.figma.com/">
+  <img  src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"/>
+</a>
+<a href="https://discord.com/">
+  <img  src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=black"/>
+</a>
 
-<br/>
+<br />
+<br />
 
 <div id="3"></div>
 
@@ -278,7 +200,7 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
 <div id="4"></div>
 
 ## 📂 프로젝트 구성도
-<img src="https://github.com/F1B4/NAVI/assets/79037963/334d9026-a877-4fb3-bdff-11957f982d8e" alt="아키텍처" width="1000px" />
+<img src="https://github.com/F1B4/NAVI/assets/79037963/a5c2f332-7392-4909-8a46-3c72c4648193" alt="아키텍처" width="1000px" />
 
 <br/>
 <br/>
@@ -291,52 +213,114 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
 
 ## 🖥️ 서비스 화면
 
+### 로그인
 <table style="border: 2px; text-align:center;">
   <tr style="text-align:center;">
     <td> 로그인 </td>
   </tr>
   <tr>
-   <td>
-     <img src="https://github.com/F1B4/NAVI/assets/79037963/45f4c347-488c-4894-93a8-d6b5469f45ec" alt="로그인"/>
+    <td>
+     <img src="./assets/로그인.gif" alt="로그인" width="450px" />
     </td>
   </tr>
 </table>
 
 <br/>
 
+### 노래방
 <table style="border: 2px; text-align:center;">
   <tr style="text-align:center;">
-    <td> 노래방 게시판, 녹음 </td>
+    <td> 노래 선택 </td>
+    <td> 녹음 </td>
   </tr>
   <tr>
-   <td>
-      <img src="https://github.com/F1B4/NAVI/assets/79037963/be9c1bfb-6be3-4536-9382-c3112ae81fdf" alt="노래방"/>
+    <td>
+      <img src="./assets/노래방-노래선택.gif" alt="=" width="450px" />
+    </td>
+    <td>
+      <img src="./assets/노래방-녹음.gif" alt="=" width="450px" />
+    </td>
+  </tr>
+</table>
+<table style="border: 2px; text-align:center;">
+  <tr style="text-align:center;">
+    <td> 재생 </td>
+    <td> 게시글 작성 </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="./assets/노래방-재생.gif" alt="=" width="450px" />
+    </td>
+    <td>
+      <img src="./assets/노래방-게시글작성.gif" alt="=" width="450px" />
     </td>
   </tr>
 </table>
 
 <br/>
 
+### AI 커버곡
 <table style="border: 2px; text-align:center;">
   <tr style="text-align:center;">
-    <td> AI 커버곡 게시판, 생성 </td>
+    <td> 글쓰기 </td>
+    <td> 노래 선택 </td>
   </tr>
   <tr>
-   <td>
-      <img src="https://github.com/F1B4/NAVI/assets/79037963/db71f648-2cd1-4031-9793-48c3c7da1fac" alt="AI커버곡"/>
+    <td>
+      <img src="./assets/커버-글쓰기.gif" alt="=" width="450px" />
+    </td>
+    <td>
+      <img src="./assets/커버-노래선택.gif" alt="=" width="450px" />
+    </td>
+  </tr>
+</table>
+<table style="border: 2px; text-align:center;">
+  <tr style="text-align:center;">
+    <td> 커버생성 후 매칭 </td>
+    <td> 매칭 완료 알림 </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="./assets/커버-커버생성,매칭신청.gif" alt="=" width="450px" />
+    </td>
+    <td>
+      <img src="./assets/커버-매칭완료알림.gif" alt="=" width="450px" />
+    </td>
+  </tr>
+</table>
+<table style="border: 2px; text-align:center;">
+  <tr style="text-align:center;">
+    <td> 커버 디테일 </td>
+    <td> 커버곡 재생 </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="./assets/커버디테일1.gif" alt="=" width="450px" />
+    </td>
+    <td>
+      <img src="./assets/커버디테일2.gif" alt="=" width="450px" />
     </td>
   </tr>
 </table>
 
 <br/>
 
+### 유저 피드
 <table style="border: 2px; text-align:center;">
   <tr style="text-align:center;">
-    <td> 유저 피드 </td>
+    <td> 언팔로우 </td>
+    <td> 팔로우 </td>
+    <td> 마이페이지 </td>
   </tr>
   <tr>
-   <td>
-      <img src="https://github.com/F1B4/NAVI/assets/79037963/8c9d9bb2-496c-4489-8f91-6dc98e2062a4" alt="유저피드"/>
+    <td>
+      <img src="./assets/유저피드-언팔로우.gif" alt="=" width="300px" />
+    </td>
+    <td>
+      <img src="./assets/유저피드-팔로우.gif" alt="=" width="300px" />
+    </td>
+    <td>
+      <img src="./assets/유저피드-내피드.gif" alt="=" width="300px" />
     </td>
   </tr>
 </table>
@@ -542,7 +526,6 @@ FE
 
 ```
 BE
-main
 ├───java
 │   └───ssafy
 │       └───navi
