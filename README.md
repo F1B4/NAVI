@@ -235,10 +235,10 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
   </tr>
   <tr>
     <td>
-      <img src="./assets/노래방-노래선택.gif" alt="=" width="450px" />
+      <img src="./assets/노래방-노래선택.gif" alt="=" width="300px" />
     </td>
     <td>
-      <img src="./assets/노래방-녹음.gif" alt="=" width="450px" />
+      <img src="./assets/노래방-녹음.gif" alt="=" width="300px" />
     </td>
   </tr>
 </table>
@@ -249,10 +249,10 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
   </tr>
   <tr>
     <td>
-      <img src="./assets/노래방-재생.gif" alt="=" width="450px" />
+      <img src="./assets/노래방-재생.gif" alt="=" width="300px" />
     </td>
     <td>
-      <img src="./assets/노래방-게시글작성.gif" alt="=" width="450px" />
+      <img src="./assets/노래방-게시글작성.gif" alt="=" width="300px" />
     </td>
   </tr>
 </table>
@@ -267,10 +267,10 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
   </tr>
   <tr>
     <td>
-      <img src="./assets/커버-글쓰기.gif" alt="=" width="450px" />
+      <img src="./assets/커버-글쓰기.gif" alt="=" width="300px" />
     </td>
     <td>
-      <img src="./assets/커버-노래선택.gif" alt="=" width="450px" />
+      <img src="./assets/커버-노래선택.gif" alt="=" width="300px" />
     </td>
   </tr>
 </table>
@@ -281,10 +281,10 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
   </tr>
   <tr>
     <td>
-      <img src="./assets/커버-커버생성,매칭신청.gif" alt="=" width="450px" />
+      <img src="./assets/커버-커버생성,매칭신청.gif" alt="=" width="300px" />
     </td>
     <td>
-      <img src="./assets/커버-매칭완료알림.gif" alt="=" width="450px" />
+      <img src="./assets/커버-매칭완료알림.gif" alt="=" width="300px" />
     </td>
   </tr>
 </table>
@@ -295,10 +295,10 @@ NAVI는 사용자의 목소리를 학습한 AI모델로 커버곡을 만들고 �
   </tr>
   <tr>
     <td>
-      <img src="./assets/커버디테일1.gif" alt="=" width="450px" />
+      <img src="./assets/커버디테일1.gif" alt="=" width="300px" />
     </td>
     <td>
-      <img src="./assets/커버디테일2.gif" alt="=" width="450px" />
+      <img src="./assets/커버디테일2.gif" alt="=" width="300px" />
     </td>
   </tr>
 </table>
